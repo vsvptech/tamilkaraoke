@@ -144,7 +144,7 @@ const songs = [
     }, 
       {
         id: 9,
-        title: "Kadhal-Oviyam",
+        title: "Kadhal Oviyam",
         artist: "Alaigal Oivathillai",
         image: getFirebaseUrl("images/AlaigalOivathillai.jpg"),
         audio: {
@@ -159,7 +159,23 @@ const songs = [
         active: false,
         currentType: "male"
     }, 
-
+      {
+        id: 10,
+        title: "Maalayil Yaro",
+        artist: "Chatriyan",
+        image: getFirebaseUrl("images/Chatriyan.jpg"),
+        audio: {
+           // male: getFirebaseUrl("songs/male/Maalayil-Yaro-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Maalayil-Yaro-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Maalayil-Yaro-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Maalayil-Yaro-Song.mp3")
+        },  
+        lyrics: "lyrics/Maalayil-Yaro.txt",
+        availableTypes: ["female", "song", "podcast"],
+        trackId: 10,
+        active: false,
+        currentType: "male"
+    }, 
 
 
 
