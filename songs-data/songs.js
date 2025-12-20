@@ -34,7 +34,7 @@ const songs = [
             duet: getFirebaseUrl("songs/duet/Oru-Kadhal-Enbathu-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Oru-Kadhal-Enbathu-Song.mp3")
         },  
-        lyrics: "lyrics/Guruvayurappa.txt",
+        lyrics: "lyrics/Oru-Kadhal-Enbathu.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
         trackId: 2,
         active: false,
