@@ -171,7 +171,7 @@ const songs = [
             song: getFirebaseUrl("songs/song/Maalayil-Yaro-Song.mp3")
         },  
         lyrics: "lyrics/Maalayil-Yaro.txt",
-        availableTypes: ["female", "song", "podcast"],
+        availableTypes: ["song", "female", "song", "podcast"],
         trackId: 10,
         active: false,
         currentType: "male"
