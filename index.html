@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chillax Karaoke</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+    <!-- Hidden Audio Element -->
+    <audio id="audioPlayer" preload="metadata"></audio>
+    
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="images/logo.png" class="logo" alt="Logo">
+                <div class="logo-text">Chillax Karaoke</div>
+            </div>
+            
+            <button class="mobile-search-toggle" id="mobileSearchToggle">
+                <i class="fas fa-search"></i>
+            </button>
+            
+            <div class="search-bar">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search Songs, Movie Name...">
+                    <button class="search-clear" id="searchClear">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="profile">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <div class="fas fa-bars menu-btn" id="menuBtn" style="font-size:36px;"></div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <img src="images/logo.png" class="logo" alt="Logo">
+                    <span class="app-name">Chillax Karaoke</span>
+                    <i class="fas fa-times close-btn" id="closeBtn"></i>
+                </div>
+
+                <ul class="menu">
+                    <li data-type="male"><i class="fas fa-mars"></i> Solo Male</li>
+                    <li data-type="female"><i class="fas fa-venus"></i> Solo Female</li>
+                    <li data-type="duet"><i class="fas fa-venus-mars"></i> Duet</li>
+                    <li data-type="song"><i class="fas fa-music"></i> Song</li>
+                    <li data-type="podcast"><i class="fas fa-podcast"></i> Lyrics</li>
+                    <li data-type="favourite"><i class="far fa-heart"></i> Favourite</li>
+                    <li data-type="developed"><i class="fas fa-code"></i> Designed & Developed by Venkattaraman</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Mobile Search -->
+        <div class="mobile-search-container" id="mobileSearchContainer">
+            <div class="mobile-search-wrapper">
+                <i class="fas fa-search mobile-search-icon"></i>
+                <input type="text" class="mobile-search-input" placeholder="Search Songs, Movie Name...">
+                <button class="mobile-search-clear" id="mobileSearchClear">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="player-section">
+            <div class="player-header">
+            
+                <h2 class="player-title">Now Playing</h2> <!-- Changed from "Now Playing" to "Now" -->
+                <div class="player-controls">
+                    <button class="control-btn type-filter-btn active" data-type="male">
+                        <i class="fas fa-mars"></i>
+                    </button>
+                    <button class="control-btn type-filter-btn" data-type="female">
+                        <i class="fas fa-venus"></i>
+                    </button>
+                    <button class="control-btn type-filter-btn" data-type="duet">
+                        <i class="fas fa-venus-mars"></i>
+                    </button>
+                    <button class="control-btn type-filter-btn" data-type="song">
+                        <i class="fas fa-music"></i>
+                    </button>
+                    <button class="control-btn" id="lyricsBtn">
+                        <i class="fas fa-podcast"></i>
+                    </button>
+                    <button class="control-btn type-filter-btn" data-type="favourite">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <!-- Auto Play Toggle Button -->
+                    <button class="control-btn auto-play-toggle-btn" id="autoPlayToggleBtn" title="Auto Play">
+                        <i class="fas fa-play-circle"></i>
+                    </button>
+                </div>
+            </div>
+           
+            <!-- Carousel Slider -->
+            <div class="now-playing">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper" id="carouselContainer">
+                        <!-- Carousel slides will be populated by JavaScript -->
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                
+                <div class="song-info">
+                    <h3 class="song-title" id="songTitleDisplay">Thalattuthe Vaanam</h3>
+                    <p class="song-artist" id="songArtistDisplay">Kadal Meengal</p>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar">
+                            <div class="progress" id="progress"></div>
+                        </div>
+                        <div class="song-time">
+                            <span class="current-time" id="currentTime">0:00</span>
+                            <span class="total-time" id="totalTime">0:00</span>
+                        </div>
+                    </div>
+                    <div class="audio-loading" id="audioLoading">Loading audio...</div>
+                </div>
+            </div>
+            
+            <div class="song-list" id="songListContainer">
+                <!-- Song items will be populated by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Player Controls (Bottom Fixed) -->
+    <div class="mobile-player-controls">
+        <div class="mobile-player-info">
+            <div class="mobile-song-title" id="mobileSongTitle">Thalattuthe Vaanam</div>
+            <div class="mobile-song-artist" id="mobileSongArtist">Kadal Meengal</div>
+            <!-- Mobile Progress Bar -->
+            <div class="mobile-progress-container">
+                <div class="progress-bar" id="mobileProgressBar">
+                    <div class="progress" id="mobileProgress"></div>
+                </div>
+                <div class="mobile-song-time">
+                    <span class="current-time" id="mobileCurrentTime">0:00</span>
+                    <span class="total-time" id="mobileTotalTime">0:00</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mobile-controls">
+            <button class="mobile-player-btn" id="mobilePrevBtn">
+                <i class="fas fa-step-backward"></i>
+            </button>
+            <button class="mobile-player-btn mobile-play-btn" id="mobilePlayBtn">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="mobile-player-btn" id="mobileNextBtn">
+                <i class="fas fa-step-forward"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Lyrics Modal -->
+    <div class="lyrics-modal" id="lyricsModal">
+        <div class="lyrics-swipe-indicator"></div>
+        <div class="lyrics-container">
+            <div class="lyrics-header">
+                <h3 class="lyrics-title">Lyrics</h3>
+                <button class="close-lyrics" id="closeLyrics">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="lyrics-content">
+                <pre class="lyrics-text" id="lyricsText">Loading lyrics...</pre>
+            </div>
+            
+            <div class="lyrics-player">
+                <div class="lyrics-player-info">
+                    <div class="lyrics-player-title" id="lyricsPlayerTitle">Thalattuthe Vaanam - Kadal Meengal</div>
+                    <div class="lyrics-player-time">
+                        <span id="lyricsCurrentTime">0:00</span> / <span id="lyricsTotalTime">0:00</span>
+                    </div>
+                </div>
+                
+                <div class="lyrics-player-controls">
+                    <div class="lyrics-progress-container">
+                        <div class="progress-bar" id="lyricsProgressBar">
+                            <div class="progress" id="lyricsProgress"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="lyrics-control-buttons">
+                        <button class="lyrics-player-btn" id="lyricsPrevBtn">
+                            <i class="fas fa-step-backward"></i>
+                        </button>
+                        <button class="lyrics-player-btn lyrics-play-btn" id="lyricsPlayBtn">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="lyrics-player-btn" id="lyricsNextBtn">
+                            <i class="fas fa-step-forward"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <!-- Songs Data -->
+    <script src="songs-data/songs.js"></script>
+    
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html>
