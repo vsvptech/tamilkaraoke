@@ -1,0 +1,167 @@
+// songs.js - Clean version using the helper function
+const FIREBASE_BUCKET = "chillaxkaraoke-3d1cb.firebasestorage.app";
+
+function getFirebaseUrl(path) {
+    return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
+}
+
+const songs = [
+    {
+        id: 1,
+        title: "Guruvayurappa",
+        artist: "Puthu Puthu Arthangal",
+        image: getFirebaseUrl("images/PuthuPuthuArthangal.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Guruvayurappa-Guruvayurappa-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Guruvayurappa-Guruvayurappa-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Guruvayurappa-Guruvayurappa-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Guruvayurappa-Guruvayurappa-Song.mp3")
+        },  
+        lyrics: "lyrics/Guruvayurappa.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        trackId: 1,
+        active: true,
+        currentType: "male"
+    },
+    {
+        id: 2,
+        title: "Oru Kadhal Enbathu",
+        artist: "Chinna Thambi Periya Thambi",
+        image: getFirebaseUrl("images/ChinnaThambi.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Oru-Kadhal-Enbathu-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Oru-Kadhal-Enbathu-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Oru-Kadhal-Enbathu-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Oru-Kadhal-Enbathu-Song.mp3")
+        },  
+        lyrics: "lyrics/Guruvayurappa.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+        trackId: 2,
+        active: false,
+        currentType: "male"
+    },
+     {
+        id: 3,
+        title: "Engengo Sellum",
+        artist: "Pattakkathi Bhairavan",
+        image: getFirebaseUrl("images/PattakkathiBhairavan.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Engengo-Sellum-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Engengo-Sellum-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Engengo-Sellum-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Engengo-Sellum-Song.mp3")
+        },  
+        lyrics: "lyrics/Engengo-Sellum.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+        trackId: 3,
+        active: false,
+        currentType: "male"
+    }, 
+      {
+        id: 4,
+        title: "Aagaya Gangai",
+        artist: "Dharma Yuddham",
+        image: getFirebaseUrl("images/DharmaYuddham.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Aagaya-Gangai-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Aagaya-Gangai-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Aagaya-Gangai-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Aagaya-Gangai-Song.mp3")
+        },  
+        lyrics: "lyrics/Aagaya-Gangai.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+        trackId: 4,
+        active: false,
+        currentType: "male"
+    },     
+      {
+        id: 5,
+        title: "Innum Ennai Enna",
+        artist: "Singaravelan",
+        image: getFirebaseUrl("images/Singaravelan.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Innum-Ennai-Enna-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Innum-Ennai-Enna-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Innum-Ennai-Enna-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Innum-Ennai-Enna-Song.mp3")
+        },  
+        lyrics: "lyrics/Innum-Ennai-Enna.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+        trackId: 5,
+        active: false,
+        currentType: "male"
+    },     
+      {
+        id: 6,
+        title: "Nethu Oruthara Oruthara",
+        artist: "Puthu Pattu",
+        image: getFirebaseUrl("images/PuthuPattu.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Nethu-Oruthara-Oruthara-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Nethu-Oruthara-Oruthara-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Nethu-Oruthara-Oruthara-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Nethu-Oruthara-Oruthara-Song.mp3")
+        },  
+        lyrics: "lyrics/Nethu-Oruthara-Oruthara.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+        trackId: 6,
+        active: false,
+        currentType: "male"
+    },    
+      {
+        id: 7,
+        title: "Valli Valli Ena Vanthan",
+        artist: "Deiva Vaakku",
+        image: getFirebaseUrl("images/DeivaVaakku.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Valli-Valli-Ena-Vanthan-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Valli-Valli-Ena-Vanthan-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Valli-Valli-Ena-Vanthan-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Valli-Valli-Ena-Vanthan-Song.mp3")
+        },  
+        lyrics: "lyrics/Valli-Valli-Ena-Vanthan.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        trackId: 7,
+        active: false,
+        currentType: "male"
+    },  
+      {
+        id: 8,
+        title: "Malare Mounama",
+        artist: "Karna",
+        image: getFirebaseUrl("images/Karna.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Malare-Mounama-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Malare-Mounama-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Malare-Mounama-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Malare-Mounama-Song.mp3")
+        },  
+        lyrics: "lyrics/Malare-Mounama.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        trackId: 8,
+        active: false,
+        currentType: "male"
+    }, 
+      {
+        id: 9,
+        title: "Kadhal-Oviyam",
+        artist: "Alaigal Oivathillai",
+        image: getFirebaseUrl("images/AlaigalOivathillai.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Kadhal-Oviyam-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Kadhal-Oviyam-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kadhal-Oviyam-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kadhal-Oviyam-Song.mp3")
+        },  
+        lyrics: "lyrics/Kadhal-Oviyam.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        trackId: 9,
+        active: false,
+        currentType: "male"
+    }, 
+
+
+
+
+
+];
