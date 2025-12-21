@@ -173,8 +173,8 @@ const songs = [
         lyrics: "lyrics/Maalayil-Yaro.txt",
         availableTypes: ["female", "song", "podcast"],
         trackId: 10,
-        active: false,
-        currentType: "male"
+        active: true,
+        currentType: "female"
     }, 
 {
         id: 11,
