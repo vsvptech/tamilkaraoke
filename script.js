@@ -818,7 +818,7 @@ function setupEventListeners() {
         document.body.classList.toggle('light-mode', !isDarkMode);
         
         const icon = themeToggle.querySelector('i');
-        icon.className = isDarkMode ? 'fas fa-moon' : 'fas fa-sun';
+        icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-bahai';
     });
     
     // Mobile search toggle
