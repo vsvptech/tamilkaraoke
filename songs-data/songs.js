@@ -261,7 +261,23 @@ const songs = [
         active: false,
         currentType: "male"
     }, 
-
+{ 
+        id: 16,
+        title: "Kavidhaye Theriyuma",
+        artist: "Jayam",
+        image: getFirebaseUrl("images/Jayam.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Kavidhaye-Theriyuma-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Kavidhaye-Theriyuma-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kavidhaye-Theriyuma-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kavidhaye-Theriyuma-Song.mp3")
+        },  
+        lyrics: "lyrics/Kavidhaye-Theriyuma.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+        trackId: 16,
+        active: false,
+        currentType: "male"
+    }, 
 
 
     
