@@ -176,6 +176,22 @@ const songs = [
         active: false,
         currentType: "male"
     }, 
+        if: 11,
+        title: "Enna Than Sugamo",
+        artist: "Mappillai",
+        image: getFirebaseUrl("images/Mappillai.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Enna-Thaan-Sugano-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Enna-Thaan-Sugano-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Enna-Thaan-Sugano-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Enna-Thaan-Sugano-Song.mp3")
+        },  
+        lyrics: "lyrics/EnnaThanSugano.txt",
+        availableTypes: ["song", "female", "song", "podcast"],
+        trackId: 11,
+        active: false,
+        currentType: "male"
+    }, 
 
 
 
