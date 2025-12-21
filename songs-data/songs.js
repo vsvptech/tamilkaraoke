@@ -171,7 +171,7 @@ const songs = [
             song: getFirebaseUrl("songs/song/Maalayil-Yaro-Song.mp3")
         },  
         lyrics: "lyrics/Maalayil-Yaro.txt",
-        availableTypes: ["song", "female", "song", "podcast"],
+        availableTypes: ["female", "song", "podcast"],
         trackId: 10,
         active: false,
         currentType: "male"
@@ -187,7 +187,7 @@ const songs = [
             song: getFirebaseUrl("songs/song/Enna-Thaan-Sugano-Song.mp3")
         },  
         lyrics: "lyrics/EnnaThanSugano.txt",
-        availableTypes: ["song", "female", "song", "podcast"],
+        availableTypes: ["male", "female", "song", "podcast"],
         trackId: 11,
         active: false,
         currentType: "male"
