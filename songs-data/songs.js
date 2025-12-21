@@ -183,7 +183,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Enna-Thaan-Sugano-Male.mp3"),
             female: getFirebaseUrl("songs/female/Enna-Thaan-Sugano-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Enna-Thaan-Sugano-Duet.mp3"),
+            duet: getFirebaseUrl("songs/duet/Enna-Thaan-Sugano-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Enna-Thaan-Sugano-Song.mp3")
         },  
         lyrics: "lyrics/EnnaThanSugano.txt",
