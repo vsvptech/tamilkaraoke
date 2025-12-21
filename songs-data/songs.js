@@ -20,7 +20,7 @@ const songs = [
             duet: getFirebaseUrl("songs/duet/Kavidhaye-Theriyuma-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Kavithayae-Theriyuma-Song.mp3")
         },  
-        lyrics: "lyrics/Kavithaye-Theriyuma.txt",
+        lyrics: "lyrics/Kavidhaye-Theriyma.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
         trackId: 16,
         active: false,
