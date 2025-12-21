@@ -193,7 +193,23 @@ const songs = [
         active: false,
         currentType: "male"
     }, 
-
+{
+        id: 12,
+        title: "En Anbe Anbe En Manam",
+        artist: "Unnai Thedi Varuven",
+        image: getFirebaseUrl("images/UnnaiThediVaruven.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/En-Anbe-Anbe-Male.mp3"),
+            female: getFirebaseUrl("songs/female/En-Anbe-Anbe-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/En-Anbe-Anbe-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/En-Anbe-Anbe-Song.mp3")
+        },  
+        lyrics: "lyrics/EnnaThanSugamo.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        trackId: 11,
+        active: false,
+        currentType: "male"
+    }, 
 
 
 
