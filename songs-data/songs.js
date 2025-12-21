@@ -182,10 +182,10 @@ const songs = [
         artist: "Mappillai",
         image: getFirebaseUrl("images/Mappillai.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Enna-Thaan-Sugamo-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Enna-Thaan-Sugamo-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Enna-Thaan-Sugamo-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Enna-Thaan-Sugamo-Song.mp3")
+            male: getFirebaseUrl("songs/male/Ennathaan-Sugamo-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Ennathaan-Sugamo-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Ennathaan-Sugamo-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Ennathaan-Sugamo-Song.mp3")
         },  
         lyrics: "lyrics/EnnaThanSugamo.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
