@@ -187,7 +187,7 @@ const songs = [
             song: getFirebaseUrl("songs/song/Enna-Thaan-Sugano-Song.mp3")
         },  
         lyrics: "lyrics/EnnaThanSugano.txt",
-        availableTypes: ["male", "female", "song", "podcast"],
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
         trackId: 11,
         active: false,
         currentType: "male"
