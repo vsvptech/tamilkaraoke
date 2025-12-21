@@ -15,12 +15,12 @@ const songs = [
         artist: "Jayam",
         image: getFirebaseUrl("images/Jayam.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Kavidhayae-Theriyuma-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Kavidhayae-Theriyuma-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Kavidhayae-Theriyuma-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Kavidhayae-Theriyuma-Song.mp3")
+            male: getFirebaseUrl("songs/male/Kavithayae-Theriyuma-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Kavithayae-Theriyuma-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kavithayae-Theriyuma-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kavithayae-Theriyuma-Song.mp3")
         },  
-        lyrics: "lyrics/Kavidhaye-Theriyuma.txt",
+        lyrics: "lyrics/Kavithaye-Theriyuma.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
         trackId: 16,
         active: false,
