@@ -160,13 +160,13 @@ const songs = [
         currentType: "male"
     }, 
       {
-        id: 10,
+               id: 10,
         title: "Maalayil Yaro",
         artist: "Chatriyan",
         image: getFirebaseUrl("images/Chatriyan.jpg"),
         audio: {
-           // male: getFirebaseUrl("songs/male/Maalayil-Yaro-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Maalayil-Yaro-Female.mp3"),
+            //male: getFirebaseUrl("songs/male/Maalayil-Yaro-male.mp3"),
+            female: getFirebaseUrl("songs/female/Maalayil-Yaaro-Female.mp3"),
             //duet: getFirebaseUrl("songs/duet/Maalayil-Yaro-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Maalayil-Yaro-Song.mp3")
         },  
