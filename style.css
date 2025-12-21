@@ -1433,7 +1433,7 @@ main {
     .type-filter-btn i,
     #lyricsBtn i,
     .control-btn i {
-        font-size: 11px;
+        font-size: 14px;
     }
 }
 
@@ -1447,4 +1447,5 @@ main {
     margin-right: -50vw;
 
 }
+
 
