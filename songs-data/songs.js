@@ -210,7 +210,22 @@ const songs = [
         active: false,
         currentType: "male"
     }, 
-
+        id: 13,
+        title: "Elangaathu Veesudhey",
+        artist: "Unnai Thedi Varuven",
+        image: getFirebaseUrl("images/Pithamagan.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Elangaathu-Veesudhey-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Elangaathu-Veesudhey-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Elangaathu-Veesudhey-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Elangaathu-Veesudhey-Song.mp3")
+        },  
+        lyrics: "lyrics/Elangaathu-Veesudhey.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        trackId: 13,
+        active: false,
+        currentType: "male"
+    }, 
 
 
 ];
