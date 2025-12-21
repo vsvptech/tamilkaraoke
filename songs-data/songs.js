@@ -177,7 +177,7 @@ const songs = [
         currentType: "male"
     }, 
         id: 11,
-        title: "Enna Than Sugamo",
+        title: "Enna Thaan Sugamo",
         artist: "Mappillai",
         image: getFirebaseUrl("images/Mappillai.jpg"),
         audio: {
