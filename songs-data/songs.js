@@ -227,6 +227,22 @@ const songs = [
         active: false,
         currentType: "male"
     }, 
-
+{ 
+        id: 14,
+        title: "Idhayam Oru Kovil",
+        artist: "Idhaya Kovil",
+        image: getFirebaseUrl("images/IdhayaKovil.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Idhayam-Oru-Kovil-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Idhayam-Oru-Kovil-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Idhayam-Oru-Kovil-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Idhayam-Oru-Kovil-Song.mp3")
+        },  
+        lyrics: "lyrics/Idhayam-Oru-Kovil.txt",
+        availableTypes: ["male", "song", "podcast"],
+        trackId: 14,
+        active: false,
+        currentType: "male"
+    }, 
 
 ];
