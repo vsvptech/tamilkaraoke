@@ -17,7 +17,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Kavithayae-Theriyuma-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Kavithayae-Theriyuma-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Kavidhaye-Theriyuma-Duet.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kavidhaye-Theriyuma-Dute.mp3"),
             song: getFirebaseUrl("songs/song/Kavithayae-Theriyuma-Song.mp3")
         },  
         lyrics: "lyrics/Kavidhaye-Theriyma.txt",
