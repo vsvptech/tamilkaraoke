@@ -267,10 +267,10 @@ const songs = [
         artist: "Jayam",
         image: getFirebaseUrl("images/Jayam.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Kavidhaye-Theriyuma-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Kavidhaye-Theriyuma-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Kavidhaye-Theriyuma-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Kavidhaye-Theriyuma-Song.mp3")
+            male: getFirebaseUrl("songs/male/Kavidhayae-Theriyuma-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Kavidhayae-Theriyuma-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kavidhayae-Theriyuma-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kavidhayae-Theriyuma-Song.mp3")
         },  
         lyrics: "lyrics/Kavidhaye-Theriyuma.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
