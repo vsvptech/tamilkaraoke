@@ -9,7 +9,23 @@ const songs = [
 
 
 
-
+{ 
+        id: 42,
+        title: "Oru Maalai Iravinil",
+        artist: "Ghajini",
+        image: getFirebaseUrl("images/Ghajini.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Oru-Maalai-Iravinil-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Oru-Maalai-Iravinil-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Oru-Maalai-Iravinil-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Oru-Maalai-Iravinil-Song.mp3")
+        },  
+        lyrics: "lyrics/Oru-Maalai-Iravinil.txt",
+        availableTypes: ["male", "song", "podcast"],
+        trackId: 42,
+        active: false,
+        currentType: "male"
+    }, 
 { 
         id: 41,
         title: "Uyirin Uyire",
@@ -92,23 +108,6 @@ const songs = [
         lyrics: "lyrics/Un-Uthadora-Sivape.txt",
         availableTypes: ["duet", "song", "podcast"],
         trackId: 36,
-        active: false,
-        currentType: "male"
-    }, 
-{ 
-        id: 35,
-        title: "Oru Maalai Iravinil",
-        artist: "Ghajini",
-        image: getFirebaseUrl("images/Ghajini.jpg"),
-        audio: {
-            male: getFirebaseUrl("songs/male/Oru-Maalai-Iravinil-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Oru-Maalai-Iravinil-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Oru-Maalai-Iravinil-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Oru-Maalai-Iravinil-Song.mp3")
-        },  
-        lyrics: "lyrics/Oru-Maalai-Iravinil.txt",
-        availableTypes: ["male", "song", "podcast"],
-        trackId: 35,
         active: false,
         currentType: "male"
     }, 
