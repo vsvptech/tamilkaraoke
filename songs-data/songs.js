@@ -10,6 +10,91 @@ const songs = [
 
 
 { 
+        id: 21,
+        title: "Ennai Konjam Maatri",
+        artist: "Kakka Kakka",
+        image: getFirebaseUrl("images/KakkaKakka.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Ennai-Konjam-Maatri-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Ennai-Konjam-Maatri-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Ennai-Konjam-Maatri-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Ennai-Konjam-Maatri-Song.mp3")
+        },  
+        lyrics: "lyrics/Ennai-Konjam-Maatri.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        trackId: 21,
+        active: false,
+        currentType: "male"
+    },  
+{ 
+        id: 20,
+        title: "Ennulle Ennulle",
+        artist: "Valli",
+        image: getFirebaseUrl("images/Valli.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Ennulle-Ennulle-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Ennulle-Ennulle-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Ennulle-Ennulle-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Ennulle-Ennulle-Song.mp3")
+        },  
+        lyrics: "lyrics/Ennulle-Ennulle.txt",
+        availableTypes: ["female", "song", "podcast"],
+        trackId: 20,
+        active: false,
+        currentType: "male"
+    },     
+{ 
+        id: 19,
+        title: "Sangeetha Megham",
+        artist: "Udhaya Geetham",
+        image: getFirebaseUrl("images/UdhayaGeetham.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Sangeetha-Megham-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Sangeetha-Megham-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Sangeetha-Megham-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Sangeetha-Megham-Song.mp3")
+        },  
+        lyrics: "lyrics/Sangeetha-Megham.txt",
+        availableTypes: ["male", "song", "podcast"],
+        trackId: 19,
+        active: false,
+        currentType: "male"
+    }, 
+{ 
+        id: 18,
+        title: "Thuli-Thuliyai-Kottum",
+        artist: "Paarvai Ondre Pothume",
+        image: getFirebaseUrl("images/PaarvaiOndrePothume.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Thuli-Thuliyai-Kottum-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Thuli-Thuliyai-Kottum-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Thuli-Thuliyai-Kottum-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Thuli-Thuliyai-Kottum-Song.mp3")
+        },  
+        lyrics: "lyrics/Thuli-Thuliyai-Kottum.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        trackId: 18,
+        active: false,
+        currentType: "male"
+    }, 
+{ 
+        id: 17,
+        title: "Ennamma Kannu Sowkiyama",
+        artist: "Mr Bharath",
+        image: getFirebaseUrl("images/MrBharath.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Ennamma-Kannu-Sawkiyama-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Ennamma-Kannu-Sawkiyama-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Ennamma-Kannu-Sawkiyama-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Ennamma-Kannu-Sawkiyama-Song.mp3")
+        },  
+        lyrics: "lyrics/Ennamma-Kannu-Sawkiyama.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+        trackId: 17,
+        active: false,
+        currentType: "male"
+    }, 
+{ 
         id: 16,
         title: "Kavidhaye Theriyuma",
         artist: "Jayam",
