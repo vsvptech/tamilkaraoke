@@ -18,7 +18,7 @@ const songs = [
         audio: {
             //male: getFirebaseUrl("songs/male/Uyirin-Uyire-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Uyirin-Uyire-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Uyirin-Uyire-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Uyirin-Uyire-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Uyirin-Uyire-Song.mp3")
         },  
         lyrics: "lyrics/Uyirin-Uyire.txt",
@@ -35,7 +35,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Pathinettu-Vayathu-Male.mp3"),
             female: getFirebaseUrl("songs/female/Pathinettu-Vayathu-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Pathinettu-Vayathu-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Pathinettu-Vayathu-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Pathinettu-Vayathu-Song.mp3")
         },  
         lyrics: "lyrics/Pathinettu-Vayathu.txt",
@@ -69,7 +69,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Dheivam-Thantha-Veedu-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Dheivam-Thantha-Veedu-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Dheivam-Thantha-Veedu-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Dheivam-Thantha-Veedu-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Dheivam-Thantha-Veedu-Song.mp3")
         },  
         lyrics: "lyrics/Dheivam-Thantha-Veedu.txt",
@@ -86,7 +86,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Un-Uthadora-Sivape-Male.mp3"),
             female: getFirebaseUrl("songs/female/Un-Uthadora-Sivape-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Un-Uthadora-Sivape-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Un-Uthadora-Sivape-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Un-Uthadora-Sivape-Song.mp3")
         },  
         lyrics: "lyrics/Un-Uthadora-Sivape.txt",
@@ -103,7 +103,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Oru-Maalai-Iravinil-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Oru-Maalai-Iravinil-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Oru-Maalai-Iravinil-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Oru-Maalai-Iravinil-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Oru-Maalai-Iravinil-Song.mp3")
         },  
         lyrics: "lyrics/Oru-Maalai-Iravinil.txt",
@@ -120,7 +120,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Vaayamoodi-Summa-Iru-Da-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Vaayamoodi-Summa-Iru-Da-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Vaayamoodi-Summa-Iru-Da-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Vaayamoodi-Summa-Iru-Da-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Vaayamoodi-Summa-Iru-Da-Song.mp3")
         },  
         lyrics: "lyrics/Vaayamoodi-Summa-Iru-Da.txt",
@@ -137,7 +137,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Oliyile-Therivadhu-Male.mp3"),
             female: getFirebaseUrl("songs/female/Oliyile-Therivadhu-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Oliyile-Therivadhu-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Oliyile-Therivadhu-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Oliyile-Therivadhu-Song.mp3")
         },  
         lyrics: "lyrics/Oliyile-Therivadhu.txt",
@@ -154,7 +154,7 @@ const songs = [
         audio: {
             //male: getFirebaseUrl("songs/male/Nenjinile-Nenjinile-Male.mp3"),
             female: getFirebaseUrl("songs/female/Nenjinile-Nenjinile-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Nenjinile-Nenjinile-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Nenjinile-Nenjinile-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Nenjinile-Nenjinile-Song.mp3")
         },  
         lyrics: "lyrics/Nenjinile-Nenjinile.txt",
@@ -171,7 +171,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Lajjavathiye-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Lajjavathiye-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Lajjavathiye-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Lajjavathiye-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Lajjavathiye-Song.mp3")
         },  
         lyrics: "lyrics/Lajjavathiye.txt",
@@ -188,7 +188,7 @@ const songs = [
         audio: {
             //male: getFirebaseUrl("songs/male/Manmadhane-Nee-Male.mp3"),
             female: getFirebaseUrl("songs/female/Manmadhane-Nee-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Manmadhane-Nee-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Manmadhane-Nee-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Manmadhane-Nee-Song.mp3")
         },  
         lyrics: "lyrics/Manmadhane-Nee.txt",
@@ -205,7 +205,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Manasellam-Mazhaiye-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Manasellam-Mazhaiye-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Manasellam-Mazhaiye-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Manasellam-Mazhaiye-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Manasellam-Mazhaiye-Song.mp3")
         },  
         lyrics: "lyrics/Manasellam-Mazhaiye-Thingal.txt",
@@ -222,7 +222,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Thendral-Thaan-Thingal-Male.mp3"),
             female: getFirebaseUrl("songs/female/Thendral-Thaan-Thingal-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Thendral-Thaan-Thingal-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Thendral-Thaan-Thingal-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Thendral-Thaan-Thingal-Song.mp3")
         },  
         lyrics: "lyrics/Thendral-Thaan-Thingal.txt",
@@ -239,7 +239,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Paada-Vandhadhor-Gaanam-Male.mp3"),
             female: getFirebaseUrl("songs/female/Paada-Vandhadhor-Gaanam-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Paada-Vandhadhor-Gaanam-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Paada-Vandhadhor-Gaanam-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Paada-Vandhadhor-Gaanam-Song.mp3")
         },  
         lyrics: "lyrics/Paada-Vandhadhor-Gaanam.txt",
@@ -256,7 +256,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Pesa-Koodathu-Male.mp3"),
             female: getFirebaseUrl("songs/female/Pesa-Koodathu-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Pesa-Koodathu-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Pesa-Koodathu-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Pesa-Koodathu-Song.mp3")
         },  
         lyrics: "lyrics/Pesa-Koodathu.txt",
@@ -273,7 +273,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Mazhai-Tharumo-En-Megam-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Mazhai-Tharumo-En-Megam-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Mazhai-Tharumo-En-Megam-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Mazhai-Tharumo-En-Megam-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Mazhai-Tharumo-En-Megam-Song.mp3")
         },  
         lyrics: "lyrics/Mazhai-Tharumo-En-Megam.txt",
@@ -290,7 +290,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Oru-Pattam-Poochi-Male.mp3"),
             female: getFirebaseUrl("songs/female/Oru-Pattam-Poochi-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Oru-Pattam-Poochi-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Oru-Pattam-Poochi-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Oru-Pattam-Poochi-Song.mp3")
         },  
         lyrics: "lyrics/Oru-Pattam-Poochi.txt",
@@ -307,7 +307,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Ennavale-Ennavale-Engirunthai-Male.mp3"),
             female: getFirebaseUrl("songs/female/Ennavale-Ennavale-Engirunthai-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Ennavale-Ennavale-Engirunthai-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Ennavale-Ennavale-Engirunthai-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Ennavale-Ennavale-Engirunthai-Song.mp3")
         },  
         lyrics: "lyrics/Ennavale-Ennavale-Engirunthai.txt",
@@ -324,7 +324,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Enna-Solli-Paaduvatho-Male.mp3"),
             female: getFirebaseUrl("songs/female/Enna-Solli-Paaduvatho-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Enna-Solli-Paaduvatho-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Enna-Solli-Paaduvatho-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Enna-Solli-Paaduvatho-Song.mp3")
         },  
         lyrics: "lyrics/Enna-Solli-Paaduvatho.txt",
@@ -341,7 +341,7 @@ const songs = [
         audio: {
             //male: getFirebaseUrl("songs/male/Ennulle-Ennulle-Male.mp3"),
             female: getFirebaseUrl("songs/female/Ennulle-Ennulle-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Ennulle-Ennulle-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Ennulle-Ennulle-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Ennulle-Ennulle-Song.mp3")
         },  
         lyrics: "lyrics/Ennulle-Ennulle.txt",
@@ -358,7 +358,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Ennai-Konjam-Maatri-Male.mp3"),
             female: getFirebaseUrl("songs/female/Ennai-Konjam-Maatri-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Ennai-Konjam-Maatri-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Ennai-Konjam-Maatri-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Ennai-Konjam-Maatri-Song.mp3")
         },  
         lyrics: "lyrics/Ennai-Konjam-Maatri.txt",
@@ -375,7 +375,7 @@ const songs = [
         audio: {
             //male: getFirebaseUrl("songs/male/Ennulle-Ennulle-Male.mp3"),
             female: getFirebaseUrl("songs/female/Ennulle-Ennulle-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Ennulle-Ennulle-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Ennulle-Ennulle-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Ennulle-Ennulle-Song.mp3")
         },  
         lyrics: "lyrics/Ennulle-Ennulle.txt",
@@ -392,7 +392,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Sangeetha-Megham-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Sangeetha-Megham-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Sangeetha-Megham-Dute.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Sangeetha-Megham-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Sangeetha-Megham-Song.mp3")
         },  
         lyrics: "lyrics/Sangeetha-Megham.txt",
@@ -409,7 +409,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Thuli-Thuliyai-Kottum-Male.mp3"),
             female: getFirebaseUrl("songs/female/Thuli-Thuliyai-Kottum-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Thuli-Thuliyai-Kottum-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Thuli-Thuliyai-Kottum-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Thuli-Thuliyai-Kottum-Song.mp3")
         },  
         lyrics: "lyrics/Thuli-Thuliyai-Kottum.txt",
@@ -426,7 +426,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Ennamma-Kannu-Sawkiyama-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Ennamma-Kannu-Sawkiyama-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Ennamma-Kannu-Sawkiyama-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Ennamma-Kannu-Sawkiyama-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Ennamma-Kannu-Sawkiyama-Song.mp3")
         },  
         lyrics: "lyrics/Ennamma-Kannu-Sowkiyama.txt",
@@ -443,7 +443,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Kavithayae-Theriyuma-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Kavithayae-Theriyuma-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Kavidhaye-Theriyuma-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kavidhaye-Theriyuma-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Kavithayae-Theriyuma-Song.mp3")
         },  
         lyrics: "lyrics/Kavidhaye-Theriyma.txt",
