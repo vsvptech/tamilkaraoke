@@ -80,7 +80,7 @@ const songs = [
     }, 
 { 
         id: 36,
-        title: "Un-Uthadora-Sivape",
+        title: "Un Uthadora Sivape",
         artist: "Panchalankurichi",
         image: getFirebaseUrl("images/Panchalankurichi.jpg"),
         audio: {
@@ -97,16 +97,16 @@ const songs = [
     }, 
 { 
         id: 35,
-        title: "Vaayamoodi Summa Iru Da",
-        artist: "Mugamoodi",
-        image: getFirebaseUrl("images/Mugamoodi.jpg"),
+        title: "Oru Maalai Iravinil",
+        artist: "Ghajini",
+        image: getFirebaseUrl("images/Ghajini.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Vaayamoodi-Summa-Iru-Da-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Vaayamoodi-Summa-Iru-Da-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Vaayamoodi-Summa-Iru-Da-Dute.mp3"),
-            song: getFirebaseUrl("songs/song/Vaayamoodi-Summa-Iru-Da-Song.mp3")
+            male: getFirebaseUrl("songs/male/Oru-Maalai-Iravinil-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Oru-Maalai-Iravinil-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Oru-Maalai-Iravinil-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Oru-Maalai-Iravinil-Song.mp3")
         },  
-        lyrics: "lyrics/Vaayamoodi-Summa-Iru-Da.txt",
+        lyrics: "lyrics/Oru-Maalai-Iravinil.txt",
         availableTypes: ["male", "song", "podcast"],
         trackId: 35,
         active: false,
@@ -303,7 +303,7 @@ const songs = [
         id: 24,
         title: "Ennavale Ennavale Engirunthai",
         artist: "Ninaithen Vanthai",
-        image: getFirebaseUrl("images/EnManaVaanil.jpg"),
+        image: getFirebaseUrl("images/NinaithenVanthai.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Ennavale-Ennavale-Engirunthai-Male.mp3"),
             female: getFirebaseUrl("songs/female/Ennavale-Ennavale-Engirunthai-Female.mp3"),
