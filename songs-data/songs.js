@@ -237,12 +237,12 @@ const songs = [
         image: getFirebaseUrl("images/IlamaiKaalangal.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Paada-Vandhadhor-Gaanam-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Paada-Vandhadhor-Gaanam-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Paada-Vandhadhor-Gaanam-Duet.mp3"),
+            //female: getFirebaseUrl("songs/female/Paada-Vandhadhor-Gaanam-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Paada-Vandhadhor-Gaanam-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Paada-Vandhadhor-Gaanam-Song.mp3")
         },  
         lyrics: "lyrics/Paada-Vandhadhor-Gaanam.txt",
-        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        availableTypes: ["male", "song", "podcast"],
         trackId: 28,
         active: false,
         currentType: "male"
