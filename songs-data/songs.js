@@ -288,12 +288,12 @@ const songs = [
         image: getFirebaseUrl("images/KadhalukkuMariyadhai.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Oru-Pattam-Poochi-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Oru-Pattam-Poochi-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Oru-Pattam-Poochi-Duet.mp3"),
+            //female: getFirebaseUrl("songs/female/Oru-Pattam-Poochi-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Oru-Pattam-Poochi-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Oru-Pattam-Poochi-Song.mp3")
         },  
         lyrics: "lyrics/Oru-Pattam-Poochi.txt",
-        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        availableTypes: ["male", "song", "podcast"],
         trackId: 25,
         active: false,
         currentType: "male"
