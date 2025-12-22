@@ -820,29 +820,47 @@ function renderSongList() {
         });
         
         songItem.querySelectorAll('.version-btn.lyrics-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                markUserInteraction();
-                e.stopPropagation();
-                const songId = parseInt(btn.dataset.id);
-                const trackId = parseInt(btn.dataset.trackId);
+    btn.addEventListener('click', async (e) => {
+        markUserInteraction();
+        e.stopPropagation();
+        const songId = parseInt(btn.dataset.id);
+        const trackId = parseInt(btn.dataset.trackId);
+        const versionType = btn.dataset.type;
+        
+        const songIndex = songs.findIndex(s => s.id === songId);
+        if (songIndex >= 0) {
+            const song = songs[songIndex];
+            
+            lastClickedSongId = songId;
+            lastClickedTrackId = trackId;
+            lastActiveSongId = songId;
+            lastActiveSongType = song.currentType;
+            
+            // FIX: Only update UI and load lyrics WITHOUT restarting the audio
+            // if it's the same song that's currently playing
+            if (currentSongIndex === songIndex) {
+                // Same song - just update UI and open lyrics modal
+                updateSelectedSongUI(songId, song.currentType);
                 
-                const songIndex = songs.findIndex(s => s.id === songId);
-                if (songIndex >= 0) {
-                    const song = songs[songIndex];
-                    
-                    lastClickedSongId = songId;
-                    lastClickedTrackId = trackId;
-                    lastActiveSongId = songId;
-                    lastActiveSongType = song.currentType;
-                    
-                    setActiveSong(songIndex);
-                    
-                    await loadLyrics(song.lyrics, song, song.currentType);
-                    lyricsPlayerTitle.textContent = `${song.title} - ${getArtistForType(song, song.currentType)}`;
-                    lyricsModal.classList.add('active');
+                // Update progress display in lyrics modal to match current playback
+                if (isPlaying) {
+                    // Sync lyrics progress with current playback
+                    lyricsCurrentTime.textContent = formatTime(audioPlayer.currentTime);
+                    lyricsTotalTime.textContent = formatTime(audioPlayer.duration);
+                    const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                    lyricsProgress.style.width = `${progressPercent}%`;
                 }
-            });
-        });
+            } else {
+                // Different song - load it normally
+                setActiveSong(songIndex);
+            }
+            
+            await loadLyrics(song.lyrics, song, song.currentType);
+            lyricsPlayerTitle.textContent = `${song.title} - ${getArtistForType(song, song.currentType)}`;
+            lyricsModal.classList.add('active');
+        }
+    });
+});
         
         songItem.addEventListener('click', (e) => {
             if (e.target.closest('.version-btn')) {
@@ -1950,3 +1968,4 @@ function setupEventListeners() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
