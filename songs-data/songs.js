@@ -304,13 +304,13 @@ const songs = [
         artist: "Ninaithen Vanthai",
         image: getFirebaseUrl("images/NinaithenVanthai.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Ennavale-Ennavale-Engirunthai-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Ennavale-Ennavale-Engirunthai-Female.mp3"),
+            //male: getFirebaseUrl("songs/male/Ennavale-Ennavale-Engirunthai-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Ennavale-Ennavale-Engirunthai-Female.mp3"),
             duet: getFirebaseUrl("songs/duet/Ennavale-Ennavale-Engirunthai-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Ennavale-Ennavale-Engirunthai-Song.mp3")
         },  
         lyrics: "lyrics/Ennavale-Ennavale-Engirunthai.txt",
-        availableTypes: ["male", "female", "duet","song", "podcast"],
+        availableTypes: ["duet", "song", "podcast"],
         trackId: 24,
         active: false,
         currentType: "male"
