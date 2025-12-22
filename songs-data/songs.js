@@ -88,7 +88,7 @@ const songs = [
             duet: getFirebaseUrl("songs/duet/Ennamma-Kannu-Sawkiyama-Dute.mp3"),
             song: getFirebaseUrl("songs/song/Ennamma-Kannu-Sawkiyama-Song.mp3")
         },  
-        lyrics: "lyrics/Ennamma-Kannu-Sawkiyama.txt",
+        lyrics: "lyrics/Ennamma-Kannu-Sowkiyama.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
         trackId: 17,
         active: false,
