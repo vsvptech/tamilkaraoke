@@ -134,13 +134,13 @@ const songs = [
         artist: "Azhagi",
         image: getFirebaseUrl("images/Azhagi.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Oliyile-Therivadhu-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Oliyile-Therivadhu-Female.mp3"),
+            //male: getFirebaseUrl("songs/male/Oliyile-Therivadhu-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Oliyile-Therivadhu-Female.mp3"),
             duet: getFirebaseUrl("songs/duet/Oliyile-Therivadhu-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Oliyile-Therivadhu-Song.mp3")
         },  
         lyrics: "lyrics/Oliyile-Therivadhu.txt",
-        availableTypes: ["male", "female", "song", "podcast"],
+        availableTypes: ["duet", "song", "podcast"],
         trackId: 34,
         active: false,
         currentType: "male"
