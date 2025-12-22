@@ -16,13 +16,13 @@ const songs = [
         artist: "Kakka Kakka",
         image: getFirebaseUrl("images/KakkaKakka.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Uyirin-Uyire-Male.mp3"),
+            //male: getFirebaseUrl("songs/male/Uyirin-Uyire-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Uyirin-Uyire-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Uyirin-Uyire-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Uyirin-Uyire-Dute.mp3"),
             song: getFirebaseUrl("songs/song/Uyirin-Uyire-Song.mp3")
         },  
         lyrics: "lyrics/Uyirin-Uyire.txt",
-        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        availableTypes: ["duet", "song", "podcast"],
         trackId: 41,
         active: false,
         currentType: "male"
