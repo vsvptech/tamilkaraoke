@@ -39,7 +39,7 @@ const songs = [
             song: getFirebaseUrl("songs/song/Pathinettu-Vayathu-Song.mp3")
         },  
         lyrics: "lyrics/Pathinettu-Vayathu.txt",
-        availableTypes: ["male", "song", "podcast"],
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
         trackId: 40,
         active: false,
         currentType: "male"
@@ -52,7 +52,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Engey-Enn-Jeevane-Male.mp3"),
             female: getFirebaseUrl("songs/female/Engey-Enn-Jeevane-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Engey-Enn-Jeevane-Dute.mp3"),
+            duet: getFirebaseUrl("songs/duet/Engey-Enn-Jeevane-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Engey-Enn-Jeevane-Song.mp3")
         },  
         lyrics: "lyrics/Engey-Enn-Jeevane.txt",
