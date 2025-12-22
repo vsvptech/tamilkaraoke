@@ -207,7 +207,7 @@ const songs = [
             //duet: getFirebaseUrl("songs/duet/Manasellam-Mazhaiye-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Manasellam-Mazhaiye-Song.mp3")
         },  
-        lyrics: "lyrics/Manasellam-Mazhaiye-Thingal.txt",
+        lyrics: "lyrics/Manasellam-Mazhaiye.txt",
         availableTypes: ["male", "song", "podcast"],
         trackId: 30,
         active: false,
