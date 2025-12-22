@@ -84,13 +84,13 @@ const songs = [
         artist: "Panchalankurichi",
         image: getFirebaseUrl("images/Panchalankurichi.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Un-Uthadora-Sivape-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Un-Uthadora-Sivape-Female.mp3"),
+            //male: getFirebaseUrl("songs/male/Un-Uthadora-Sivape-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Un-Uthadora-Sivape-Female.mp3"),
             duet: getFirebaseUrl("songs/duet/Un-Uthadora-Sivape-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Un-Uthadora-Sivape-Song.mp3")
         },  
         lyrics: "lyrics/Un-Uthadora-Sivape.txt",
-        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        availableTypes: ["duet", "song", "podcast"],
         trackId: 36,
         active: false,
         currentType: "male"
