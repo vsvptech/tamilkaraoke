@@ -10,7 +10,7 @@ const songs = [
 
 
 { 
-        id: 42,
+        id: 41,
         title: "Oru Maalai Iravinil",
         artist: "Ghajini",
         image: getFirebaseUrl("images/Ghajini.jpg"),
@@ -22,12 +22,9 @@ const songs = [
         },  
         lyrics: "lyrics/Oru-Maalai-Iravinil.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 42,
-        active: false,
-        currentType: "male"
     }, 
 { 
-        id: 41,
+        id: 40,
         title: "Uyirin Uyire",
         artist: "Kakka Kakka",
         image: getFirebaseUrl("images/KakkaKakka.jpg"),
@@ -39,12 +36,9 @@ const songs = [
         },  
         lyrics: "lyrics/Uyirin-Uyire.txt",
         availableTypes: ["duet", "song", "podcast"],
-        trackId: 41,
-        active: false,
-        currentType: "male"
     }, 
 { 
-        id: 40,
+        id: 39,
         title: "Pathinettu-Vayathu",
         artist: "Suriyan",
         image: getFirebaseUrl("images/Suriyan.jpg"),
@@ -56,9 +50,6 @@ const songs = [
         },  
         lyrics: "lyrics/Pathinettu-Vayathu.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 40,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 38,
@@ -73,9 +64,6 @@ const songs = [
         },  
         lyrics: "lyrics/Engey-Enn-Jeevane.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 38,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 37,
@@ -90,9 +78,6 @@ const songs = [
         },  
         lyrics: "lyrics/Dheivam-Thantha-Veedu.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 37,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 36,
@@ -107,9 +92,6 @@ const songs = [
         },  
         lyrics: "lyrics/Un-Uthadora-Sivape.txt",
         availableTypes: ["duet", "song", "podcast"],
-        trackId: 36,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 35,
@@ -124,9 +106,6 @@ const songs = [
         },  
         lyrics: "lyrics/Vaayamoodi-Summa-Iru-Da.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 35,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 34,
@@ -141,9 +120,6 @@ const songs = [
         },  
         lyrics: "lyrics/Oliyile-Therivadhu.txt",
         availableTypes: ["duet", "song", "podcast"],
-        trackId: 34,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 33,
@@ -158,9 +134,6 @@ const songs = [
         },  
         lyrics: "lyrics/Nenjinile-Nenjinile.txt",
         availableTypes: ["female", "song", "podcast"],
-        trackId: 33,
-        active: false,
-        currentType: "female"
     }, 
 { 
         id: 32,
@@ -175,9 +148,6 @@ const songs = [
         },  
         lyrics: "lyrics/Lajjavathiye.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 32,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 31,
@@ -192,9 +162,6 @@ const songs = [
         },  
         lyrics: "lyrics/Manmadhane-Nee.txt",
         availableTypes: ["female", "song", "podcast"],
-        trackId: 31,
-        active: false,
-        currentType: "female"
     },
 { 
         id: 30,
@@ -209,9 +176,6 @@ const songs = [
         },  
         lyrics: "lyrics/Manasellam-Mazhaiye.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 30,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 29,
@@ -226,9 +190,6 @@ const songs = [
         },  
         lyrics: "lyrics/Thendral-Thaan-Thingal.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 29,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 28,
@@ -243,9 +204,6 @@ const songs = [
         },  
         lyrics: "lyrics/Paada-Vandhadhor-Gaanam.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 28,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 27,
@@ -260,9 +218,6 @@ const songs = [
         },  
         lyrics: "lyrics/Pesa-Koodathu.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 27,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 26,
@@ -277,9 +232,6 @@ const songs = [
         },  
         lyrics: "lyrics/Mazhai-Tharumo-En-Megam.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 26,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 25,
@@ -294,9 +246,6 @@ const songs = [
         },  
         lyrics: "lyrics/Oru-Pattam-Poochi.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 25,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 24,
@@ -311,9 +260,7 @@ const songs = [
         },  
         lyrics: "lyrics/Ennavale-Ennavale-Engirunthai.txt",
         availableTypes: ["duet", "song", "podcast"],
-        trackId: 24,
-        active: false,
-        currentType: "male"
+
     }, 
 { 
         id: 23,
@@ -328,9 +275,6 @@ const songs = [
         },  
         lyrics: "lyrics/Enna-Solli-Paaduvatho.txt",
         availableTypes: ["male", "female", "song", "podcast"],
-        trackId: 23,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 22,
@@ -345,9 +289,6 @@ const songs = [
         },  
         lyrics: "lyrics/Ennulle-Ennulle.txt",
         availableTypes: ["female", "song", "podcast"],
-        trackId: 22,
-        active: false,
-        currentType: "female"
     }, 
 { 
         id: 21,
@@ -362,9 +303,6 @@ const songs = [
         },  
         lyrics: "lyrics/Ennai-Konjam-Maatri.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 21,
-        active: false,
-        currentType: "male"
     },  
 { 
         id: 20,
@@ -379,9 +317,6 @@ const songs = [
         },  
         lyrics: "lyrics/Ennulle-Ennulle.txt",
         availableTypes: ["female", "song", "podcast"],
-        trackId: 20,
-        active: false,
-        currentType: "male"
     },     
 { 
         id: 19,
@@ -396,9 +331,6 @@ const songs = [
         },  
         lyrics: "lyrics/Sangeetha-Megham.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 19,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 18,
@@ -413,9 +345,6 @@ const songs = [
         },  
         lyrics: "lyrics/Thuli-Thuliyai-Kottum.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 18,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 17,
@@ -430,9 +359,6 @@ const songs = [
         },  
         lyrics: "lyrics/Ennamma-Kannu-Sowkiyama.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
-        trackId: 17,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 16,
@@ -447,9 +373,6 @@ const songs = [
         },  
         lyrics: "lyrics/Kavidhaye-Theriyma.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
-        trackId: 16,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 15,
@@ -464,9 +387,6 @@ const songs = [
         },  
         lyrics: "lyrics/Unna-Nenachen.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 15,
-        active: false,
-        currentType: "male"
     }, 
 { 
         id: 14,
@@ -481,9 +401,6 @@ const songs = [
         },  
         lyrics: "lyrics/Idhayam-Oru-Kovil.txt",
         availableTypes: ["male", "song", "podcast"],
-        trackId: 14,
-        active: false,
-        currentType: "male"
     }, 
  { 
         id: 13,
@@ -498,11 +415,8 @@ const songs = [
         },  
         lyrics: "lyrics/Elangaathu-Veesudhey.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 13,
-        active: false,
-        currentType: "male"
     }, 
-{
+        {
         id: 12,
         title: "En Anbe Anbe En Manam",
         artist: "Unnai Thedi Varuven",
@@ -515,11 +429,8 @@ const songs = [
         },  
         lyrics: "lyrics/EnAnbeAnbe.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 12,
-        active: false,
-        currentType: "male"
-       },
-{
+    },
+        {
         id: 11,
         title: "Enna Thaan Sugamo",
         artist: "Mappillai",
@@ -532,12 +443,9 @@ const songs = [
         },  
         lyrics: "lyrics/EnnaThanSugamo.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 11,
-        active: false,
-        currentType: "male"
     }, 
       {
-               id: 10,
+        id: 10,
         title: "Maalayil Yaro",
         artist: "Chatriyan",
         image: getFirebaseUrl("images/Chatriyan.jpg"),
@@ -549,9 +457,6 @@ const songs = [
         },  
         lyrics: "lyrics/Maalayil-Yaro.txt",
         availableTypes: ["female", "song", "podcast"],
-        trackId: 10,
-        active: false,
-        currentType: "female"
     }, 	
       {
         id: 9,
@@ -566,9 +471,6 @@ const songs = [
         },  
         lyrics: "lyrics/Kadhal-Oviyam.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 9,
-        active: false,
-        currentType: "male"
     },
       {
         id: 8,
@@ -583,9 +485,6 @@ const songs = [
         },  
         lyrics: "lyrics/Malare-Mounama.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 8,
-        active: false,
-        currentType: "male"
     },
       {
         id: 7,
@@ -600,9 +499,6 @@ const songs = [
         },  
         lyrics: "lyrics/Valli-Valli-Ena-Vanthan.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 7,
-        active: false,
-        currentType: "male"
     }, 
       {
         id: 6,
@@ -617,9 +513,6 @@ const songs = [
         },  
         lyrics: "lyrics/Nethu-Oruthara-Oruthara.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
-        trackId: 6,
-        active: false,
-        currentType: "male"
     }, 
       {
         id: 5,
@@ -634,9 +527,6 @@ const songs = [
         },  
         lyrics: "lyrics/Innum-Ennai-Enna.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
-        trackId: 5,
-        active: false,
-        currentType: "male"
     }, 
       {
         id: 4,
@@ -651,9 +541,6 @@ const songs = [
         },  
         lyrics: "lyrics/Aagaya-Gangai.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
-        trackId: 4,
-        active: false,
-        currentType: "male"
     }, 
      {
         id: 3,
@@ -668,9 +555,6 @@ const songs = [
         },  
         lyrics: "lyrics/Engengo-Sellum.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
-        trackId: 3,
-        active: false,
-        currentType: "male"
     },
     {
         id: 2,
@@ -685,9 +569,6 @@ const songs = [
         },  
         lyrics: "lyrics/OruKadhalEnbathu.txt",
         availableTypes: ["male", "duet", "song", "podcast"],
-        trackId: 2,
-        active: false,
-        currentType: "male"
     },
     {
         id: 1,
@@ -702,9 +583,11 @@ const songs = [
         },  
         lyrics: "lyrics/Guruvayurappa.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
-        trackId: 1,
-        active: true,
-        currentType: "male"
     },
 	
 ];
+
+songs.forEach(song => {
+    song.currentType = "male"; // Default type, will be updated by script.js
+    song.active = false; // Will be set by script.js based on current selection
+});
