@@ -306,17 +306,17 @@ const songs = [
     },  
 { 
         id: 20,
-        title: "Ennulle Ennulle",
-        artist: "Valli",
-        image: getFirebaseUrl("images/Valli.jpg"),
+        title: "Thodu Thodu Enave",
+        artist: "Thullatha Manamum Thullum",
+        image: getFirebaseUrl("images/ThullathaManamumThullum.jpg"),
         audio: {
-            //male: getFirebaseUrl("songs/male/Ennulle-Ennulle-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Ennulle-Ennulle-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Ennulle-Ennulle-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Ennulle-Ennulle-Song.mp3")
+            male: getFirebaseUrl("songs/male/Thodu-Thodu-Enave-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Thodu-Thodu-Enave-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Thodu-Thodu-Enave-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Thodu-Thodu-Enave-Song.mp3")
         },  
-        lyrics: "lyrics/Ennulle-Ennulle.txt",
-        availableTypes: ["female", "song", "podcast"],
+        lyrics: "lyrics/Thodu-Thodu-Enave.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
     },     
 { 
         id: 19,
