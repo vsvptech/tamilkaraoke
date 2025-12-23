@@ -606,7 +606,7 @@ main {
 .control-btn {
     background-color: var(--player-bg);
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 8px 12px;
     color: var(--text-color);
     font-family: 'Montserrat', sans-serif;
@@ -661,6 +661,7 @@ main {
     border-radius: 0; /* Remove border-radius for full width */
     overflow: hidden;
     position: relative;
+     white-space: nowrap;
 }
 
 .swiper-wrapper {
@@ -730,6 +731,7 @@ main {
 .swiper-pagination-bullet {
     background: white;
     opacity: 0.5;
+    
 }
 
 .swiper-pagination-bullet-active {
@@ -1447,10 +1449,3 @@ main {
     margin-right: -50vw;
 
 }
-
-
-
-
-
-
-
