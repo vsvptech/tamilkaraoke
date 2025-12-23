@@ -8,7 +8,20 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 42,
+        title: "Andha Arabi Kadaloram",
+        artist: "Bombay",
+        image: getFirebaseUrl("images/Bombay.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Andha-Arabi-Kadaloram-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Andha-Arabi-Kadaloram-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Andha-Arabi-Kadaloram-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Andha-Arabi-Kadaloram-Song.mp3")
+        },  
+        lyrics: "lyrics/Andha-Arabi-Kadaloram.txt",
+        availableTypes: ["male", "song", "podcast"],
+    }, 
 { 
         id: 41,
         title: "Oru Maalai Iravinil",
