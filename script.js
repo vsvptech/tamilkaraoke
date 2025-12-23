@@ -175,7 +175,7 @@ function getTypeDisplayName(type) {
         "song": "Original Song",
         "favourite": "Favourites",
         "podcast": "Lyrics",
-        "developed": "Developed by Venkattaraman"
+        "developed": "Developed by Chillax Technologies"
     };
     return names[type] || type;
 }
@@ -2132,3 +2132,4 @@ function setupEventListeners() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
