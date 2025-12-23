@@ -1367,7 +1367,7 @@ main {
     }
     
     .player-title {
-        font-size: 16px;
+        font-size: 14px;
         margin-right: 5px;
         flex-shrink: 1;
         /* overflow: hidden; */
@@ -1449,3 +1449,4 @@ main {
     margin-right: -50vw;
 
 }
+
