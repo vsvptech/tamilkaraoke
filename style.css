@@ -405,7 +405,7 @@ main {
 }
 
 .menu li[data-type="developed"] i {
-    margin-right: 10px;
+    margin-right: 2px;
     color: var(--primary-color);
 }
 
@@ -1449,3 +1449,4 @@ main {
     margin-right: -50vw;
 
 }
+
