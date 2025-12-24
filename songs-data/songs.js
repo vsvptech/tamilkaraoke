@@ -115,7 +115,7 @@ const songs = [
             //duet: getFirebaseUrl("songs/duet/Munbe-Vaa-Dute.mp3"),
             song: getFirebaseUrl("songs/song/Munbe-Vaa-Song.mp3")
         },  
-        lyrics: "lyrics/Lajjavathiye.txt",
+        lyrics: "lyrics/Munbe-Vaa.txt",
         availableTypes: ["female", "song", "podcast"],
     },     
 { 
