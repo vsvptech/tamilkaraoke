@@ -425,16 +425,6 @@ function setCorrectActiveState(songId, versionType) {
                 }
             });
             
-            // Update favorite icon in list mode
-            if (currentFilterType === "list") {
-                const heartIcon = item.querySelector('.song-item-type i');
-                if (heartIcon) {
-                    const isFavorite = favoriteSongs.includes(songId);
-                    heartIcon.className = isFavorite ? 'fas fa-heart' : 'far fa-heart';
-                    heartIcon.title = isFavorite ? 'Remove from Favorites' : 'Add to Favorites';
-                }
-            }
-            
         } else {
             item.classList.remove('active');
             
@@ -442,6 +432,13 @@ function setCorrectActiveState(songId, versionType) {
             item.querySelectorAll('.version-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
+            
+            // Remove rotation from inactive songs
+            const songItemArt = item.querySelector('.song-item-art');
+            if (songItemArt) {
+                songItemArt.classList.remove('playing', 'paused');
+                songItemArt.classList.remove('selected'); // Remove selected class too
+            }
         }
     });
     
@@ -453,6 +450,9 @@ function setCorrectActiveState(songId, versionType) {
             slide.classList.remove('active');
         }
     });
+    
+    // Update rotation after setting active state
+    updateSongArtRotation();
 }
 
 // Update UI for selected song
@@ -500,7 +500,8 @@ function updateSelectedSongUI(songId, versionType) {
             // Update song info display
             const song = songs.find(s => s.id === songId);
             if (song) {
-                const artistName = getArtistForType(song, versionType);
+                // Get artist name - remove ONLY (Podcast) suffix
+                const artistName = getArtistForType(song, versionType).replace(/\(Podcast\)/gi, '').trim();
                 
                 songTitleDisplay.textContent = song.title;
                 songArtistDisplay.textContent = artistName;
@@ -761,7 +762,7 @@ function renderCarousel() {
     });
 }
 
-/// Render song list
+// Render song list
 function renderSongList() {
     songListContainer.innerHTML = '';
     
@@ -815,7 +816,6 @@ function renderSongList() {
         } else {
             // In other filter modes (male, female, duet, song): 
             // Show ALL audio types that the song has, plus podcast if available
-            // But only show songs that include the current filter type
             const audioTypes = song.availableTypes.filter(t => getAudioForType(song, t));
             const hasPodcast = song.availableTypes.includes("podcast") && song.lyrics && song.lyrics.trim() !== '';
             
@@ -826,52 +826,65 @@ function renderSongList() {
         }
         
         typesToShow.forEach(type => {
-            // Check if this button should be active
-            // It should be active if:
-            // 1. This song is active AND
-            // 2. This button's type matches the song's currentType
-            const isCurrent = (song.active && type === song.currentType);
-            
-            const audioPath = getAudioForType(song, type);
-            
-            if (type === "podcast") {
-                // Show lyrics button if song has lyrics
-                if (song.lyrics && song.lyrics.trim() !== '') {
-                    versionSelector += `
-                        <button class="version-btn lyrics-btn ${isCurrent ? 'active' : ''}" 
-                                data-id="${song.id}" 
-                                data-type="${type}"
-                                title="Show Lyrics">
-                            <i class="fas fa-podcast"></i>
-                        </button>
-                    `;
-                }
-            } else if (audioPath) {
-                const btnTitle = type === "song" ? "Original" : 
-                                type === "male" ? "Male" :
-                                type === "female" ? "Female" : 
-                                "Duet";
-                
-                versionSelector += `
-                    <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
-                            data-id="${song.id}" 
-                            data-type="${type}"
-                            title="${btnTitle} Version">
-                        <i class="${getSongTypeIcon(type)}"></i>
-                    </button>
-                `;
-            }
-        });
+    // Check if this button should be active
+    // It should be active if:
+    // 1. This song is active AND
+    // 2. This button's type matches the song's currentType
+    // BUT for podcast type, NEVER mark as active
+    const isCurrent = (song.active && type === song.currentType && type !== "podcast");
+    
+    const audioPath = getAudioForType(song, type);
+    
+    if (type === "podcast") {
+        // Show lyrics button if song has lyrics
+        if (song.lyrics && song.lyrics.trim() !== '') {
+            versionSelector += `
+                <button class="version-btn lyrics-btn" 
+                        data-id="${song.id}" 
+                        data-type="${type}"
+                        title="Show Lyrics">
+                    <i class="fas fa-podcast"></i>
+                </button>
+            `;
+        }
+    } else if (audioPath) {
+        const btnTitle = type === "song" ? "Original" : 
+                        type === "male" ? "Male" :
+                        type === "female" ? "Female" : 
+                        "Duet";
         
-        // Show favorite button in version-selector for ALL filters
         versionSelector += `
-            <button class="version-btn favorite-btn ${isFavorite ? 'active' : ''}" 
+            <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
                     data-id="${song.id}" 
-                    data-type="favourite"
-                    title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}">
-                <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
+                    data-type="${type}"
+                    title="${btnTitle} Version">
+                <i class="${getSongTypeIcon(type)}"></i>
             </button>
         `;
+    }
+});
+        
+        // Show favorite button in version-selector ONLY for NON-list modes
+        if (currentFilterType !== "list") {
+            versionSelector += `
+                <button class="version-btn favorite-btn ${isFavorite ? 'active' : ''}" 
+                        data-id="${song.id}" 
+                        data-type="favourite"
+                        title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}">
+                    <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
+                </button>
+            `;
+        }
+        
+        // Determine which artist name to show
+        let artistName = '';
+        if (currentFilterType === "list") {
+            // In list mode: Show artist name WITHOUT version suffix
+            artistName = song.artist.replace(/\((Male|Female|Duet|Original|Song|Podcast)\)/gi, '').trim();
+        } else {
+            // In other modes: Show artist name WITH version suffix
+            artistName = getArtistForType(song, currentType);
+        }
         
         // Determine which icon to show in .song-item-type
         let typeIconHtml = '';
@@ -891,7 +904,7 @@ function renderSongList() {
             </div>
             <div class="song-item-info">
                 <h4 class="song-item-title">${song.title}</h4>
-                <p class="song-item-artist">${getArtistForType(song, currentType)}</p>
+                <p class="song-item-artist">${artistName}</p>
                 <div class="version-selector">
                     ${versionSelector}
                 </div>
@@ -901,15 +914,17 @@ function renderSongList() {
             </div>
         `;
         
-        // Handle favorite button in version-selector
-        const favoriteBtn = songItem.querySelector('.favorite-btn');
-        if (favoriteBtn) {
-            favoriteBtn.addEventListener('click', (e) => {
-                markUserInteraction();
-                e.stopPropagation();
-                const songId = parseInt(e.currentTarget.dataset.id);
-                toggleFavorite(songId);
-            });
+        // Handle favorite button in version-selector (for non-list modes only)
+        if (currentFilterType !== "list") {
+            const favoriteBtn = songItem.querySelector('.favorite-btn');
+            if (favoriteBtn) {
+                favoriteBtn.addEventListener('click', (e) => {
+                    markUserInteraction();
+                    e.stopPropagation();
+                    const songId = parseInt(e.currentTarget.dataset.id);
+                    toggleFavorite(songId);
+                });
+            }
         }
         
         // Handle heart icon in .song-item-type (for list mode)
@@ -930,15 +945,6 @@ function renderSongList() {
                         e.currentTarget.className = 'far fa-heart';
                         e.currentTarget.title = 'Add to Favorites';
                     }
-                    
-                    // Also update the favorite button in version-selector
-                    const favBtn = songItem.querySelector('.favorite-btn');
-                    if (favBtn) {
-                        const favIcon = favBtn.querySelector('i');
-                        favIcon.className = wasAdded ? 'fas fa-heart' : 'far fa-heart';
-                        favBtn.classList.toggle('active', wasAdded);
-                        favBtn.title = wasAdded ? 'Remove from Favorites' : 'Add to Favorites';
-                    }
                 });
             }
         }
@@ -958,6 +964,18 @@ function renderSongList() {
                 lastActiveSongId = songId;
                 lastActiveSongType = versionType;
                 
+                // If it's a lyrics button, open lyrics modal WITHOUT changing song state
+                if (versionType === "podcast") {
+                    const song = songs[songIndex];
+                    loadLyrics(song.lyrics, song, song.currentType);
+                    lyricsModal.classList.add('active');
+                    
+                    // DON'T activate the song or change its currentType
+                    // DON'T update UI for this song
+                    return; // Stop here for podcast clicks
+                }
+                
+                // For audio versions only:
                 // FIRST: Deactivate ALL songs
                 songs.forEach(s => {
                     s.active = false;
@@ -972,15 +990,8 @@ function renderSongList() {
                 // Update UI for this specific song
                 updateSelectedSongUI(songId, versionType);
                 
-                // If it's a lyrics button, open lyrics modal
-                if (versionType === "podcast") {
-                    const song = songs[songIndex];
-                    loadLyrics(song.lyrics, song, song.currentType);
-                    lyricsModal.classList.add('active');
-                } else {
-                    // For audio versions, load and play the song
-                    loadSong(songIndex, isAutoPlayEnabled);
-                }
+                // Load and play the song
+                loadSong(songIndex, isAutoPlayEnabled);
                 
                 // Only change filter if not in "list" mode and not "favourite" mode
                 if (currentFilterType !== "list" && currentFilterType !== "favourite" && versionType !== currentFilterType) {
@@ -1060,7 +1071,9 @@ function loadSong(index, autoPlay = true) {
     
     setCorrectActiveState(song.id, currentType);
     
-    const artistName = getArtistForType(song, currentType);
+    // Get artist name - remove ONLY (Podcast) suffix
+    const artistName = getArtistForType(song, currentType).replace(/\(Podcast\)/gi, '').trim();
+    
     songTitleDisplay.textContent = song.title;
     songArtistDisplay.textContent = artistName;
     mobileSongTitle.textContent = song.title;
@@ -1121,9 +1134,9 @@ function loadSong(index, autoPlay = true) {
                 else versionName = currentType.charAt(0).toUpperCase() + currentType.slice(1);
                 
                 // Don't show version loaded notification when in list mode
-if (currentFilterType !== "list") {
-    showNotification(`${versionName} version loaded`, 2000);
-}
+                if (currentFilterType !== "list") {
+                    showNotification(`${versionName} version loaded`, 2000);
+                }
                 
                 // Auto play if enabled
                 const shouldAutoPlay = autoPlay && isAutoPlayEnabled;
@@ -1594,7 +1607,7 @@ function playAudio() {
             playPromise
                 .then(() => {
                     isPlaying = true;
-                    updatePlayButtons();
+                    updatePlayButtons(); // This now also updates rotation
                     startProgressUpdate();
                     showNotification("Now playing", 1500);
                     
@@ -1629,7 +1642,7 @@ function playAudio() {
 function pauseAudio() {
     audioPlayer.pause();
     isPlaying = false;
-    updatePlayButtons();
+    updatePlayButtons(); // This now also updates rotation
     stopProgressUpdate();
 }
 
@@ -1671,7 +1684,7 @@ function togglePlayPause() {
     }
 }
 
-// Update play button icons
+// Update play button icons and rotation
 function updatePlayButtons() {
     if (isPlaying) {
         mobilePlayIcon.className = 'fas fa-pause';
@@ -1680,6 +1693,9 @@ function updatePlayButtons() {
         mobilePlayIcon.className = 'fas fa-play';
         lyricsPlayIcon.className = 'fas fa-play';
     }
+    
+    // Update rotation animation for active song in song list
+    updateSongArtRotation();
 }
 
 // Start updating progress
@@ -1824,10 +1840,13 @@ function setupAudioEvents() {
     audioPlayer.addEventListener('playing', () => {
         audioLoading.classList.remove('active');
         audioLoading.textContent = "";
+        isPlaying = true;
+        updateSongArtRotation(); // Update rotation when audio starts playing
     });
     
     audioPlayer.addEventListener('pause', () => {
-        // Nothing needed
+        isPlaying = false;
+        updateSongArtRotation(); // Update rotation when audio pauses
     });
     
     audioPlayer.addEventListener('ended', () => {
@@ -2130,6 +2149,44 @@ function setupEventListeners() {
     });
 }
 
+// Update rotation animation for song art - UPDATED VERSION
+function updateSongArtRotation() {
+    document.querySelectorAll('.song-item-art').forEach(art => {
+        // First remove all rotation classes
+        art.classList.remove('rotating', 'selected');
+        
+        const songItem = art.closest('.song-item');
+        if (songItem) {
+            const songId = parseInt(songItem.dataset.id);
+            const isActiveSong = songs.find(s => s.id === songId)?.active || false;
+            
+            // If this is the active song (selected in the list)
+            if (isActiveSong) {
+                if (isPlaying) {
+                    // If audio is playing, add rotating class
+                    art.classList.add('rotating');
+                } else {
+                    // If audio is paused/stopped, add selected class (non-animated rotation)
+                    art.classList.add('selected');
+                }
+            }
+        }
+    });
+}
+
+// Update play button icons and rotation
+function updatePlayButtons() {
+    if (isPlaying) {
+        mobilePlayIcon.className = 'fas fa-pause';
+        lyricsPlayIcon.className = 'fas fa-pause';
+    } else {
+        mobilePlayIcon.className = 'fas fa-play';
+        lyricsPlayIcon.className = 'fas fa-play';
+    }
+    
+    // Also update rotation animation
+    updateSongArtRotation();
+}
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
-
