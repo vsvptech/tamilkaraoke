@@ -935,6 +935,20 @@ main {
     border-radius: 50px;
 }
 
+/* Song art rotation animation */
+.song-item-art.rotating img {
+    animation: rotateAlbumArt 10s linear infinite;
+}
+
+@keyframes rotateAlbumArt {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .song-item-info {
     flex: 1;
     min-width: 0;
@@ -1450,5 +1464,3 @@ main {
     margin-right: -50vw;
 
 }
-
-
