@@ -111,7 +111,7 @@ const songs = [
         image: getFirebaseUrl("images/VaaranamAayiram.jpg"),
         audio: {
             //male: getFirebaseUrl("songs/male/Munbe-Vaa-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Munbe-Va-Female.mp3"),
+            female: getFirebaseUrl("songs/female/Munbe-Vaa-Female.mp3"),
             //duet: getFirebaseUrl("songs/duet/Munbe-Vaa-Dute.mp3"),
             song: getFirebaseUrl("songs/song/Munbe-Vaa-Song.mp3")
         },  
