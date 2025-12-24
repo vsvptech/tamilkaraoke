@@ -103,6 +103,16 @@ let lastActiveSongType = null;
 // Song list visibility state
 let isSongListVisible = true;
 
+// ==================== NETWORK AND BACKGROUND AUDIO FIXES ====================
+
+// Network status variables
+let isOnline = navigator.onLine;
+let networkNotificationShown = false;
+
+// Background audio wake lock
+let wakeLock = null;
+let isWakeLockSupported = 'wakeLock' in navigator;
+
 // ==================== HELPER FUNCTIONS ====================
 
 // Get icon based on song type
@@ -569,11 +579,167 @@ function checkScrollForProgress() {
     }
 }
 
+// ==================== NETWORK FUNCTIONS ====================
+
+// Check network status
+function checkNetworkStatus() {
+    isOnline = navigator.onLine;
+    
+    if (!isOnline && !networkNotificationShown) {
+        showNetworkNotification("No internet connection. Please check your network.", "error", 0);
+        networkNotificationShown = true;
+    } else if (isOnline && networkNotificationShown) {
+        hideNetworkNotification();
+        networkNotificationShown = false;
+        showNotification("Network connection restored", 2000);
+    }
+}
+
+// Show network notification
+function showNetworkNotification(message, type = "error", duration = 0) {
+    // Remove any existing network notification
+    hideNetworkNotification();
+    
+    const notification = document.createElement('div');
+    notification.id = 'network-notification';
+    notification.className = `network-notification ${type}`;
+    notification.innerHTML = `
+        <div class="network-notification-content">
+            <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+            <span>${message}</span>
+            ${duration === 0 ? '<button id="closeNetworkNotification" class="network-notification-close"><i class="fas fa-times"></i></button>' : ''}
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Add close button functionality
+    if (duration === 0) {
+        const closeBtn = document.getElementById('closeNetworkNotification');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', hideNetworkNotification);
+        }
+    }
+    
+    // Auto-hide if duration is set
+    if (duration > 0) {
+        setTimeout(() => {
+            hideNetworkNotification();
+        }, duration);
+    }
+}
+
+// Hide network notification
+function hideNetworkNotification() {
+    const existing = document.getElementById('network-notification');
+    if (existing) {
+        existing.classList.add('hiding');
+        setTimeout(() => {
+            if (existing.parentNode) {
+                existing.parentNode.removeChild(existing);
+            }
+        }, 300);
+    }
+}
+
+// ==================== BACKGROUND AUDIO FUNCTIONS ====================
+
+// Request wake lock to keep audio playing in background
+async function requestWakeLock() {
+    if (!isWakeLockSupported) {
+        console.log("Wake Lock API not supported");
+        return;
+    }
+    
+    try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        console.log("Wake Lock acquired");
+        
+        // Handle wake lock release
+        wakeLock.addEventListener('release', () => {
+            console.log("Wake Lock released");
+        });
+        
+    } catch (err) {
+        console.error(`Wake Lock error: ${err.name}, ${err.message}`);
+    }
+}
+
+// Release wake lock
+async function releaseWakeLock() {
+    if (wakeLock !== null) {
+        await wakeLock.release();
+        wakeLock = null;
+        console.log("Wake Lock released manually");
+    }
+}
+
+// Handle visibility change for wake lock
+function handleVisibilityChange() {
+    if (document.hidden && isPlaying && isWakeLockSupported) {
+        // Screen locked or tab hidden - request wake lock
+        requestWakeLock();
+    } else if (!document.hidden && wakeLock !== null) {
+        // Screen unlocked or tab visible - release wake lock
+        releaseWakeLock();
+    }
+}
+
+// Initialize background audio features
+function initBackgroundAudio() {
+    // Check if browser supports background audio
+    const audio = new Audio();
+    const supportsBackgroundAudio = !!(audio.canPlayType && audio.canPlayType('audio/mpeg').replace(/no/, ''));
+    
+    if (!supportsBackgroundAudio) {
+        console.log("Browser may not support background audio");
+    }
+    
+    // Request wake lock support
+    if (isWakeLockSupported) {
+        console.log("Wake Lock API supported");
+        
+        // Add visibility change listener
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        
+        // Request wake lock when audio starts playing
+        audioPlayer.addEventListener('play', () => {
+            if (document.hidden) {
+                requestWakeLock();
+            }
+        });
+        
+        // Release wake lock when audio stops
+        audioPlayer.addEventListener('pause', () => {
+            releaseWakeLock();
+        });
+        
+        audioPlayer.addEventListener('ended', () => {
+            releaseWakeLock();
+        });
+    }
+    
+    // Add beforeunload listener to clean up
+    window.addEventListener('beforeunload', () => {
+        releaseWakeLock();
+    });
+}
+
+// ==================== INITIALIZE APP ====================
+
 // Initialize the app
 function init() {
     console.log("=== INITIALIZING APP ===");
     
     favoriteSongs = JSON.parse(localStorage.getItem('favoriteSongs')) || [];
+    
+    // Initialize network monitoring
+    checkNetworkStatus();
+    window.addEventListener('online', checkNetworkStatus);
+    window.addEventListener('offline', checkNetworkStatus);
+    
+    // Initialize background audio features
+    initBackgroundAudio();
     
     // Start with "list" filter active
     currentFilterType = "list";
@@ -1053,6 +1219,12 @@ function loadSong(index, autoPlay = true) {
         return;
     }
     
+    // Check network before loading
+    if (!isOnline) {
+        showNetworkNotification("No internet connection. Cannot load song.", "error", 3000);
+        return;
+    }
+    
     audioLoading.classList.add('active');
     isAudioLoading = true;
     
@@ -1180,6 +1352,11 @@ function loadSong(index, autoPlay = true) {
                             errorMessage = `${versionName} version not supported`;
                             break;
                     }
+                }
+                
+                // Check if it's a network error
+                if (errorMessage.includes("Network")) {
+                    showNetworkNotification("Network error. Check your connection.", "error", 3000);
                 }
                 
                 audioLoading.textContent = errorMessage;
@@ -1350,6 +1527,13 @@ async function loadLyrics(lyricsFile, song, currentType) {
             return;
         }
         
+        // Check network before loading lyrics
+        if (!isOnline) {
+            showNetworkNotification("No internet connection. Cannot load lyrics.", "error", 3000);
+            lyricsText.textContent = `${song.title}\n${getArtistForType(song, currentType)}\n\nNo internet connection.`;
+            return;
+        }
+        
         const response = await fetch(lyricsFile);
         if (response.ok) {
             const lyricsContent = await response.text();
@@ -1362,6 +1546,10 @@ async function loadLyrics(lyricsFile, song, currentType) {
             lyricsText.textContent = `${song.title}\n${getArtistForType(song, currentType)}\n\nLyrics file not found.`;
         }
     } catch (error) {
+        // Check if it's a network error
+        if (error.message.includes("network") || error.message.includes("Network")) {
+            showNetworkNotification("Network error loading lyrics.", "error", 3000);
+        }
         lyricsText.textContent = `${song.title}\n${getArtistForType(song, currentType)}\n\nError loading lyrics.`;
     }
 }
@@ -1370,6 +1558,12 @@ async function loadLyrics(lyricsFile, song, currentType) {
 function applyFilter(type) {
     console.log("=== APPLY FILTER CALLED ===");
     console.log("Filter type:", type);
+    
+    // Check network if loading audio files
+    if (type !== "list" && type !== "favourite" && !isOnline) {
+        showNetworkNotification("No internet connection. Cannot load songs.", "error", 3000);
+        return;
+    }
     
     // Show appropriate notification based on filter type
     if (type === "male") {
@@ -1612,6 +1806,11 @@ function playAudio() {
                     showNotification("Now playing", 1500);
                     
                     checkScrollForProgress();
+                    
+                    // Request wake lock for background play
+                    if (document.hidden && isWakeLockSupported) {
+                        requestWakeLock();
+                    }
                 })
                 .catch(error => {
                     console.error("Playback error:", error);
@@ -1644,6 +1843,9 @@ function pauseAudio() {
     isPlaying = false;
     updatePlayButtons(); // This now also updates rotation
     stopProgressUpdate();
+    
+    // Release wake lock when pausing
+    releaseWakeLock();
 }
 
 // Toggle play/pause
@@ -1842,17 +2044,28 @@ function setupAudioEvents() {
         audioLoading.textContent = "";
         isPlaying = true;
         updateSongArtRotation(); // Update rotation when audio starts playing
+        
+        // Request wake lock when playing starts
+        if (document.hidden && isWakeLockSupported) {
+            requestWakeLock();
+        }
     });
     
     audioPlayer.addEventListener('pause', () => {
         isPlaying = false;
         updateSongArtRotation(); // Update rotation when audio pauses
+        
+        // Release wake lock when pausing
+        releaseWakeLock();
     });
     
     audioPlayer.addEventListener('ended', () => {
         isPlaying = false;
         updatePlayButtons();
         stopProgressUpdate();
+        
+        // Release wake lock when song ends
+        releaseWakeLock();
         
         if (isAutoPlayEnabled) {
             setTimeout(() => {
@@ -1889,6 +2102,11 @@ function setupAudioEvents() {
             }
         }
         
+        // Show network notification for network errors
+        if (errorMsg.includes("Network")) {
+            showNetworkNotification("Network error. Check your connection.", "error", 3000);
+        }
+        
         audioLoading.textContent = errorMsg;
         isPlaying = false;
         updatePlayButtons();
@@ -1903,15 +2121,42 @@ function setupAudioEvents() {
     
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-            // Tab is hidden
+            // Tab is hidden or screen locked
+            console.log("Page hidden/screen locked");
+            
+            // Try to keep audio playing
+            if (isPlaying && audioPlayer.paused) {
+                setTimeout(() => {
+                    if (isPlaying && audioPlayer.paused) {
+                        audioPlayer.play().catch(e => {
+                            console.log("Failed to auto-resume playback:", e);
+                        });
+                    }
+                }, 100);
+            }
         } else {
+            // Tab is visible again
+            console.log("Page visible again");
+            
             if (isPlaying && audioPlayer.paused) {
                 setTimeout(() => {
                     playAudio();
                 }, 300);
             }
         }
+        
+        // Handle wake lock for background play
+        handleVisibilityChange();
     });
+    
+    // Handle page becoming active again
+    document.addEventListener('resume', () => {
+        if (isPlaying && audioPlayer.paused) {
+            setTimeout(() => {
+                playAudio();
+            }, 300);
+        }
+    }, false);
 }
 
 // Handle search function
