@@ -169,6 +169,7 @@ header {
 .mobile-search-input {
     width: 100%;
     padding: 14px 50px 14px 55px !important;
+    border-radius: 10px;
 }
 
 .mobile-search-toggle {
@@ -1464,5 +1465,6 @@ main {
     margin-right: -50vw;
 
 }
+
 
 
