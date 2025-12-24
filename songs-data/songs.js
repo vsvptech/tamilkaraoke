@@ -153,7 +153,7 @@ const songs = [
         image: getFirebaseUrl("images/Bheema.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Mudhal-Mazhai-Male.mp3"),
-            female: getFirebaseUrl("songs/Mudhal-Mazhai-Vizhigal-Female.mp3"),
+            female: getFirebaseUrl("songs/Mudhal-Mazhai-Female.mp3"),
             duet: getFirebaseUrl("songs/duet/Mudhal-Mazhai-Dute.mp3"),
             song: getFirebaseUrl("songs/song/Mudhal-Mazhai-Song.mp3")
         },  
