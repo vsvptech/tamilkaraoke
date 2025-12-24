@@ -178,7 +178,7 @@ const songs = [
         id: 45,
         title: "Anal Mele Panithuli",
         artist: "Vaaranam Aayiram",
-        image: getFirebaseUrl("images/Vaaranam-Aayiram.jpg"),
+        image: getFirebaseUrl("images/VaaranamAayiram.jpg"),
         audio: {
            //male: getFirebaseUrl("songs/male/Anal-Mele-Male.mp3"),
             female: getFirebaseUrl("songs/female/Anal-Mele-Kadaloram-Female.mp3"),
@@ -191,8 +191,8 @@ const songs = [
 { 
         id: 44,
         title: "Naani Koni",
-        artist: "Maattrraan",
-        image: getFirebaseUrl("images/Maattrraan.jpg"),
+        artist: "Maatraan",
+        image: getFirebaseUrl("images/Maatran.jpg"),
         audio: {
            //male: getFirebaseUrl("songs/male/Naani-Koni-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Naani-Koni-Kadaloram-Female.mp3"),
