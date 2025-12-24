@@ -4,10 +4,218 @@ const FIREBASE_BUCKET = "chillaxkaraoke-3d1cb.firebasestorage.app";
 function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
-
 const songs = [
 
-
+{ 
+        id: 57,
+        title: "Hosanna",
+        artist: "Vinnaithaandi Varuvaaya",
+        image: getFirebaseUrl("images/VinnaithaandiVaruvaaya.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Hosanna-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Hosanna-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Hosanna-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Hosanna-Song.mp3")
+        },  
+        lyrics: "lyrics/Hosanna.txt",
+        availableTypes: ["male", "song", "podcast"],
+    }, 
+{ 
+        id: 56,
+        title: "Thuli Thuli Mazhaiyaai",
+        artist: "Paiyaa",
+        image: getFirebaseUrl("images/Paiyaa.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Thuli-Thuli-Mazhaiyaai-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Thuli-Thuli-Mazhaiyaai-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Thuli-Thuli-Mazhaiyaai-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Thuli-Thuli-Mazhaiyaai-Song.mp3")
+        },  
+        lyrics: "lyrics/Thuli-Thuli-Mazhaiyaai.txt",
+        availableTypes: ["male", "song", "podcast"],
+    }, 
+{ 
+        id: 55,
+        title: "Ennamo Yeadho",
+        artist: "Ko",
+        image: getFirebaseUrl("images/Ko.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Ennamo-Yeadho-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Ennamo-Yeadho-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Ennamo-Yeadho-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Ennamo-Yeadho-Song.mp3")
+        },  
+        lyrics: "lyrics/Ennamo-Yeadho.txt",
+        availableTypes: ["male", "song", "podcast"],
+    }, 
+{ 
+        id: 54,
+        title: "Manjal Veiyil",
+        artist: "Vettaiyadu Vilaiyadu",
+        image: getFirebaseUrl("images/VettaiyaduVilaiyadu.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Manjal-Veiyil-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Manjal-Veiyil-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Manjal-Veiyil-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Manjal-Veiyil-Song.mp3")
+        },  
+        lyrics: "lyrics/Manjal-Veiyil.txt",
+        availableTypes: ["male", "song", "podcast"],
+    }, 
+{ 
+        id: 53,
+        title: "Engeyo Paartha Mayakkam",
+        artist: "Yaaradi Nee Mohini",
+        image: getFirebaseUrl("images/YaaradiNeeMohini.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Engeyo-Paartha-Mayakkam-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Engeyo-Paartha-Mayakkam-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Engeyo-Paartha-Mayakkam-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Engeyo-Paartha-Mayakkam-Song.mp3")
+        },  
+        lyrics: "lyrics/Engeyo-Paartha-Mayakkam.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },     
+{ 
+        id: 52,
+        title: "Venmegam Pennaga",
+        artist: "Yaaradi Nee Mohini",
+        image: getFirebaseUrl("images/YaaradiNeeMohini.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Venmegam-Pennaga-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Venmegam-Pennaga-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Venmegam-Pennaga-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Venmegam-Pennaga-Song.mp3")
+        },  
+        lyrics: "lyrics/Venmegam-Pennaga.txt",
+        availableTypes: ["male", "song", "podcast"],
+    }, 
+{ 
+        id: 51,
+        title: "Idhu Varai Illadha",
+        artist: "Goa",
+        image: getFirebaseUrl("images/Goa.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Idhu-Varai-Illadha-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Idhu-Varai-Illadha-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Idhu-Varai-Illadha-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Idhu-Varai-Illadha-Song.mp3")
+        },  
+        lyrics: "lyrics/Idhu-Varai-Illadha.txt",
+        availableTypes: ["male", "female", "dute", "song", "podcast"],
+    }, 
+{ 
+        id: 50,
+        title: "Munbe Vaa",
+        artist: "Vaaranam Aayiram",
+        image: getFirebaseUrl("images/VaaranamAayiram.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Munbe-Vaa-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Munbe-Vaa-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Munbe-Vaa-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Munbe-Vaa-Song.mp3")
+        },  
+        lyrics: "lyrics/Lajjavathiye.txt",
+        availableTypes: ["female", "song", "podcast"],
+    },     
+{ 
+        id: 49,
+        title: "Nee Paartha Vizhigal",
+        artist: "Moonu",
+        image: getFirebaseUrl("images/Moonu.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Nee-Paartha-Vizhigal-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Nee-Paartha-Vizhigal-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Nee-Paartha-Vizhigal-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Nee-Paartha-Vizhigal-Song.mp3")
+        },  
+        lyrics: "lyrics/Nee-Paartha-Vizhigal.txt",
+        availableTypes: ["dute", "song", "podcast"],
+    }, 
+{ 
+        id: 48,
+        title: "Azhagiye Marry Me",
+        artist: "Kaatru Veliyidai",
+        image: getFirebaseUrl("images/KaatruVeliyidai.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Azhagiye-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Azhagiye-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Azhagiye-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Azhagiye-Song.mp3")
+        },  
+        lyrics: "lyrics/Azhagiye.txt",
+        availableTypes: ["male", "song", "podcast"],
+    }, 
+{ 
+        id: 47,
+        title: "Mudhal Mazhai",
+        artist: "Bheema",
+        image: getFirebaseUrl("images/Bheema.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Mudhal-Mazhai-Male.mp3"),
+            female: getFirebaseUrl("songs/Mudhal-Mazhai-Vizhigal-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Mudhal-Mazhai-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Mudhal-Mazhai-Song.mp3")
+        },  
+        lyrics: "lyrics/Mudhal-Mazhai.txt",
+        availableTypes: ["male", "female", "dute", "song", "podcast"],
+    }, 
+{ 
+        id: 46,
+        title: "Thean Thean Thean",
+        artist: "Kuruvi",
+        image: getFirebaseUrl("images/Kuruvi.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Thean-Thean-Thean-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Thean-Thean-Thean-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Thean-Thean-Thean-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Thean-Thean-Thean-Song.mp3")
+        },  
+        lyrics: "lyrics/Thean-Thean-Thean.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    }, 
+{ 
+        id: 45,
+        title: "Anal Mele Panithuli",
+        artist: "Vaaranam Aayiram",
+        image: getFirebaseUrl("images/Vaaranam-Aayiram.jpg"),
+        audio: {
+           //male: getFirebaseUrl("songs/male/Anal-Mele-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Anal-Mele-Kadaloram-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Anal-Mele-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Anal-Mele-Song.mp3")
+        },  
+        lyrics: "lyrics/Anal-Mele.txt",
+        availableTypes: ["female", "song", "podcast"],
+    },
+{ 
+        id: 44,
+        title: "Naani Koni",
+        artist: "Maattrraan",
+        image: getFirebaseUrl("images/Maattrraan.jpg"),
+        audio: {
+           //male: getFirebaseUrl("songs/male/Naani-Koni-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Naani-Koni-Kadaloram-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Naani-Koni-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Naani-Koni-Song.mp3")
+        },  
+        lyrics: "lyrics/Naani-Koni.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },
+{ 
+        id: 43,
+        title: "Amali Thumali",
+        artist: "Ko",
+        image: getFirebaseUrl("images/Ko.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Amali-Thumali-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Amali-Thumali-Kadaloram-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Amali-Thumali-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Amali-Thumali-Song.mp3")
+        },  
+        lyrics: "lyrics/Amali-Thumali.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 42,
         title: "Andha Arabi Kadaloram",
