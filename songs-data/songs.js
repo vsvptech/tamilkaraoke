@@ -195,7 +195,7 @@ const songs = [
         image: getFirebaseUrl("images/Maatran.jpg"),
         audio: {
            //male: getFirebaseUrl("songs/male/Naani-Koni-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Naani-Koni-Kadaloram-Female.mp3"),
+            //female: getFirebaseUrl("songs/female/Naani-Koni-Female.mp3"),
             duet: getFirebaseUrl("songs/duet/Naani-Koni-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Naani-Koni-Song.mp3")
         },  
@@ -210,7 +210,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Amali-Thumali-Male.mp3"),
             female: getFirebaseUrl("songs/female/Amali-Thumali-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Amali-Thumali-Duet.mp3"),
+            duet: getFirebaseUrl("songs/duet/Amali-Thumali-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Amali-Thumali-Song.mp3")
         },  
         lyrics: "lyrics/Amali-Thumali.txt",
