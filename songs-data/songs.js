@@ -209,7 +209,7 @@ const songs = [
         image: getFirebaseUrl("images/Ko.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Amali-Thumali-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Amali-Thumali-Kadaloram-Female.mp3"),
+            female: getFirebaseUrl("songs/female/Amali-Thumali-Female.mp3"),
             //duet: getFirebaseUrl("songs/duet/Amali-Thumali-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Amali-Thumali-Song.mp3")
         },  
