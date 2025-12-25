@@ -6,6 +6,441 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
+
+{ 
+        id: 88,
+        title: "Kaadhal Kaditham Theettavae",
+        artist: "Jodi",
+        image: getFirebaseUrl("images/Jodi.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Kaadhal-Kaditham-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Kaadhal-Kaditham-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kaadhal-Kaditham-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kaadhal-Kaditham-Song.mp3")
+        },  
+        lyrics: "lyrics/Kaadhal-Kaditham.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
+{ 
+        id: 87,
+        title: "Kaatre En Vaasal",
+        artist: "Aayirathil Oruvan",
+        image: getFirebaseUrl("images/Aayirathil-Oruvan.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Kaatre-En-Vaasal-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Kaatre-En-Vaasal-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kaatre-En-Vaasal-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kaatre-En-Vaasal-Song.mp3")
+        },  
+        lyrics: "lyrics/Kaatre-En-Vaasal.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },
+{ 
+        id: 86,
+        title: "Un Mela Aasadhaan",
+        artist: "Aayirathil Oruvan",
+        image: getFirebaseUrl("images/Aayirathil-Oruvan.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Un-Mela-Aasadhaan-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Un-Mela-Aasadhaan-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Un-Mela-Aasadhaan-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Un-Mela-Aasadhaan-Song.mp3")
+        },  
+        lyrics: "lyrics/Un-Mela-Aasadhaan.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },  
+{ 
+        id: 85,
+        title: "Latcham Calorie",
+        artist: "Yaan",
+        image: getFirebaseUrl("images/Yaan.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Latcham-Calorie-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Latcham-Calorie-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Latcham-Calorie-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Latcham-Calorie-Song.mp3")
+        },  
+        lyrics: "lyrics/Latcham-Calorie.txt",
+        availableTypes: ["female", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 84,
+        title: "Kangal Irandal",
+        artist: "Subramaniyapuram",
+        image: getFirebaseUrl("images/Subramaniyapuram.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Kangal-Irandal-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Kangal-Irandal-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kangal-Irandal-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kangal-Irandal-Song.mp3")
+        },  
+        lyrics: "lyrics/Kangal-Irandal.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 83,
+        title: "Unnaale Unnaale",
+        artist: "Unnaale Unnaale",
+        image: getFirebaseUrl("images/Unnaale-Unnaale.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Unnaale-Unnaale-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Unnaale-Unnaale-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Unnaale-Unnaale-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Unnaale-Unnaale-Song.mp3")
+        },  
+        lyrics: "lyrics/Unnaale-Unnaale.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },      
+{ 
+        id: 82,
+        title: "Loosu Penne",
+        artist: "Vallavan",
+        image: getFirebaseUrl("images/Vallavan.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Loosu-Penne-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Loosu-Penne-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Loosu-Penne-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Loosu-Penne-Song.mp3")
+        },  
+        lyrics: "lyrics/Loosu-Penne.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 81,
+        title: "Thaniye Thananthaniye",
+        artist: "Rhythm",
+        image: getFirebaseUrl("images/Rhythm.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Thaniye-Thananthaniye-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Thaniye-Thananthaniye-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Thaniye-Thananthaniye-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Thaniye-Thananthaniye-Song.mp3")
+        },  
+        lyrics: "lyrics/Thaniye-Thananthaniye.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 80,
+        title: "June Ponaal",
+        artist: "Unnale Unnale",
+        image: getFirebaseUrl("images/Unnale-Unnale.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/June-Ponaal-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/June-Ponaal-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/June-Ponaal-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/June-Ponaal-Song.mp3")
+        },  
+        lyrics: "lyrics/June-Ponaal.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 79,
+        title: "Po Nee Po",
+        artist: "Moonu",
+        image: getFirebaseUrl("images/Moonu.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Po-Nee-Po-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Po-Nee-Po-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Po-Nee-Po-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Po-Nee-Po-Song.mp3")
+        },  
+        lyrics: "lyrics/Po-Nee-Po.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 78,
+        title: "Maalai Mangum Neram",
+        artist: "Rowthiram",
+        image: getFirebaseUrl("images/Rowthiram.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Maalai-Mangum-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Maalai-Mangum-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Maalai-Mangum-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Maalai-Mangum-Song.mp3")
+        },  
+        lyrics: "lyrics/Maalai-Mangum.txt",
+        availableTypes: ["female", "song", "podcast"],
+    },  
+{ 
+        id: 77,
+        title: "Yaaro Ivan",
+        artist: "Udhayam NH4",
+        image: getFirebaseUrl("images/Udhayam.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Yaaro-Ivan-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Yaaro-Ivan-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Yaaro-Ivan-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Yaaro-Ivan-Song.mp3")
+        },  
+        lyrics: "lyrics/Yaaro-Ivan.txt",
+        availableTypes: ["female", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 76,
+        title: "Kadhal-Vaithu",
+        artist: "Deepavali",
+        image: getFirebaseUrl("images/Deepavali.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Kadhal-Vaithu-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Kadhal-Vaithu-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Kadhal-Vaithu-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kadhal-Vaithu-Song.mp3")
+        },  
+        lyrics: "lyrics/Kadhal-Vaithu.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 75,
+        title: "En Kadhal Solla",
+        artist: "Paiyaa",
+        image: getFirebaseUrl("images/Paiyaa.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/En-Kadhal-Solla-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/En-Kadhal-Solla-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/En-Kadhal-Solla-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/En-Kadhal-Solla-Song.mp3")
+        },  
+        lyrics: "lyrics/En-Kadhal-Solla.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 74,
+        title: "Irumbile Oru Idhaiyam",
+        artist: "Endhiran",
+        image: getFirebaseUrl("images/Endhiran.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Irumbile-Oru-Idhaiyam-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Irumbile-Oru-Idhaiyam-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Irumbile-Oru-Idhaiyam-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Irumbile-Oru-Idhaiyam-Song.mp3")
+        },  
+        lyrics: "lyrics/Irumbile-Oru-Idhaiyam.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 73,
+        title: "Kalasala Kalasala",
+        artist: "Minnale",
+        image: getFirebaseUrl("images/Osthe.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Kalasala-Kalasala-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Kalasala-Kalasala-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kalasala-Kalasala-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kalasala-Kalasala-Song.mp3")
+        },  
+        lyrics: "lyrics/Kalasala-Kalasala.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 72,
+        title: "Siragugal Vanthathu",
+        artist: "Sarvam",
+        image: getFirebaseUrl("images/Sarvam.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Siragugal-Vanthathu-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Siragugal-Vanthathu-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Siragugal-Vanthathu-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Siragugal-Vanthathu-Song.mp3")
+        },  
+        lyrics: "lyrics/Siragugal-Vanthathu.txt",
+        availableTypes: ["female", "song", "podcast"],
+    },      
+{ 
+        id: 71,
+        title: "Ayayayo-Aananthamey",
+        artist: "Kumki",
+        image: getFirebaseUrl("images/Kumki.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Ayayayo-Aananthamey-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Ayayayo-Aananthamey-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Ayayayo-Aananthamey-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Ayayayo-Aananthamey-Song.mp3")
+        },  
+        lyrics: "lyrics/Ayayayo-Aananthamey.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 70,
+        title: "Naan Pogiren Mele Mele",
+        artist: "Naanayam",
+        image: getFirebaseUrl("images/Naanayam.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Naan-Pogiren-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Naan-Pogiren-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Naan-Pogiren-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Naan-Pogiren-Song.mp3")
+        },  
+        lyrics: "lyrics/Naan-Pogiren.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 69,
+        title: "Velicha Poove Vaa",
+        artist: "Ethir Neechal",
+        image: getFirebaseUrl("images/Ethir-Neechal.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Velicha-Poove-Vaa-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Velicha-Poove-Vaa-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Velicha-Poove-Vaa-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Velicha-Poove-Vaa-Song.mp3")
+        },  
+        lyrics: "lyrics/Velicha-Poove-Vaa.txt",
+        availableTypes: ["female", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 68,
+        title: "Saayndhu Saayndhu",
+        artist: "Neethaane En Ponvasantham",
+        image: getFirebaseUrl("images/Neethaane-En-Ponvasantham.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Saayndhu-Saayndhu-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Saayndhu-Saayndhu-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Saayndhu-Saayndhu-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Saayndhu-Saayndhu-Song.mp3")
+        },  
+        lyrics: "lyrics/Saayndhu-Saayndhu.txt",
+        availableTypes: ["female", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 67,
+        title: "Partha Muthal Naale",
+        artist: "Vettaiyadu Vilaiyadu",
+        image: getFirebaseUrl("images/Vettaiyadu-Vilaiyadu.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Partha-Muthal-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Partha-Muthal-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Partha-Muthal-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Partha-Muthal-Song.mp3")
+        },  
+        lyrics: "lyrics/Partha-Muthal.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },  
+{ 
+        id: 66,
+        title: "Hasili-Fisiliye",
+        artist: "Aadhavan",
+        image: getFirebaseUrl("images/Aadhavan.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Hasili-Fisiliye-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Hasili-Fisiliye-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Hasili-Fisiliye-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Hasili-Fisiliye-Song.mp3")
+        },  
+        lyrics: "lyrics/Hasili-Fisiliye.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },  
+{ 
+        id: 65,
+        title: "Iragai Pole",
+        artist: "Naan Mahaan Alla",
+        image: getFirebaseUrl("images/Naan-Mahaan-Alla.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Iragai-Pole-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Iragai-Pole-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Iragai-Pole-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Iragai-Pole-Song.mp3")
+        },  
+        lyrics: "lyrics/Iragai-Pole.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 64,
+        title: "Sahana Saaral",
+        artist: "Sivaji",
+        image: getFirebaseUrl("images/Sivaji.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Sahana-Saaral-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Sahana-Saaral-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Sahana-Saaral-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Sahana-Saaral-Song.mp3")
+        },  
+        lyrics: "lyrics/Sahana-Saaral.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 63,
+        title: "Kaatrukulle Vaasam Pola",
+        artist: "Sarvam",
+        image: getFirebaseUrl("images/Sarvam.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Kaatrukulle-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Kaatrukulle-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Kaatrukulle-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kaatrukulle-Song.mp3")
+        },  
+        lyrics: "lyrics/Kaatrukulle.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 62,
+        title: "Pachchai Nirame",
+        artist: "Alaipayuthe",
+        image: getFirebaseUrl("images/Alaipayuthe.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Pachchai-Nirame-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Pachchai-Nirame-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Pachchai-Nirame-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Pachchai-Nirame-Song.mp3")
+        },  
+        lyrics: "lyrics/Pachchai-Nirame.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },  
+{ 
+        id: 61,
+        title: "Vaarayo Vaarayo Monolisa",
+        artist: "Aadhavan",
+        image: getFirebaseUrl("images/Aadhavan.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Vaarayo-Vaarayo-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Vaarayo-Vaarayo-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Vaarayo-Vaarayo-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Vaarayo-Vaarayo-Song.mp3")
+        },  
+        lyrics: "lyrics/Vaarayo-Vaarayo.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },  
+{ 
+        id: 60,
+        title: "Akkam Pakkam Yarumilla",
+        artist: "Kireedam",
+        image: getFirebaseUrl("images/Kireedam.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Akkam-Pakkam-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Akkam-Pakkam-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Akkam-Pakkam-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Akkam-Pakkam-Song.mp3")
+        },  
+        lyrics: "lyrics/Akkam-Pakkam.txt",
+        availableTypes: ["female", "song", "podcast"],
+    },  
+{ 
+        id: 59,
+        title: "Vizhi Moodi Yosithaal",
+        artist: "Ayan",
+        image: getFirebaseUrl("images/Ayan.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Vizhi-Moodi-Yosithaal-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Vizhi-Moodi-Yosithaal-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Vizhi-Moodi-Yosithaal-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Vizhi-Moodi-Yosithaal-Song.mp3")
+        },  
+        lyrics: "lyrics/Vizhi-Moodi-Yosithaal.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },
+{ 
+        id: 58,
+        title: "Vaseegara",
+        artist: "Minnale",
+        image: getFirebaseUrl("images/Minnale.jpg"),
+        audio: {
+            //male: getFirebaseUrl("songs/male/Vaseegara-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Vaseegara-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Vaseegara-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Vaseegara-Song.mp3")
+        },  
+        lyrics: "lyrics/Vaseegara.txt",
+        availableTypes: ["female", "song", "podcast"],
+    },    
 { 
         id: 57,
         title: "Hosanna",
