@@ -13,10 +13,10 @@ const songs = [
         artist: "Jodi",
         image: getFirebaseUrl("images/Jodi.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Kaadhal-Kaditham-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Kaadhal-Kaditham-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Kaadhal-Kaditham-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Kaadhal-Kaditham-Song.mp3")
+            male: getFirebaseUrl("songs/male/Kadhal-Kaditham-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Kadhal-Kaditham-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kadhal-Kaditham-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kadhal-Kaditham-Song.mp3")
         },  
         lyrics: "lyrics/Kaadhal-Kaditham.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
