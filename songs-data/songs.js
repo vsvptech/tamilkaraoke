@@ -24,7 +24,7 @@ const songs = [
 { 
         id: 87,
         title: "Kaatre En Vaasal",
-        artist: "Aayirathil Oruvan",
+        artist: "Rhythm",
         image: getFirebaseUrl("images/Rhythm.jpg"),
         audio: {
             //male: getFirebaseUrl("songs/male/Kaatre-En-Vaasal-Male.mp3"),
