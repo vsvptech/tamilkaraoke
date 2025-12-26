@@ -320,7 +320,7 @@ const songs = [
         artist: "Vettaiyadu Vilaiyadu",
         image: getFirebaseUrl("images/Vettaiyadu-Vilaiyadu.jpg"),
         audio: {
-            //male: getFirebaseUrl("songs/male/Partha-Muthal-Male.mp3"),
+            male: getFirebaseUrl("songs/male/Partha-Muthal-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Partha-Muthal-Female.mp3"),
             duet: getFirebaseUrl("songs/duet/Partha-Muthal-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Partha-Muthal-Song.mp3")
