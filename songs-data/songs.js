@@ -18,8 +18,8 @@ const songs = [
         image: getFirebaseUrl("images/Uzhaippali.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Oru-Maina-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Oru-Maina-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Oru-Maina-Dute.mp3"),
+            female: getFirebaseUrl("songs/female/Oru-Maina-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Oru-Maina-Dute.mp3"),
             song: getFirebaseUrl("songs/song/Oru-Maina-Song.mp3")
         },  
         lyrics: "lyrics/Oru-Maina.txt",
