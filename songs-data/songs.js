@@ -82,7 +82,7 @@ const songs = [
         artist: "Subramaniyapuram",
         image: getFirebaseUrl("images/Subramaniyapuram.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Kangal-Irandal-Male.mp3"),
+            male: getFirebaseUrl("songs/male/KangalIrandal-Male.mp3"),
             female: getFirebaseUrl("songs/female/Kangal-Irandal-Female.mp3"),
             duet: getFirebaseUrl("songs/duet/Kangal-Irandal-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Kangal-Irandal-Song.mp3")
