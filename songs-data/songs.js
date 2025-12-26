@@ -8,7 +8,7 @@ const songs = [
 
 { 
         id: 89,
-        title: "Roja-Poonthottam",
+        title: "Roja Poonthottam",
         artist: "Kannukul Nilavu",
         image: getFirebaseUrl("images/Kannukul-Nilavu.jpg"),
         audio: {
@@ -190,7 +190,7 @@ const songs = [
     },  
 { 
         id: 76,
-        title: "Kadhal-Vaithu",
+        title: "Kadhal Vaithu",
         artist: "Deepavali",
         image: getFirebaseUrl("images/Deepavali.jpg"),
         audio: {
@@ -260,7 +260,7 @@ const songs = [
     },      
 { 
         id: 71,
-        title: "Ayayayo-Aananthamey",
+        title: "Ayayayo Aananthamey",
         artist: "Kumki",
         image: getFirebaseUrl("images/Kumki.jpg"),
         audio: {
@@ -330,7 +330,7 @@ const songs = [
     },  
 { 
         id: 66,
-        title: "Hasili-Fisiliye",
+        title: "Hasili Fisiliye",
         artist: "Aadhavan",
         image: getFirebaseUrl("images/Aadhavan.jpg"),
         audio: {
@@ -708,7 +708,7 @@ const songs = [
     }, 
 { 
         id: 39,
-        title: "Pathinettu-Vayathu",
+        title: "Pathinettu Vayathu",
         artist: "Suriyan",
         image: getFirebaseUrl("images/Suriyan.jpg"),
         audio: {
@@ -820,7 +820,7 @@ const songs = [
     }, 
 { 
         id: 31,
-        title: "Manmadhane-Nee",
+        title: "Manmadhane Nee",
         artist: "Manmadhan",
         image: getFirebaseUrl("images/Manmadhan.jpg"),
         audio: {
@@ -1003,7 +1003,7 @@ const songs = [
     }, 
 { 
         id: 18,
-        title: "Thuli-Thuliyai-Kottum",
+        title: "Thuli Thuliyai Kottum",
         artist: "Paarvai Ondre Pothume",
         image: getFirebaseUrl("images/PaarvaiOndrePothume.jpg"),
         audio: {
