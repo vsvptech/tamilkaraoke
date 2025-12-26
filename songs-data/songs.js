@@ -80,7 +80,7 @@ const songs = [
 { 
         id: 83,
         title: "Unnaale Unnaale",
-        artist: "Unnaale Unnaale",
+        artist: "Unnale Unnale",
         image: getFirebaseUrl("images/Unnaale-Unnaale.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Unnaale-Unnaale-Male.mp3"),
