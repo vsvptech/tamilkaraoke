@@ -40,13 +40,13 @@ const songs = [
         artist: "Rhythm",
         image: getFirebaseUrl("images/Rhythm.jpg"),
         audio: {
-            //male: getFirebaseUrl("songs/male/Kaatre-En-Vaasal-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Kaatre-En-Vaasal-Female.mp3"),
+            male: getFirebaseUrl("songs/male/Kaatre-En-Vaasal-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Kaatre-En-Vaasal-Female.mp3"),
             duet: getFirebaseUrl("songs/duet/Kaatre-En-Vaasal-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Kaatre-En-Vaasal-Song.mp3")
         },  
         lyrics: "lyrics/Kaatre-En-Vaasal.txt",
-        availableTypes: ["duet", "song", "podcast"],
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
     },
 { 
         id: 86,
