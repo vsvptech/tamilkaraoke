@@ -56,7 +56,7 @@ const songs = [
     }, 
 { 
         id: 129,
-        title: "Aasai-Aasai",
+        title: "Aasai Aasai",
         artist: "Dhool",
         image: getFirebaseUrl("images/Dhool.jpg"),
         audio: {
