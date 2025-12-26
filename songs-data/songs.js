@@ -6,7 +6,20 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 89,
+        title: "Roja-Poonthottam",
+        artist: "Kannukul Nilavu",
+        image: getFirebaseUrl("images/Kannukul-Nilavu.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Roja-Poonthottam-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Roja-Poonthottam-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Roja-Poonthottam-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Roja-Poonthottam-Song.mp3")
+        },  
+        lyrics: "lyrics/Roja-Poonthottam.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 88,
         title: "Kaadhal Kaditham Theettavae",
