@@ -98,16 +98,16 @@ const songs = [
     }, 
 { 
         id: 126,
-        title: "Azhagiya- heeye-",
+        title: "Azhagiya Theeye",
         artist: "Minnale",
         image: getFirebaseUrl("images/Minnale.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Azhagiya-Theeye--Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Azhagiya-Theeye--Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Azhagiya-Theeye--Dute.mp3"),
-            song: getFirebaseUrl("songs/song/Azhagiya-Theeye--Song.mp3")
+            male: getFirebaseUrl("songs/male/Azhagiya-Theeye-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Azhagiya-Theeye-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Azhagiya-Theeye-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Azhagiya-Theeye-Song.mp3")
         },  
-        lyrics: "lyrics/Azhagiya-Theeye-.txt",
+        lyrics: "lyrics/Azhagiya-Theeye.txt",
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
