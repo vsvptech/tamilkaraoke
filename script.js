@@ -725,6 +725,59 @@ function initBackgroundAudio() {
     });
 }
 
+// ==================== SEARCH BOX HANDLING ====================
+
+// Close mobile search when clicking outside
+function closeMobileSearchOnOutsideClick(e) {
+    // If search is open and user clicks outside the search container
+    if (isMobileSearchOpen && 
+        !mobileSearchContainer.contains(e.target) && 
+        !mobileSearchToggle.contains(e.target)) {
+        
+        closeMobileSearch();
+    }
+}
+
+// Open mobile search
+function openMobileSearch() {
+    isMobileSearchOpen = true;
+    mobileSearchContainer.classList.add('active');
+    
+    // Focus on input
+    setTimeout(() => {
+        mobileSearchContainer.querySelector('.mobile-search-input').focus();
+    }, 100);
+    
+    // Add click listener to document to close when clicking outside
+    document.addEventListener('click', closeMobileSearchOnOutsideClick);
+    document.addEventListener('touchstart', closeMobileSearchOnOutsideClick);
+}
+
+// Close mobile search
+function closeMobileSearch() {
+    isMobileSearchOpen = false;
+    mobileSearchContainer.classList.remove('active');
+    
+    // Clear search if needed
+    mobileSearchInput.value = '';
+    handleSearch({ target: mobileSearchInput });
+    
+    // Remove click listeners
+    document.removeEventListener('click', closeMobileSearchOnOutsideClick);
+    document.removeEventListener('touchstart', closeMobileSearchOnOutsideClick);
+}
+
+// Toggle mobile search
+function toggleMobileSearch() {
+    markUserInteraction();
+    
+    if (isMobileSearchOpen) {
+        closeMobileSearch();
+    } else {
+        openMobileSearch();
+    }
+}
+
 // ==================== INITIALIZE APP ====================
 
 // Initialize the app
@@ -2203,7 +2256,7 @@ function setupSidebarMenu() {
     });
 }
 
-// Set up event listeners
+// Set up event listeners - UPDATED FOR SEARCH BOX
 function setupEventListeners() {
     themeToggle.addEventListener('click', () => {
         markUserInteraction();
@@ -2215,17 +2268,8 @@ function setupEventListeners() {
         icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
     });
 
-    mobileSearchToggle.addEventListener('click', () => {
-        markUserInteraction();
-        isMobileSearchOpen = !isMobileSearchOpen;
-        mobileSearchContainer.classList.toggle('active', isMobileSearchOpen);
-        
-        if (isMobileSearchOpen) {
-            setTimeout(() => {
-                mobileSearchContainer.querySelector('.mobile-search-input').focus();
-            }, 100);
-        }
-    });
+    // UPDATED: Use the new toggle function for mobile search
+    mobileSearchToggle.addEventListener('click', toggleMobileSearch);
 
     lyricsBtn.addEventListener('click', async () => {
         markUserInteraction();
@@ -2305,6 +2349,13 @@ function setupEventListeners() {
     if (mobileSearchInput) {
         mobileSearchInput.addEventListener('input', (e) => {
             handleSearch(e);
+        });
+        
+        // Close search when pressing Escape key
+        mobileSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMobileSearch();
+            }
         });
     }
     
