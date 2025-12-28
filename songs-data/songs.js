@@ -12,6 +12,20 @@ const songs = [
 
 
 { 
+        id: 134,
+        title: "Kalyana Maalai",
+        artist: "Puthu Puthu Arthangal",
+        image: getFirebaseUrl("images/PuthuPuthuArthangal.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Kalyana-Maalai-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Kalyana-Maalai-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Kalyana-Maalai-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Kalyana-Maalai-Song.mp3")
+        },  
+        lyrics: "lyrics/Kalyana-Maalai.txt",
+        availableTypes: ["male", "song", "podcast"],
+    }, 
+{ 
         id: 133,
         title: "Oru Maina Maina",
         artist: "Uzhaippali",
