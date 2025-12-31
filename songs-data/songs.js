@@ -8,7 +8,20 @@ const songs = [
 
 
 
-
+{ 
+        id: 137,
+        title: "Per Vachalum",
+        artist: "Michael Madana Kama Rajan",
+        image: getFirebaseUrl("images/Michel.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Per-Vechalum-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Per-Vechalum-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Per-Vechalum-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Per-Vechalum-Song.mp3")
+        },  
+        lyrics: "lyrics/Per-Vechalum.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    }, 
 { 
         id: 136,
         title: "Sorgame Endralum",
