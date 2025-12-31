@@ -10,7 +10,20 @@ const songs = [
 
 
 
-
+{ 
+        id: 135,
+        title: "Valaiyosai",
+        artist: "Sathya",
+        image: getFirebaseUrl("images/Sathya.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Valaiyosai-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Valaiyosai-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Valaiyosai-Dute.mp3"),
+            song: getFirebaseUrl("songs/song/Valaiyosai-Song.mp3")
+        },  
+        lyrics: "lyrics/Valaiyosai.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    }, 
 { 
         id: 134,
         title: "Kalyana Maalai",
