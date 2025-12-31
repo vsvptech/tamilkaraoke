@@ -9,7 +9,20 @@ const songs = [
 
 
 
-
+{ 
+        id: 136,
+        title: "Sorgame Endralum",
+        artist: "Oru Vittu Oru Vanthu",
+        image: getFirebaseUrl("images/Oruvittu.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Oruvittu-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Oruvittu-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Oruvittu-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Oruvittu-Song.mp3")
+        },  
+        lyrics: "lyrics/Sorgame.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    }, 
 { 
         id: 135,
         title: "Valaiyosai",
