@@ -15,10 +15,10 @@ const songs = [
         artist: "Oru Vittu Oru Vanthu",
         image: getFirebaseUrl("images/Oruvittu.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Oruvittu-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Oruvittu-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Oruvittu-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Oruvittu-Song.mp3")
+            male: getFirebaseUrl("songs/male/Sorgame-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Sorgame-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Sorgame-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Sorgame-Song.mp3")
         },  
         lyrics: "lyrics/Sorgame.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
