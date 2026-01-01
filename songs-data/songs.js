@@ -7,7 +7,20 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 138,
+        title: "Enaku Piditha Paadal",
+        artist: "Julie Ganapathi",
+        image: getFirebaseUrl("images/Michel.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Enaku-Piditha-Paadal-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Enaku-Piditha-Paadal-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Enaku-Piditha-Paadal-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Enaku-Piditha-Paadal-Song.mp3")
+        },  
+        lyrics: "lyrics/Enaku-Piditha-Paadal.txt",
+        availableTypes: ["female", "song", "podcast"],
+    }, 
 { 
         id: 137,
         title: "Per Vachalum",
