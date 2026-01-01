@@ -11,7 +11,7 @@ const songs = [
         id: 138,
         title: "Enaku Piditha Paadal",
         artist: "Julie Ganapathi",
-        image: getFirebaseUrl("images/Michel.jpg"),
+        image: getFirebaseUrl("images/Julie.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Enaku-Piditha-Paadal-Male.mp3"),
             female: getFirebaseUrl("songs/female/Enaku-Piditha-Paadal-Female.mp3"),
