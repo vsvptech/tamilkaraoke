@@ -6,7 +6,20 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 139,
+        title: "Thenmadurai Vaigai Nathi",
+        artist: "Dharmathin Thalaivan",
+        image: getFirebaseUrl("images/Dharmathin.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Thenmadurai-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Thenmadurai-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Thenmadurai-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Thenmadurai-Song.mp3")
+        },  
+        lyrics: "lyrics/Thenmadurai.txt",
+        availableTypes: ["male", "song", "podcast"],
+    }, 
 { 
         id: 138,
         title: "Enaku Piditha Paadal",
