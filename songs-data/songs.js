@@ -950,13 +950,13 @@ const songs = [
         artist: "Sarvam",
         image: getFirebaseUrl("images/Sarvam.jpg"),
         audio: {
-            //male: getFirebaseUrl("songs/male/Siragugal-Vanthathu-Male.mp3"),
+            male: getFirebaseUrl("songs/male/Siragugal-Vanthathu-Male.mp3"),
             female: getFirebaseUrl("songs/female/Siragugal-Vanthathu-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Siragugal-Vanthathu-Duet.mp3"),
+            duet: getFirebaseUrl("songs/duet/Siragugal-Vanthathu-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Siragugal-Vanthathu-Song.mp3")
         },  
         lyrics: "lyrics/Siragugal-Vanthathu.txt",
-        availableTypes: ["female", "song", "podcast"],
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
     },      
 { 
         id: 71,
