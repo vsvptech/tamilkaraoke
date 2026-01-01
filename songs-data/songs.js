@@ -5,7 +5,20 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
-
+{ 
+        id: 140,
+        title: "Ennai Thottu Allikonda",
+        artist: "Unnai Ninachen Paattu Padichen",
+        image: getFirebaseUrl("images/Ennai-Thottu.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Ennai-Thottu-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Ennai-Thottu-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Ennai-Thottu-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Ennai-Thottu-Song.mp3")
+        },  
+        lyrics: "lyrics/Ennai-Thottu.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    }, 
 { 
         id: 139,
         title: "Thenmadurai Vaigai Nathi",
@@ -13,8 +26,8 @@ const songs = [
         image: getFirebaseUrl("images/Dharmathin.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Thenmadurai-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Thenmadurai-Female.mp3"),
-            duet: getFirebaseUrl("songs/duet/Thenmadurai-Duet.mp3"),
+            //female: getFirebaseUrl("songs/female/Thenmadurai-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Thenmadurai-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Thenmadurai-Song.mp3")
         },  
         lyrics: "lyrics/Thenmadurai.txt",
