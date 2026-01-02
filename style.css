@@ -408,7 +408,7 @@ body.dark-mode .network-notification.warning {
     position: fixed;
     top: 0;
     left: -280px;
-    width: 310px;
+    width: 330px;
     height: 100%;
     background: var(--card-bg);
     color: var(--text-color);
@@ -1561,6 +1561,7 @@ main {
     margin-right: -50vw;
 
 }
+
 
 
 
