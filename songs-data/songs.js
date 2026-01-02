@@ -5,6 +5,26 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
+
+
+
+
+
+
+{ 
+        id: 141,
+        title: "Kannathil Kannam Vaikka",
+        artist: "Watchman Vadivelu",
+        image: getFirebaseUrl("images/Watchman.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Kannathil-Kannam-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Kannathil-Kannam-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kannathil-Kannam-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kannathil-Kannam-Song.mp3")
+        },  
+        lyrics: "lyrics/Kannathil-Kannam.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    }, 	
 { 
         id: 140,
         title: "Ennai Thottu Allikonda",
