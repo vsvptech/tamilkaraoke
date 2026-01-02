@@ -545,11 +545,11 @@ const songs = [
     }, 
 { 
         id: 103,
-        title: "Suttrum VizhiSudare",
+        title: "Suttrum Vizhi Sudare",
         artist: "Ghajini",
         image: getFirebaseUrl("images/Ghajini.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Suttrum-VizhiSudare-Male.mp3"),
+            male: getFirebaseUrl("songs/male/Suttum-Vizhi-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Suttrum-VizhiSudare-Female.mp3"),
             //duet: getFirebaseUrl("songs/duet/Suttrum-VizhiSudare-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Suttrum-VizhiSudare-Song.mp3")
