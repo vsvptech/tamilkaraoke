@@ -725,15 +725,38 @@ function initBackgroundAudio() {
     });
 }
 
-// ==================== SEARCH BOX HANDLING ====================
+// ==================== SEARCH BOX HANDLING - UPDATED ====================
 
-// Close mobile search when clicking outside
+// Close mobile search when clicking outside - UPDATED VERSION
 function closeMobileSearchOnOutsideClick(e) {
+    // Don't close on scroll events (touchmove, wheel, etc.)
+    if (e.type === 'touchmove' || e.type === 'wheel' || e.type === 'scroll') {
+        return;
+    }
+    
     // If search is open and user clicks outside the search container
     if (isMobileSearchOpen && 
         !mobileSearchContainer.contains(e.target) && 
         !mobileSearchToggle.contains(e.target)) {
         
+        // Check if the click is on a song item or version button
+        const clickedSongItem = e.target.closest('.song-item');
+        const clickedVersionBtn = e.target.closest('.version-btn');
+        
+        // If clicking on a song or version button, close search
+        if (clickedSongItem || clickedVersionBtn) {
+            closeMobileSearch();
+        }
+        // If clicking elsewhere (not on song list), close search
+        else if (!songListContainer.contains(e.target)) {
+            closeMobileSearch();
+        }
+    }
+}
+
+// Close mobile search when a song is selected - NEW FUNCTION
+function closeMobileSearchOnSongSelect() {
+    if (isMobileSearchOpen) {
         closeMobileSearch();
     }
 }
@@ -745,7 +768,7 @@ function openMobileSearch() {
     
     // Focus on input
     setTimeout(() => {
-        mobileSearchContainer.querySelector('.mobile-search-input').focus();
+        mobileSearchInput.focus();
     }, 100);
     
     // Add click listener to document to close when clicking outside
@@ -966,6 +989,9 @@ function renderCarousel() {
         slide.addEventListener('click', () => {
             markUserInteraction();
             
+            // Close mobile search when a song is selected
+            closeMobileSearchOnSongSelect();
+            
             lastClickedSongId = song.id;
             lastClickedTrackId = song.trackId;
             lastActiveSongId = song.id;
@@ -1173,6 +1199,10 @@ function renderSongList() {
             btn.addEventListener('click', (e) => {
                 markUserInteraction();
                 e.stopPropagation();
+                
+                // Close mobile search when a version is selected
+                closeMobileSearchOnSongSelect();
+                
                 const songId = parseInt(btn.dataset.id);
                 const versionType = btn.dataset.type;
                 
@@ -1249,6 +1279,9 @@ function renderSongList() {
             }
             
             markUserInteraction();
+            
+            // Close mobile search when a song is selected
+            closeMobileSearchOnSongSelect();
             
             lastClickedSongId = song.id;
             lastActiveSongId = song.id;
@@ -2212,11 +2245,13 @@ function setupAudioEvents() {
     }, false);
 }
 
-// Handle search function
+// Handle search function - UPDATED to prevent closing on scroll
 function handleSearch(e) {
     markUserInteraction();
     const searchTerm = e.target.value.toLowerCase();
     const songItems = document.querySelectorAll('.song-item');
+    
+    let hasVisibleResults = false;
     
     songItems.forEach(item => {
         const title = item.querySelector('.song-item-title').textContent.toLowerCase();
@@ -2224,12 +2259,35 @@ function handleSearch(e) {
         
         if (title.includes(searchTerm) || artist.includes(searchTerm)) {
             item.style.display = 'flex';
+            hasVisibleResults = true;
         } else {
             item.style.display = 'none';
         }
     });
     
     updateSearchClearButtons();
+    
+    // If no results, keep search open but show message
+    if (!hasVisibleResults && searchTerm.trim() !== '') {
+        // Don't close search - just show no results
+        if (!document.querySelector('.no-search-results')) {
+            const noResults = document.createElement('div');
+            noResults.className = 'no-search-results';
+            noResults.innerHTML = `
+                <p style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                    <i class="fas fa-search" style="font-size: 32px; margin-bottom: 10px;"></i>
+                    <br>No songs found matching "${searchTerm}"
+                </p>
+            `;
+            songListContainer.appendChild(noResults);
+        }
+    } else {
+        // Remove any existing no results message
+        const existingMessage = document.querySelector('.no-search-results');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+    }
 }
 
 // Setup sidebar menu
@@ -2443,6 +2501,17 @@ function setupEventListeners() {
             }
         }
     });
+    
+    // Prevent touch/scroll from closing search
+    songListContainer.addEventListener('touchstart', (e) => {
+        // Mark that touch started in song list
+        e.stopPropagation();
+    }, { passive: true });
+    
+    songListContainer.addEventListener('touchmove', (e) => {
+        // Prevent scroll from triggering close
+        e.stopPropagation();
+    }, { passive: true });
 }
 
 // Update rotation animation for song art - UPDATED VERSION
