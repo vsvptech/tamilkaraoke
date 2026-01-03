@@ -1473,7 +1473,7 @@ const songs = [
         artist: "Aval Oru Thodar Kathai",
         image: getFirebaseUrl("images/AvalOruThodarKathai.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Dheivam-Thantha-Veedu-Male.mp3"),
+            male: getFirebaseUrl("songs/male/Deivam-Thantha-Veedu-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Dheivam-Thantha-Veedu-Female.mp3"),
             //duet: getFirebaseUrl("songs/duet/Dheivam-Thantha-Veedu-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Dheivam-Thantha-Veedu-Song.mp3")
@@ -1599,7 +1599,7 @@ const songs = [
         artist: "Ilamai Kaalangal",
         image: getFirebaseUrl("images/IlamaiKaalangal.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Paada-Vandhadhor-Gaanam-Male.mp3"),
+            male: getFirebaseUrl("songs/male/Paada-Vandhadhor-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Paada-Vandhadhor-Gaanam-Female.mp3"),
             //duet: getFirebaseUrl("songs/duet/Paada-Vandhadhor-Gaanam-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Paada-Vandhadhor-Gaanam-Song.mp3")
@@ -1627,7 +1627,7 @@ const songs = [
         artist: "Manidharil Ithanai Nirangala",
         image: getFirebaseUrl("images/ManidharilIthanaiNirangala.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Mazhai-Tharumo-En-Megam-Male.mp3"),
+            male: getFirebaseUrl("songs/male/Mazhai-Tharumo-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Mazhai-Tharumo-En-Megam-Female.mp3"),
             //duet: getFirebaseUrl("songs/duet/Mazhai-Tharumo-En-Megam-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Mazhai-Tharumo-En-Megam-Song.mp3")
