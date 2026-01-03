@@ -718,12 +718,12 @@ const songs = [
         image: getFirebaseUrl("images/EeramanaRojave.jpg"),
         audio: {
             male: getFirebaseUrl("songs/male/Kalakalakum-Mani-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Kalakalakum-Mani-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Kalakalakum-Mani-Duet.mp3"),
+            female: getFirebaseUrl("songs/female/Kalakalakum-Mani-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kalakalakum-Mani-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Kalakalakum-Mani-Song.mp3")
         },  
         lyrics: "lyrics/Kalakalakum-Mani.txt",
-        availableTypes: ["male", "song", "podcast"],
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
     }, 
 { 
         id: 90,
