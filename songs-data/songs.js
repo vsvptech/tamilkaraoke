@@ -1754,7 +1754,7 @@ const songs = [
         artist: "Mr Bharath",
         image: getFirebaseUrl("images/MrBharath.jpg"),
         audio: {
-            male: getFirebaseUrl("songs/male/Ennamma-Kannu-Sawkiyama-Male.mp3"),
+            male: getFirebaseUrl("songs/male/Ennamma-Kannu-Sowkiyama-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Ennamma-Kannu-Sawkiyama-Female.mp3"),
             duet: getFirebaseUrl("songs/duet/Ennamma-Kannu-Sawkiyama-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Ennamma-Kannu-Sawkiyama-Song.mp3")
