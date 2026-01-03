@@ -899,10 +899,10 @@ const songs = [
         artist: "Rowthiram",
         image: getFirebaseUrl("images/Rowthiram.jpg"),
         audio: {
-            //male: getFirebaseUrl("songs/male/Maalai-Mangum-Male.mp3"),
-            female: getFirebaseUrl("songs/female/Maalai-Mangum-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Maalai-Mangum-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Maalai-Mangum-Song.mp3")
+            //male: getFirebaseUrl("songs/male/Maalai-Mangum-Neram-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Maalai-Mangum-Neram-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Maalai-Mangum-Neram-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Maalai-Mangum-Neram-Song.mp3")
         },  
         lyrics: "lyrics/Maalai-Mangum.txt",
         availableTypes: ["female", "song", "podcast"],
