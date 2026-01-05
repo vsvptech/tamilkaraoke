@@ -1,4 +1,4 @@
-// ==================== COMPLETE FIXED SCRIPT.JS ====================
+// ==================== COMPLETE SCRIPT.JS FOR ANDROID BACKGROUND AUDIO ====================
 
 // DOM Elements
 const themeToggle = document.getElementById('themeToggle');
@@ -103,15 +103,443 @@ let lastActiveSongType = null;
 // Song list visibility state
 let isSongListVisible = true;
 
-// ==================== NETWORK AND BACKGROUND AUDIO FIXES ====================
+// ==================== ANDROID BACKGROUND AUDIO FIXES ====================
+
+// Background audio wake lock
+let wakeLock = null;
+let isWakeLockSupported = 'wakeLock' in navigator;
+
+// Track if we're in background
+let isInBackground = false;
+
+// Background check interval
+let backgroundCheckInterval = null;
+
+// Silent audio for keeping audio context alive
+let silentAudio = null;
+
+// ==================== NETWORK FUNCTIONS ====================
 
 // Network status variables
 let isOnline = navigator.onLine;
 let networkNotificationShown = false;
 
-// Background audio wake lock
-let wakeLock = null;
-let isWakeLockSupported = 'wakeLock' in navigator;
+// Check network status
+function checkNetworkStatus() {
+    isOnline = navigator.onLine;
+    
+    if (!isOnline && !networkNotificationShown) {
+        showNetworkNotification("No internet connection. Please check your network.", "error", 0);
+        networkNotificationShown = true;
+    } else if (isOnline && networkNotificationShown) {
+        hideNetworkNotification();
+        networkNotificationShown = false;
+        showNotification("Network connection restored", 2000);
+    }
+}
+
+// Show network notification
+function showNetworkNotification(message, type = "error", duration = 0) {
+    // Remove any existing network notification
+    hideNetworkNotification();
+    
+    const notification = document.createElement('div');
+    notification.id = 'network-notification';
+    notification.className = `network-notification ${type}`;
+    notification.innerHTML = `
+        <div class="network-notification-content">
+            <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+            <span>${message}</span>
+            ${duration === 0 ? '<button id="closeNetworkNotification" class="network-notification-close"><i class="fas fa-times"></i></button>' : ''}
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Add close button functionality
+    if (duration === 0) {
+        const closeBtn = document.getElementById('closeNetworkNotification');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', hideNetworkNotification);
+        }
+    }
+    
+    // Auto-hide if duration is set
+    if (duration > 0) {
+        setTimeout(() => {
+            hideNetworkNotification();
+        }, duration);
+    }
+}
+
+// Hide network notification
+function hideNetworkNotification() {
+    const existing = document.getElementById('network-notification');
+    if (existing) {
+        existing.classList.add('hiding');
+        setTimeout(() => {
+            if (existing.parentNode) {
+                existing.parentNode.removeChild(existing);
+            }
+        }, 300);
+    }
+}
+
+// ==================== ANDROID BACKGROUND AUDIO FUNCTIONS ====================
+
+// Initialize background audio features for Android
+function initBackgroundAudio() {
+    console.log("Initializing background audio for Android...");
+    
+    // Check if wake lock is supported
+    isWakeLockSupported = 'wakeLock' in navigator;
+    console.log("Wake Lock API supported:", isWakeLockSupported);
+    
+    if (isWakeLockSupported) {
+        // Add visibility change listener for wake lock
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        
+        // Request wake lock when audio starts playing
+        audioPlayer.addEventListener('play', () => {
+            console.log("Audio play event - requesting wake lock");
+            if (document.hidden) {
+                requestWakeLock();
+            }
+        });
+        
+        // Release wake lock when audio stops
+        audioPlayer.addEventListener('pause', () => {
+            console.log("Audio pause event - releasing wake lock");
+            releaseWakeLock();
+            stopBackgroundCheck();
+        });
+        
+        audioPlayer.addEventListener('ended', () => {
+            console.log("Audio ended event - releasing wake lock");
+            releaseWakeLock();
+            stopBackgroundCheck();
+        });
+        
+        // Start background check when playing
+        audioPlayer.addEventListener('playing', () => {
+            console.log("Audio playing - starting background check");
+            startBackgroundCheck();
+        });
+    }
+    
+    // Setup silent audio for keeping audio context alive
+    setupSilentAudio();
+    
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', handlePageVisibility);
+    
+    // Handle beforeunload to clean up
+    window.addEventListener('beforeunload', () => {
+        releaseWakeLock();
+        stopBackgroundCheck();
+        stopSilentAudio();
+    });
+    
+    // Setup media session for Android lock screen controls
+    if ('mediaSession' in navigator) {
+        setupMediaSession();
+    }
+}
+
+// Setup silent audio to keep audio context alive
+function setupSilentAudio() {
+    try {
+        silentAudio = document.createElement('audio');
+        silentAudio.loop = true;
+        silentAudio.volume = 0.001; // Almost silent
+        silentAudio.muted = true; // Muted by default
+        
+        // Create a Blob with silent audio (1 second of silence in MP3 format)
+        // This is a base64 encoded silent MP3
+        const silentMP3 = "data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
+        
+        silentAudio.src = silentMP3;
+        document.body.appendChild(silentAudio);
+        
+        console.log("Silent audio setup complete");
+        
+    } catch (error) {
+        console.error("Failed to setup silent audio:", error);
+    }
+}
+
+// Start silent audio playback
+function startSilentAudio() {
+    if (!silentAudio) return;
+    
+    try {
+        silentAudio.muted = false;
+        silentAudio.play().then(() => {
+            console.log("Silent audio started");
+        }).catch(e => {
+            console.log("Could not start silent audio:", e);
+        });
+    } catch (error) {
+        console.error("Error starting silent audio:", error);
+    }
+}
+
+// Stop silent audio
+function stopSilentAudio() {
+    if (!silentAudio) return;
+    
+    try {
+        silentAudio.pause();
+        silentAudio.currentTime = 0;
+        silentAudio.muted = true;
+        console.log("Silent audio stopped");
+    } catch (error) {
+        console.error("Error stopping silent audio:", error);
+    }
+}
+
+// Handle page visibility changes
+function handlePageVisibility() {
+    if (document.hidden) {
+        console.log("Page went to background/sleep mode");
+        isInBackground = true;
+        
+        // Start silent audio to keep audio context alive
+        if (isPlaying) {
+            startSilentAudio();
+        }
+        
+        // Start aggressive background checks
+        if (isPlaying) {
+            startBackgroundCheck();
+        }
+        
+    } else {
+        console.log("Page came to foreground");
+        isInBackground = false;
+        
+        // Stop silent audio when in foreground
+        stopSilentAudio();
+        
+        // Reduce background check frequency
+        if (isPlaying) {
+            adjustBackgroundCheckFrequency();
+        }
+    }
+}
+
+// Start background audio check
+function startBackgroundCheck() {
+    // Clear any existing interval
+    stopBackgroundCheck();
+    
+    if (!isPlaying) return;
+    
+    console.log("Starting background audio check for Android sleep mode");
+    
+    // Set up periodic check to keep audio alive
+    backgroundCheckInterval = setInterval(() => {
+        if (isInBackground && isPlaying) {
+            checkAndResumeAudio();
+        }
+    }, 10000); // Check every 10 seconds when in background/sleep
+}
+
+// Adjust background check frequency based on visibility
+function adjustBackgroundCheckFrequency() {
+    if (!backgroundCheckInterval) return;
+    
+    clearInterval(backgroundCheckInterval);
+    
+    if (isPlaying) {
+        backgroundCheckInterval = setInterval(() => {
+            checkAndResumeAudio();
+        }, 30000); // Check every 30 seconds when in foreground
+    }
+}
+
+// Stop background check
+function stopBackgroundCheck() {
+    if (backgroundCheckInterval) {
+        clearInterval(backgroundCheckInterval);
+        backgroundCheckInterval = null;
+        console.log("Background check stopped");
+    }
+}
+
+// Check and resume audio if needed
+function checkAndResumeAudio() {
+    if (!isPlaying) return;
+    
+    console.log("Background check: Checking audio status...");
+    
+    // Check if audio is paused but should be playing
+    if (audioPlayer.paused) {
+        console.log("Audio paused in background/sleep mode, attempting to resume...");
+        
+        // Start silent audio first to wake up audio context
+        startSilentAudio();
+        
+        // Try to resume main audio playback
+        const playPromise = audioPlayer.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log("Audio successfully resumed in background");
+            }).catch(error => {
+                console.error("Failed to resume audio in background:", error);
+                
+                // If wake lock issue, try to reacquire
+                if (error.name === 'NotAllowedError' && isWakeLockSupported && document.hidden) {
+                    console.log("Trying to reacquire wake lock...");
+                    requestWakeLock().then(() => {
+                        // Try playing again after getting wake lock
+                        setTimeout(() => {
+                            audioPlayer.play().catch(e => {
+                                console.error("Still can't resume audio:", e);
+                            });
+                        }, 500);
+                    });
+                }
+            });
+        }
+    }
+    
+    // Re-acquire wake lock if lost
+    if (isWakeLockSupported && document.hidden && isPlaying && wakeLock === null) {
+        console.log("Wake lock lost, reacquiring...");
+        requestWakeLock();
+    }
+    
+    // Update progress even in background
+    updateProgress();
+}
+
+// Setup media session for Android lock screen controls
+function setupMediaSession() {
+    if (!('mediaSession' in navigator)) return;
+    
+    console.log("Setting up Android media session");
+    
+    navigator.mediaSession.setActionHandler('play', () => {
+        console.log("Media session: Play button pressed");
+        if (!isPlaying) {
+            playAudio();
+        }
+    });
+    
+    navigator.mediaSession.setActionHandler('pause', () => {
+        console.log("Media session: Pause button pressed");
+        if (isPlaying) {
+            pauseAudio();
+        }
+    });
+    
+    navigator.mediaSession.setActionHandler('previoustrack', () => {
+        console.log("Media session: Previous button pressed");
+        playPrevSong();
+    });
+    
+    navigator.mediaSession.setActionHandler('nexttrack', () => {
+        console.log("Media session: Next button pressed");
+        playNextSong();
+    });
+    
+    // Update media session metadata when song changes
+    audioPlayer.addEventListener('play', () => {
+        const song = songs[currentSongIndex];
+        if (song && 'mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: song.title,
+                artist: getArtistForType(song, song.currentType).replace(/\(Podcast\)/gi, '').trim(),
+                album: "Music Player",
+                artwork: [
+                    { src: song.image, sizes: '96x96', type: 'image/jpeg' },
+                    { src: song.image, sizes: '128x128', type: 'image/jpeg' },
+                    { src: song.image, sizes: '192x192', type: 'image/jpeg' },
+                    { src: song.image, sizes: '256x256', type: 'image/jpeg' },
+                    { src: song.image, sizes: '384x384', type: 'image/jpeg' },
+                    { src: song.image, sizes: '512x512', type: 'image/jpeg' }
+                ]
+            });
+        }
+    });
+}
+
+// Request wake lock to keep audio playing in background
+async function requestWakeLock() {
+    if (!isWakeLockSupported) {
+        console.log("Wake Lock API not supported");
+        return null;
+    }
+    
+    try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        console.log("✅ Wake Lock acquired successfully");
+        
+        // Handle wake lock release
+        wakeLock.addEventListener('release', () => {
+            console.log("⚠️ Wake Lock was released by system");
+            wakeLock = null;
+            
+            // Try to reacquire if still playing in background
+            if (isPlaying && document.hidden) {
+                console.log("🔄 Wake lock released while playing, reacquiring...");
+                setTimeout(() => {
+                    requestWakeLock();
+                }, 1000);
+            }
+        });
+        
+        return wakeLock;
+        
+    } catch (err) {
+        console.error(`❌ Failed to acquire Wake Lock: ${err.name}, ${err.message}`);
+        
+        // Try again in 2 seconds if failed
+        if (isPlaying && document.hidden) {
+            setTimeout(() => {
+                console.log("🔄 Retrying wake lock acquisition...");
+                requestWakeLock();
+            }, 2000);
+        }
+        
+        return null;
+    }
+}
+
+// Release wake lock
+async function releaseWakeLock() {
+    if (wakeLock !== null) {
+        try {
+            await wakeLock.release();
+            wakeLock = null;
+            console.log("✅ Wake Lock released manually");
+        } catch (err) {
+            console.error("❌ Error releasing wake lock:", err);
+        }
+    }
+}
+
+// Handle visibility change for wake lock
+function handleVisibilityChange() {
+    if (document.hidden && isPlaying && isWakeLockSupported) {
+        // Screen locked or device in sleep mode - request wake lock
+        console.log("📱 Screen locked/device sleeping, requesting wake lock...");
+        requestWakeLock();
+        
+        // Also start background checks
+        startBackgroundCheck();
+        
+    } else if (!document.hidden && wakeLock !== null) {
+        // Screen unlocked or device awake - release wake lock
+        console.log("📱 Screen unlocked, releasing wake lock...");
+        releaseWakeLock();
+        
+        // Adjust background check frequency
+        adjustBackgroundCheckFrequency();
+    }
+}
 
 // ==================== HELPER FUNCTIONS ====================
 
@@ -579,155 +1007,9 @@ function checkScrollForProgress() {
     }
 }
 
-// ==================== NETWORK FUNCTIONS ====================
+// ==================== SEARCH BOX HANDLING ====================
 
-// Check network status
-function checkNetworkStatus() {
-    isOnline = navigator.onLine;
-    
-    if (!isOnline && !networkNotificationShown) {
-        showNetworkNotification("No internet connection. Please check your network.", "error", 0);
-        networkNotificationShown = true;
-    } else if (isOnline && networkNotificationShown) {
-        hideNetworkNotification();
-        networkNotificationShown = false;
-        showNotification("Network connection restored", 2000);
-    }
-}
-
-// Show network notification
-function showNetworkNotification(message, type = "error", duration = 0) {
-    // Remove any existing network notification
-    hideNetworkNotification();
-    
-    const notification = document.createElement('div');
-    notification.id = 'network-notification';
-    notification.className = `network-notification ${type}`;
-    notification.innerHTML = `
-        <div class="network-notification-content">
-            <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
-            <span>${message}</span>
-            ${duration === 0 ? '<button id="closeNetworkNotification" class="network-notification-close"><i class="fas fa-times"></i></button>' : ''}
-        </div>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Add close button functionality
-    if (duration === 0) {
-        const closeBtn = document.getElementById('closeNetworkNotification');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', hideNetworkNotification);
-        }
-    }
-    
-    // Auto-hide if duration is set
-    if (duration > 0) {
-        setTimeout(() => {
-            hideNetworkNotification();
-        }, duration);
-    }
-}
-
-// Hide network notification
-function hideNetworkNotification() {
-    const existing = document.getElementById('network-notification');
-    if (existing) {
-        existing.classList.add('hiding');
-        setTimeout(() => {
-            if (existing.parentNode) {
-                existing.parentNode.removeChild(existing);
-            }
-        }, 300);
-    }
-}
-
-// ==================== BACKGROUND AUDIO FUNCTIONS ====================
-
-// Request wake lock to keep audio playing in background
-async function requestWakeLock() {
-    if (!isWakeLockSupported) {
-        console.log("Wake Lock API not supported");
-        return;
-    }
-    
-    try {
-        wakeLock = await navigator.wakeLock.request('screen');
-        console.log("Wake Lock acquired");
-        
-        // Handle wake lock release
-        wakeLock.addEventListener('release', () => {
-            console.log("Wake Lock released");
-        });
-        
-    } catch (err) {
-        console.error(`Wake Lock error: ${err.name}, ${err.message}`);
-    }
-}
-
-// Release wake lock
-async function releaseWakeLock() {
-    if (wakeLock !== null) {
-        await wakeLock.release();
-        wakeLock = null;
-        console.log("Wake Lock released manually");
-    }
-}
-
-// Handle visibility change for wake lock
-function handleVisibilityChange() {
-    if (document.hidden && isPlaying && isWakeLockSupported) {
-        // Screen locked or tab hidden - request wake lock
-        requestWakeLock();
-    } else if (!document.hidden && wakeLock !== null) {
-        // Screen unlocked or tab visible - release wake lock
-        releaseWakeLock();
-    }
-}
-
-// Initialize background audio features
-function initBackgroundAudio() {
-    // Check if browser supports background audio
-    const audio = new Audio();
-    const supportsBackgroundAudio = !!(audio.canPlayType && audio.canPlayType('audio/mpeg').replace(/no/, ''));
-    
-    if (!supportsBackgroundAudio) {
-        console.log("Browser may not support background audio");
-    }
-    
-    // Request wake lock support
-    if (isWakeLockSupported) {
-        console.log("Wake Lock API supported");
-        
-        // Add visibility change listener
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        
-        // Request wake lock when audio starts playing
-        audioPlayer.addEventListener('play', () => {
-            if (document.hidden) {
-                requestWakeLock();
-            }
-        });
-        
-        // Release wake lock when audio stops
-        audioPlayer.addEventListener('pause', () => {
-            releaseWakeLock();
-        });
-        
-        audioPlayer.addEventListener('ended', () => {
-            releaseWakeLock();
-        });
-    }
-    
-    // Add beforeunload listener to clean up
-    window.addEventListener('beforeunload', () => {
-        releaseWakeLock();
-    });
-}
-
-// ==================== SEARCH BOX HANDLING - UPDATED ====================
-
-// Close mobile search when clicking outside - UPDATED VERSION
+// Close mobile search when clicking outside
 function closeMobileSearchOnOutsideClick(e) {
     // Don't close on scroll events (touchmove, wheel, etc.)
     if (e.type === 'touchmove' || e.type === 'wheel' || e.type === 'scroll') {
@@ -754,7 +1036,7 @@ function closeMobileSearchOnOutsideClick(e) {
     }
 }
 
-// Close mobile search when a song is selected - NEW FUNCTION
+// Close mobile search when a song is selected
 function closeMobileSearchOnSongSelect() {
     if (isMobileSearchOpen) {
         closeMobileSearch();
@@ -805,7 +1087,7 @@ function toggleMobileSearch() {
 
 // Initialize the app
 function init() {
-    console.log("=== INITIALIZING APP ===");
+    console.log("=== INITIALIZING APP FOR ANDROID BACKGROUND AUDIO ===");
     
     favoriteSongs = JSON.parse(localStorage.getItem('favoriteSongs')) || [];
     
@@ -814,7 +1096,7 @@ function init() {
     window.addEventListener('online', checkNetworkStatus);
     window.addEventListener('offline', checkNetworkStatus);
     
-    // Initialize background audio features
+    // Initialize background audio features FIRST
     initBackgroundAudio();
     
     // Start with "list" filter active
@@ -1835,7 +2117,7 @@ function applyFilter(type) {
     updateSidebarWithCounts();
 }
 
-// Play audio
+// Play audio - UPDATED FOR ANDROID BACKGROUND
 function playAudio() {
     if (!audioPlayer.src || audioPlayer.src === "") {
         loadSong(currentSongIndex, true);
@@ -1887,7 +2169,7 @@ function playAudio() {
             playPromise
                 .then(() => {
                     isPlaying = true;
-                    updatePlayButtons(); // This now also updates rotation
+                    updatePlayButtons();
                     startProgressUpdate();
                     showNotification("Now playing", 1500);
                     
@@ -1897,6 +2179,11 @@ function playAudio() {
                     if (document.hidden && isWakeLockSupported) {
                         requestWakeLock();
                     }
+                    
+                    // Start background checks
+                    startBackgroundCheck();
+                    
+                    console.log("✅ Playback started successfully");
                 })
                 .catch(error => {
                     console.error("Playback error:", error);
@@ -1932,6 +2219,12 @@ function pauseAudio() {
     
     // Release wake lock when pausing
     releaseWakeLock();
+    
+    // Stop background checks
+    stopBackgroundCheck();
+    
+    // Stop silent audio
+    stopSilentAudio();
 }
 
 // Toggle play/pause
@@ -2115,7 +2408,7 @@ function showNotification(message, duration = 3000) {
     }, duration);
 }
 
-// Set up audio event listeners
+// Set up audio event listeners - UPDATED FOR ANDROID BACKGROUND
 function setupAudioEvents() {
     audioPlayer.addEventListener('loadedmetadata', () => {
         if (!isNaN(audioPlayer.duration)) {
@@ -2129,20 +2422,38 @@ function setupAudioEvents() {
         audioLoading.classList.remove('active');
         audioLoading.textContent = "";
         isPlaying = true;
-        updateSongArtRotation(); // Update rotation when audio starts playing
+        updateSongArtRotation();
         
-        // Request wake lock when playing starts
+        console.log("✅ Audio started playing");
+        
+        // Request wake lock if in background
         if (document.hidden && isWakeLockSupported) {
             requestWakeLock();
+        }
+        
+        // Start background check
+        startBackgroundCheck();
+        
+        // Start silent audio to keep context alive
+        if (document.hidden) {
+            startSilentAudio();
         }
     });
     
     audioPlayer.addEventListener('pause', () => {
         isPlaying = false;
-        updateSongArtRotation(); // Update rotation when audio pauses
+        updateSongArtRotation();
         
-        // Release wake lock when pausing
+        console.log("⏸️ Audio paused");
+        
+        // Release wake lock
         releaseWakeLock();
+        
+        // Stop background checks
+        stopBackgroundCheck();
+        
+        // Stop silent audio
+        stopSilentAudio();
     });
     
     audioPlayer.addEventListener('ended', () => {
@@ -2150,8 +2461,16 @@ function setupAudioEvents() {
         updatePlayButtons();
         stopProgressUpdate();
         
-        // Release wake lock when song ends
+        console.log("⏹️ Audio ended");
+        
+        // Release wake lock
         releaseWakeLock();
+        
+        // Stop background checks
+        stopBackgroundCheck();
+        
+        // Stop silent audio
+        stopSilentAudio();
         
         if (isAutoPlayEnabled) {
             setTimeout(() => {
@@ -2188,7 +2507,6 @@ function setupAudioEvents() {
             }
         }
         
-        // Show network notification for network errors
         if (errorMsg.includes("Network")) {
             showNetworkNotification("Network error. Check your connection.", "error", 3000);
         }
@@ -2196,6 +2514,11 @@ function setupAudioEvents() {
         audioLoading.textContent = errorMsg;
         isPlaying = false;
         updatePlayButtons();
+        
+        // Release wake lock on error
+        releaseWakeLock();
+        stopBackgroundCheck();
+        stopSilentAudio();
         
         setTimeout(() => {
             audioLoading.classList.remove('active');
@@ -2205,25 +2528,45 @@ function setupAudioEvents() {
         showNotification(errorMsg, 3000);
     });
     
+    // Handle page visibility changes for background audio
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-            // Tab is hidden or screen locked
-            console.log("Page hidden/screen locked");
+            console.log("📱 Page hidden - ensuring audio continues in sleep mode");
             
-            // Try to keep audio playing
+            // Start silent audio to keep context alive
+            if (isPlaying) {
+                startSilentAudio();
+            }
+            
+            // Start aggressive background checks
+            if (isPlaying) {
+                startBackgroundCheck();
+            }
+            
+            // Try to keep audio playing if it paused
             if (isPlaying && audioPlayer.paused) {
                 setTimeout(() => {
                     if (isPlaying && audioPlayer.paused) {
+                        console.log("🔊 Audio paused when page hidden, resuming...");
                         audioPlayer.play().catch(e => {
-                            console.log("Failed to auto-resume playback:", e);
+                            console.log("Failed to resume audio in sleep mode:", e);
                         });
                     }
                 }, 100);
             }
-        } else {
-            // Tab is visible again
-            console.log("Page visible again");
             
+        } else {
+            console.log("📱 Page visible again");
+            
+            // Stop silent audio
+            stopSilentAudio();
+            
+            // Adjust background check frequency
+            if (isPlaying) {
+                adjustBackgroundCheckFrequency();
+            }
+            
+            // Resume audio if it got paused in background
             if (isPlaying && audioPlayer.paused) {
                 setTimeout(() => {
                     playAudio();
@@ -2231,27 +2574,56 @@ function setupAudioEvents() {
             }
         }
         
-        // Handle wake lock for background play
+        // Handle wake lock
         handleVisibilityChange();
     });
     
-    // Handle page becoming active again
+    // Handle page becoming active again (for some Android devices)
     document.addEventListener('resume', () => {
+        console.log("📱 App resumed from sleep mode");
         if (isPlaying && audioPlayer.paused) {
             setTimeout(() => {
                 playAudio();
             }, 300);
         }
     }, false);
+    
+    // Save playback state before page unload
+    window.addEventListener('beforeunload', () => {
+        if (isPlaying) {
+            localStorage.setItem('wasPlaying', 'true');
+            localStorage.setItem('currentSongIndex', currentSongIndex.toString());
+            localStorage.setItem('currentTime', audioPlayer.currentTime.toString());
+            console.log("💾 Saved playback state before unload");
+        } else {
+            localStorage.removeItem('wasPlaying');
+        }
+    });
+    
+    // Restore playback state on load
+    const wasPlaying = localStorage.getItem('wasPlaying');
+    if (wasPlaying === 'true') {
+        const savedIndex = parseInt(localStorage.getItem('currentSongIndex') || '0');
+        const savedTime = parseFloat(localStorage.getItem('currentTime') || '0');
+        
+        if (savedIndex >= 0 && savedIndex < songs.length) {
+            setTimeout(() => {
+                setActiveSong(savedIndex);
+                audioPlayer.currentTime = savedTime;
+                if (isAutoPlayEnabled) {
+                    playAudio();
+                }
+                console.log("🔄 Restored playback from sleep mode");
+            }, 1000);
+        }
+    }
 }
 
-// Handle search function - UPDATED to prevent closing on scroll
+// Handle search function
 function handleSearch(e) {
     markUserInteraction();
     const searchTerm = e.target.value.toLowerCase();
     const songItems = document.querySelectorAll('.song-item');
-    
-    let hasVisibleResults = false;
     
     songItems.forEach(item => {
         const title = item.querySelector('.song-item-title').textContent.toLowerCase();
@@ -2259,35 +2631,12 @@ function handleSearch(e) {
         
         if (title.includes(searchTerm) || artist.includes(searchTerm)) {
             item.style.display = 'flex';
-            hasVisibleResults = true;
         } else {
             item.style.display = 'none';
         }
     });
     
     updateSearchClearButtons();
-    
-    // If no results, keep search open but show message
-    if (!hasVisibleResults && searchTerm.trim() !== '') {
-        // Don't close search - just show no results
-        if (!document.querySelector('.no-search-results')) {
-            const noResults = document.createElement('div');
-            noResults.className = 'no-search-results';
-            noResults.innerHTML = `
-                <p style="text-align: center; padding: 20px; color: var(--text-secondary);">
-                    <i class="fas fa-search" style="font-size: 32px; margin-bottom: 10px;"></i>
-                    <br>No songs found matching "${searchTerm}"
-                </p>
-            `;
-            songListContainer.appendChild(noResults);
-        }
-    } else {
-        // Remove any existing no results message
-        const existingMessage = document.querySelector('.no-search-results');
-        if (existingMessage) {
-            existingMessage.remove();
-        }
-    }
 }
 
 // Setup sidebar menu
@@ -2314,7 +2663,7 @@ function setupSidebarMenu() {
     });
 }
 
-// Set up event listeners - UPDATED FOR SEARCH BOX
+// Set up event listeners
 function setupEventListeners() {
     themeToggle.addEventListener('click', () => {
         markUserInteraction();
@@ -2326,7 +2675,7 @@ function setupEventListeners() {
         icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
     });
 
-    // UPDATED: Use the new toggle function for mobile search
+    // Use the toggle function for mobile search
     mobileSearchToggle.addEventListener('click', toggleMobileSearch);
 
     lyricsBtn.addEventListener('click', async () => {
@@ -2514,7 +2863,7 @@ function setupEventListeners() {
     }, { passive: true });
 }
 
-// Update rotation animation for song art - UPDATED VERSION
+// Update rotation animation for song art
 function updateSongArtRotation() {
     document.querySelectorAll('.song-item-art').forEach(art => {
         // First remove all rotation classes
