@@ -219,7 +219,6 @@ function getTypeDisplayName(type) {
         "favourite": "Favourites",
         "podcast": "Lyrics",
         "about": "About",
-        "request-song": "Request Song",
         "developed": "Developed by Chillax Technologies"
     };
     return names[type] || type;
@@ -241,7 +240,6 @@ function updateSidebarWithCounts() {
         { type: "podcast", icon: "fa-podcast" },
         { type: "favourite", icon: "fa-heart" },
         { type: "about", icon: "fa-info-circle" },
-        { type: "request-song", icon: "fa-envelope" },
         { type: "developed", icon: "fa-code" }
     ];
     
@@ -258,7 +256,7 @@ function updateSidebarWithCounts() {
                 <i class="fas ${item.icon}"></i>
                 <span>${getTypeDisplayName(item.type)}</span>
             `;
-        } else if (item.type === "about" || item.type === "request-song") {
+        } else if (item.type === "about") {
             li.innerHTML = `
                 <i class="fas ${item.icon}"></i>
                 <span>${getTypeDisplayName(item.type)}</span>
@@ -305,7 +303,7 @@ function updateActiveFilterButton(activeType) {
 
 // Check if type is audio type
 function isAudioType(type) {
-    return type !== "podcast" && type !== "favourite" && type !== "list" && type !== "about" && type !== "request-song";
+    return type !== "podcast" && type !== "favourite" && type !== "list" && type !== "about";
 }
 
 // Mark user interaction
@@ -1101,189 +1099,6 @@ function createAboutModal() {
     
     // Add to body
     document.body.insertAdjacentHTML('beforeend', aboutModalHTML);
-}
-
-// ==================== REQUEST SONG FUNCTIONS ====================
-
-// Function to open email client for song request - FIXED VERSION
-function openRequestSongEmail() {
-    const subject = "Song Request for Chillax Tamil Karaoke";
-    const body = `Hi Chillax Team,\n\nI would like to request the following song to be added to the app:\n\nSong Name: \nMovie/Album: \nArtist: \nWhy I want this song: \n\nThank you!\n\n- User`;
-    
-    const mailtoLink = `mailto:vsvptech@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // Check if it's a mobile device
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-        // For mobile devices, create a temporary link and click it
-        const link = document.createElement('a');
-        link.href = mailtoLink;
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        
-        try {
-            link.click();
-            showNotification("Opening email app...", 3000);
-        } catch (error) {
-            console.error("Error opening email client:", error);
-            // Fallback: Show email details for manual copy
-            showEmailDetailsForMobile(subject, body);
-        }
-        
-        // Clean up after a delay
-        setTimeout(() => {
-            if (link.parentNode) {
-                link.parentNode.removeChild(link);
-            }
-        }, 1000);
-    } else {
-        // For desktop, use window.open
-        window.open(mailtoLink, '_blank');
-        showNotification("Opening email client...", 3000);
-    }
-}
-
-// Fallback function for mobile when mailto doesn't work
-function showEmailDetailsForMobile(subject, body) {
-    // Create a modal to show email details
-    const modalHTML = `
-        <div class="email-modal" id="emailModal" style="
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        ">
-            <div class="email-modal-content" style="
-                background: var(--card-bg, white);
-                color: var(--text-color, black);
-                padding: 20px;
-                border-radius: 10px;
-                max-width: 500px;
-                width: 100%;
-                max-height: 80vh;
-                overflow-y: auto;
-            ">
-                <div class="email-modal-header" style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 15px;
-                    padding-bottom: 10px;
-                    border-bottom: 1px solid var(--border-color, #ddd);
-                ">
-                    <h3 style="margin: 0;">Send Song Request</h3>
-                    <button id="closeEmailModal" style="
-                        background: none;
-                        border: none;
-                        color: var(--text-color, black);
-                        font-size: 20px;
-                        cursor: pointer;
-                    ">×</button>
-                </div>
-                <div class="email-modal-body">
-                    <p>Could not open email app. Please copy the following details:</p>
-                    
-                    <div style="margin: 15px 0;">
-                        <strong>Email To:</strong>
-                        <div style="background: var(--bg-color, #f5f5f5); padding: 10px; border-radius: 5px; margin: 5px 0;">
-                            vsvptech@gmail.com
-                        </div>
-                    </div>
-                    
-                    <div style="margin: 15px 0;">
-                        <strong>Subject:</strong>
-                        <div style="background: var(--bg-color, #f5f5f5); padding: 10px; border-radius: 5px; margin: 5px 0;">
-                            ${subject}
-                        </div>
-                    </div>
-                    
-                    <div style="margin: 15px 0;">
-                        <strong>Message:</strong>
-                        <div style="background: var(--bg-color, #f5f5f5); padding: 10px; border-radius: 5px; margin: 5px 0; white-space: pre-wrap;">
-                            ${body}
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 20px; display: flex; gap: 10px;">
-                        <button id="copyEmailBtn" style="
-                            padding: 10px 20px;
-                            background: var(--primary-color, #007bff);
-                            color: white;
-                            border: none;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            flex: 1;
-                        ">Copy Details</button>
-                        <button id="closeEmailModalBtn" style="
-                            padding: 10px 20px;
-                            background: var(--secondary-color, #6c757d);
-                            color: white;
-                            border: none;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            flex: 1;
-                        ">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Add modal to body
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // Add event listeners
-    const emailModal = document.getElementById('emailModal');
-    const closeEmailModal = document.getElementById('closeEmailModal');
-    const closeEmailModalBtn = document.getElementById('closeEmailModalBtn');
-    const copyEmailBtn = document.getElementById('copyEmailBtn');
-    
-    function closeModal() {
-        if (emailModal && emailModal.parentNode) {
-            emailModal.parentNode.removeChild(emailModal);
-        }
-    }
-    
-    if (closeEmailModal) {
-        closeEmailModal.addEventListener('click', closeModal);
-    }
-    
-    if (closeEmailModalBtn) {
-        closeEmailModalBtn.addEventListener('click', closeModal);
-    }
-    
-    if (copyEmailBtn) {
-        copyEmailBtn.addEventListener('click', () => {
-            const emailText = `To: vsvptech@gmail.com\nSubject: ${subject}\n\n${body}`;
-            navigator.clipboard.writeText(emailText).then(() => {
-                showNotification("Email details copied to clipboard!", 3000);
-                copyEmailBtn.textContent = "Copied!";
-                copyEmailBtn.style.background = "#28a745";
-                setTimeout(() => {
-                    copyEmailBtn.textContent = "Copy Details";
-                    copyEmailBtn.style.background = "";
-                }, 2000);
-            }).catch(err => {
-                console.error("Failed to copy text: ", err);
-                showNotification("Failed to copy to clipboard", 3000);
-            });
-        });
-    }
-    
-    // Close modal when clicking outside
-    emailModal.addEventListener('click', (e) => {
-        if (e.target === emailModal) {
-            closeModal();
-        }
-    });
 }
 
 // ==================== SEARCH BOX HANDLING ====================
@@ -2216,7 +2031,7 @@ async function loadLyrics(lyricsFile, songTitle, songArtist) {
             lyricsText.textContent = "No lyrics available for this song.";
             return;
         }
-        
+    
         // Check network before loading lyrics
         if (!isOnline) {
             showNetworkNotification("No internet connection. Cannot load lyrics.", "error", 3000);
@@ -2247,7 +2062,7 @@ function applyFilter(type) {
     console.log("Filter type:", type);
     
     // Check network if loading audio files
-    if (type !== "list" && type !== "favourite" && type !== "about" && type !== "request-song" && !isOnline) {
+    if (type !== "list" && type !== "favourite" && type !== "about" && !isOnline) {
         showNetworkNotification("No internet connection. Cannot load songs.", "error", 3000);
         return;
     }
@@ -2275,7 +2090,7 @@ function applyFilter(type) {
     } else if (type === "favourite") {
         currentFilterType = "favourite";
         filteredSongs = filterSongsByType("favourite");
-    } else if (type === "about" || type === "request-song") {
+    } else if (type === "about") {
         // These are handled separately in sidebar menu
         return;
     } else {
@@ -2968,7 +2783,7 @@ function handleSearch(e) {
     updateSearchClearButtons();
 }
 
-// Setup sidebar menu - UPDATED with About and Request Song buttons
+// Setup sidebar menu - UPDATED without Request Song
 function setupSidebarMenu() {
     document.querySelectorAll('.menu li[data-type]').forEach(item => {
         item.addEventListener('click', async () => {
@@ -2987,11 +2802,6 @@ function setupSidebarMenu() {
                 if (aboutModal) {
                     aboutModal.classList.add('active');
                 }
-                toggleSidebar();
-                return;
-            } else if (type === "request-song") {
-                // Open email client to request a song - FIXED FUNCTION
-                openRequestSongEmail();
                 toggleSidebar();
                 return;
             } else if (type === "developed") {
