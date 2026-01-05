@@ -1115,7 +1115,8 @@ main {
     to { transform: translateX(100%); opacity: 0; }
 }
 
-/* Lyrics Modal */
+/* ==================== LYRICS MODAL WITH PODCAST ICON ==================== */
+
 .lyrics-modal {
     position: fixed;
     top: 0;
@@ -1150,34 +1151,124 @@ main {
     transform: translateY(0);
 }
 
+/* Updated Lyrics Header with Podcast Icon */
 .lyrics-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid var(--border-color);
+    gap: 8px;
 }
 
-.lyrics-title {
+.lyrics-header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    margin-right: 40px; /* Space for close button */
+}
+
+.lyrics-podcast-icon {
+    font-size: 28px;
+    color: var(--primary-color);
+    margin-top: 4px;
+    flex-shrink: 0;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.lyrics-song-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.lyrics-song-title {
     font-family: 'Poppins', sans-serif;
     font-size: 20px;
     font-weight: 600;
+    margin: 0;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lyrics-song-artist {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .close-lyrics {
+    position: absolute;
+    top: 15px;
+    right: 15px;
     background: none;
     border: none;
     font-size: 24px;
     color: var(--text-secondary);
     cursor: pointer;
     transition: var(--transition);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 10;
 }
 
 .close-lyrics:hover {
+    background-color: rgba(0, 0, 0, 0.1);
     color: var(--primary-color);
 }
 
+.lyrics-swipe-indicator {
+    width: 40px;
+    height: 5px;
+    background-color: var(--border-color);
+    border-radius: 3px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2001;
+}
+
+.audio-loading {
+    display: none;
+    font-size: 12px;
+    color: var(--primary-color);
+    text-align: center;
+    margin-top: 5px;
+}
+
+.audio-loading.active {
+    display: block;
+}
+
+/* Update lyrics content to remove top spacing */
 .lyrics-content {
     flex: 1;
     overflow-y: auto;
@@ -1192,8 +1283,9 @@ main {
     line-height: 1.7;
     white-space: pre-line;
     color: var(--text-color);
-    padding: 10px 0;
+    padding: 0;
     text-align: center;
+    margin: 0;
 }
 
 .lyrics-player {
@@ -1275,28 +1367,186 @@ main {
     height: 50px;
 }
 
-.lyrics-swipe-indicator {
-    width: 40px;
-    height: 5px;
-    background-color: var(--border-color);
-    border-radius: 3px;
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2001;
-}
+/* ==================== ABOUT MODAL STYLES ==================== */
 
-.audio-loading {
+.about-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
     display: none;
-    font-size: 12px;
-    color: var(--primary-color);
-    text-align: center;
-    margin-top: 5px;
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
-.audio-loading.active {
-    display: block;
+.about-modal.active {
+    display: flex;
+}
+
+.about-container {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.about-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.about-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.close-about {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-about:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--primary-color);
+}
+
+.about-content {
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.about-content h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    margin: 20px 0 10px 0;
+    color: var(--primary-color);
+}
+
+.about-content p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.about-content ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.about-content li {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.app-version {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+    .lyrics-header {
+        padding-top: 10px;
+    }
+    
+    .lyrics-podcast-icon {
+        font-size: 24px;
+        margin-top: 6px;
+    }
+    
+    .lyrics-song-title {
+        font-size: 18px;
+    }
+    
+    .lyrics-song-artist {
+        font-size: 14px;
+    }
+    
+    .about-container {
+        padding: 20px;
+        max-width: 90%;
+    }
+    
+    .about-title {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lyrics-header-left {
+        gap: 10px;
+    }
+    
+    .lyrics-podcast-icon {
+        font-size: 22px;
+        margin-top: 8px;
+    }
+    
+    .lyrics-song-title {
+        font-size: 16px;
+    }
+    
+    .lyrics-song-artist {
+        font-size: 13px;
+    }
+    
+    .about-container {
+        padding: 15px;
+        max-width: 95%;
+    }
+    
+    .about-title {
+        font-size: 20px;
+    }
+    
+    .about-content h3 {
+        font-size: 16px;
+    }
+    
+    .about-content p, .about-content li {
+        font-size: 14px;
+    }
 }
 
 /* Responsive adjustments */
@@ -1493,8 +1743,7 @@ main {
         gap: 4px;
     }
     
-0    .auto-play-toggle-btn,
-0    .auto-play-toggle-btn,
+    .auto-play-toggle-btn,
     .type-filter-btn,
     #lyricsBtn,
     .control-btn {
@@ -1560,5 +1809,4 @@ main {
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-
 }
