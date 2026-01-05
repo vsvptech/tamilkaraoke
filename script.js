@@ -19,6 +19,10 @@ const songArtistDisplay = document.getElementById('songArtistDisplay');
 const lyricsPlayerTitle = document.getElementById('lyricsPlayerTitle');
 const lyricsText = document.getElementById('lyricsText');
 
+// NEW: Lyrics header elements
+const lyricsSongTitle = document.getElementById('lyricsSongTitle');
+const lyricsSongArtist = document.getElementById('lyricsSongArtist');
+
 // Audio player element
 const audioPlayer = document.getElementById('audioPlayer');
 
@@ -214,6 +218,8 @@ function getTypeDisplayName(type) {
         "song": "Original Song",
         "favourite": "Favourites",
         "podcast": "Lyrics",
+        "about": "About",
+        "request-song": "Request Song",
         "developed": "Developed by Chillax Technologies"
     };
     return names[type] || type;
@@ -234,6 +240,8 @@ function updateSidebarWithCounts() {
         { type: "song", icon: "fa-music" },
         { type: "podcast", icon: "fa-podcast" },
         { type: "favourite", icon: "fa-heart" },
+        { type: "about", icon: "fa-info-circle" },
+        { type: "request-song", icon: "fa-envelope" },
         { type: "developed", icon: "fa-code" }
     ];
     
@@ -246,6 +254,11 @@ function updateSidebarWithCounts() {
         }
         
         if (item.type === "developed") {
+            li.innerHTML = `
+                <i class="fas ${item.icon}"></i>
+                <span>${getTypeDisplayName(item.type)}</span>
+            `;
+        } else if (item.type === "about" || item.type === "request-song") {
             li.innerHTML = `
                 <i class="fas ${item.icon}"></i>
                 <span>${getTypeDisplayName(item.type)}</span>
@@ -292,7 +305,7 @@ function updateActiveFilterButton(activeType) {
 
 // Check if type is audio type
 function isAudioType(type) {
-    return type !== "podcast" && type !== "favourite" && type !== "list";
+    return type !== "podcast" && type !== "favourite" && type !== "list" && type !== "about" && type !== "request-song";
 }
 
 // Mark user interaction
@@ -542,11 +555,16 @@ function updateSelectedSongUI(songId, versionType) {
                 const displayTitle = getTitleForType(song, versionType);
                 const cleanArtist = getArtistForType(song, versionType);
                 
+                // Update all displays
                 songTitleDisplay.textContent = displayTitle;
                 songArtistDisplay.textContent = cleanArtist;
                 mobileSongTitle.textContent = displayTitle;
                 mobileSongArtist.textContent = cleanArtist;
                 lyricsPlayerTitle.textContent = `${displayTitle} - ${cleanArtist}`;
+                
+                // NEW: Update lyrics header
+                lyricsSongTitle.textContent = displayTitle;
+                lyricsSongArtist.textContent = cleanArtist;
             }
             
         } catch (error) {
@@ -1031,6 +1049,76 @@ function handleVisibilityChange() {
     }
 }
 
+// ==================== ABOUT MODAL FUNCTIONS ====================
+
+// Create About modal
+function createAboutModal() {
+    const aboutModalHTML = `
+        <div class="about-modal" id="aboutModal">
+            <div class="about-container">
+                <div class="about-header">
+                    <h2 class="about-title">About Chillax Tamil Karaoke</h2>
+                    <button class="close-about" id="closeAbout">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="about-content">
+                    <h3>Welcome to Chillax Tamil Karaoke!</h3>
+                    <p>Your ultimate companion for Tamil karaoke and music enjoyment. Sing along with your favorite Tamil songs with high-quality karaoke tracks.</p>
+                    
+                    <h3>Features:</h3>
+                    <ul>
+                        <li>🎵 Extensive collection of Tamil karaoke songs</li>
+                        <li>🎤 Multiple versions: Male, Female, Duet, Original</li>
+                        <li>📱 Mobile-friendly responsive design</li>
+                        <li>🌙 Dark/Light mode support</li>
+                        <li>❤️ Add songs to favorites</li>
+                        <li>📖 Lyrics display with sync</li>
+                        <li>🔍 Easy search functionality</li>
+                        <li>🎧 Background audio support</li>
+                    </ul>
+                    
+                    <h3>How to Use:</h3>
+                    <p>1. Browse songs by category or use search</p>
+                    <p>2. Select a song to start playing</p>
+                    <p>3. Switch between different versions</p>
+                    <p>4. View lyrics in sync with music</p>
+                    <p>5. Add your favorite songs to Favorites</p>
+                    
+                    <h3>Tips:</h3>
+                    <p>• Use headphones for better karaoke experience</p>
+                    <p>• Enable Auto Play for continuous playback</p>
+                    <p>• Use Dark mode in low-light conditions</p>
+                    
+                    <div class="app-version">
+                        <p>Version 2.0.0</p>
+                        <p>© 2024 Chillax Technologies. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add to body
+    document.body.insertAdjacentHTML('beforeend', aboutModalHTML);
+}
+
+// ==================== REQUEST SONG FUNCTIONS ====================
+
+// Function to open email client for song request
+function openRequestSongEmail() {
+    const subject = "Song Request for Chillax Tamil Karaoke";
+    const body = `Hi Chillax Team,\n\nI would like to request the following song to be added to the app:\n\nSong Name: \nMovie/Album: \nArtist: \nWhy I want this song: \n\nThank you!\n\n- User`;
+    
+    const mailtoLink = `mailto:vsvptech@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Try to open email client
+    window.open(mailtoLink, '_blank');
+    
+    // Show notification
+    showNotification("Opening email client to send song request...", 3000);
+}
+
 // ==================== SEARCH BOX HANDLING ====================
 
 // Close mobile search when clicking outside
@@ -1122,6 +1210,9 @@ function init() {
     
     // Initialize background audio features FIRST
     initBackgroundAudio();
+    
+    // Create About modal
+    createAboutModal();
     
     // Start with "list" filter active
     currentFilterType = "list";
@@ -1232,10 +1323,32 @@ function init() {
     mobileSongArtist.textContent = "";
     lyricsPlayerTitle.textContent = "Select a song";
     
+    // NEW: Set default lyrics header
+    lyricsSongTitle.textContent = "Select a song";
+    lyricsSongArtist.textContent = "";
+    
     // Initial check
     setTimeout(() => {
         checkScrollForProgress();
     }, 500);
+    
+    // Setup About modal event listeners
+    const aboutModal = document.getElementById('aboutModal');
+    const closeAbout = document.getElementById('closeAbout');
+    
+    if (closeAbout) {
+        closeAbout.addEventListener('click', () => {
+            aboutModal.classList.remove('active');
+        });
+    }
+    
+    if (aboutModal) {
+        aboutModal.addEventListener('click', (e) => {
+            if (e.target === aboutModal) {
+                aboutModal.classList.remove('active');
+            }
+        });
+    }
 }
 
 // Initialize Swiper carousel
@@ -1634,11 +1747,16 @@ function loadSong(index, autoPlay = true) {
     const displayTitle = getTitleForType(song, currentType);
     const cleanArtist = getArtistForType(song, currentType);
     
+    // Update all displays
     songTitleDisplay.textContent = displayTitle;
     songArtistDisplay.textContent = cleanArtist;
     mobileSongTitle.textContent = displayTitle;
     mobileSongArtist.textContent = cleanArtist;
     lyricsPlayerTitle.textContent = `${displayTitle} - ${cleanArtist}`;
+    
+    // NEW: Update lyrics header
+    lyricsSongTitle.textContent = displayTitle;
+    lyricsSongArtist.textContent = cleanArtist;
     
     if (swiper) {
         const slideIndex = filteredSongs.findIndex(s => s.id === song.id);
@@ -1649,7 +1767,7 @@ function loadSong(index, autoPlay = true) {
         }
     }
     
-    // UPDATED: Pass title and artist to loadLyrics
+    // UPDATED: Pass title and artist to loadLyrics (without showing them in text)
     loadLyrics(song.lyrics, displayTitle, cleanArtist);
     
     if (isAudioType(currentType)) {
@@ -1844,11 +1962,16 @@ function updateSongUI(song, type) {
     const displayTitle = getTitleForType(song, type);
     const cleanArtist = getArtistForType(song, type);
     
+    // Update all displays
     songTitleDisplay.textContent = displayTitle;
     songArtistDisplay.textContent = cleanArtist;
     mobileSongTitle.textContent = displayTitle;
     mobileSongArtist.textContent = cleanArtist;
     lyricsPlayerTitle.textContent = `${displayTitle} - ${cleanArtist}`;
+    
+    // NEW: Update lyrics header
+    lyricsSongTitle.textContent = displayTitle;
+    lyricsSongArtist.textContent = cleanArtist;
     
     document.querySelectorAll('.song-item').forEach(item => {
         const songId = parseInt(item.dataset.id);
@@ -1912,44 +2035,42 @@ function updateSongUI(song, type) {
     mobileProgress.style.width = "0%";
 }
 
-// Load lyrics from file - UPDATED: Show title and artist at top
+// Load lyrics from file - UPDATED: Show title and artist ONLY in header, not in text
 async function loadLyrics(lyricsFile, songTitle, songArtist) {
     try {
+        // Set title and artist in lyrics header
+        lyricsSongTitle.textContent = songTitle;
+        lyricsSongArtist.textContent = songArtist;
+        
+        // Set loading text for lyrics content
         lyricsText.textContent = "Loading lyrics...";
         
         if (!lyricsFile || lyricsFile.trim() === '') {
-            // UPDATED: Show title and artist at top when no lyrics
-            lyricsText.textContent = `${songTitle}\n${songArtist}\n\n---\n\nNo lyrics available.`;
+            lyricsText.textContent = "No lyrics available for this song.";
             return;
         }
         
         // Check network before loading lyrics
         if (!isOnline) {
             showNetworkNotification("No internet connection. Cannot load lyrics.", "error", 3000);
-            lyricsText.textContent = `${songTitle}\n${songArtist}\n\n---\n\nNo internet connection.`;
+            lyricsText.textContent = "No internet connection. Cannot load lyrics.";
             return;
         }
         
         const response = await fetch(lyricsFile);
         if (response.ok) {
             const lyricsContent = await response.text();
-            // UPDATED: Add title and artist at top before lyrics
-            let lyricsWithHeader = `${songTitle}\n${songArtist}\n\n---\n\n${lyricsContent.trim()}`;
-            if (lyricsContent.trim()) {
-                lyricsWithHeader += '\n\n---';
-            }
-            lyricsText.textContent = lyricsWithHeader;
+            // Only show the lyrics text, NOT the title and artist (they're in the header)
+            lyricsText.textContent = lyricsContent.trim();
         } else {
-            // UPDATED: Show title and artist at top when file not found
-            lyricsText.textContent = `${songTitle}\n${songArtist}\n\n---\n\nLyrics file not found.`;
+            lyricsText.textContent = "Lyrics file not found.";
         }
     } catch (error) {
         // Check if it's a network error
         if (error.message.includes("network") || error.message.includes("Network")) {
             showNetworkNotification("Network error loading lyrics.", "error", 3000);
         }
-        // UPDATED: Show title and artist at top on error
-        lyricsText.textContent = `${songTitle}\n${songArtist}\n\n---\n\nError loading lyrics.`;
+        lyricsText.textContent = "Error loading lyrics.";
     }
 }
 
@@ -1959,7 +2080,7 @@ function applyFilter(type) {
     console.log("Filter type:", type);
     
     // Check network if loading audio files
-    if (type !== "list" && type !== "favourite" && !isOnline) {
+    if (type !== "list" && type !== "favourite" && type !== "about" && type !== "request-song" && !isOnline) {
         showNetworkNotification("No internet connection. Cannot load songs.", "error", 3000);
         return;
     }
@@ -1987,6 +2108,9 @@ function applyFilter(type) {
     } else if (type === "favourite") {
         currentFilterType = "favourite";
         filteredSongs = filterSongsByType("favourite");
+    } else if (type === "about" || type === "request-song") {
+        // These are handled separately in sidebar menu
+        return;
     } else {
         currentFilterType = type;
         filteredSongs = filterSongsByType(type);
@@ -2023,6 +2147,12 @@ function applyFilter(type) {
         songArtistDisplay.textContent = "";
         mobileSongTitle.textContent = "Select a song";
         mobileSongArtist.textContent = "";
+        lyricsPlayerTitle.textContent = "Select a song";
+        
+        // NEW: Update lyrics header
+        lyricsSongTitle.textContent = "Select a song";
+        lyricsSongArtist.textContent = "";
+        
         return;
     }
     
@@ -2113,11 +2243,16 @@ function applyFilter(type) {
                     const displayTitle = getTitleForType(song, songs[originalIndex].currentType);
                     const cleanArtist = getArtistForType(song, songs[originalIndex].currentType);
                     
+                    // Update all displays
                     songTitleDisplay.textContent = displayTitle;
                     songArtistDisplay.textContent = cleanArtist;
                     mobileSongTitle.textContent = displayTitle;
                     mobileSongArtist.textContent = cleanArtist;
                     lyricsPlayerTitle.textContent = `${displayTitle} - ${cleanArtist}`;
+                    
+                    // NEW: Update lyrics header
+                    lyricsSongTitle.textContent = displayTitle;
+                    lyricsSongArtist.textContent = cleanArtist;
                     
                     loadLyrics(song.lyrics, displayTitle, cleanArtist);
                 } else {
@@ -2666,7 +2801,7 @@ function handleSearch(e) {
     updateSearchClearButtons();
 }
 
-// Setup sidebar menu
+// Setup sidebar menu - UPDATED with About and Request Song buttons
 function setupSidebarMenu() {
     document.querySelectorAll('.menu li[data-type]').forEach(item => {
         item.addEventListener('click', async () => {
@@ -2679,8 +2814,21 @@ function setupSidebarMenu() {
                 const cleanArtist = getArtistForType(currentSong, currentSong.currentType);
                 await loadLyrics(currentSong.lyrics, displayTitle, cleanArtist);
                 lyricsModal.classList.add('active');
+            } else if (type === "about") {
+                // Show About modal
+                const aboutModal = document.getElementById('aboutModal');
+                if (aboutModal) {
+                    aboutModal.classList.add('active');
+                }
+                toggleSidebar();
+                return;
+            } else if (type === "request-song") {
+                // Open email client to request a song
+                openRequestSongEmail();
+                toggleSidebar();
+                return;
             } else if (type === "developed") {
-                showNotification("Designed & Developed by Venkattaraman", 3000);
+                showNotification("Designed & Developed by Chillax Technologies", 3000);
                 toggleSidebar();
                 return;
             } else {
