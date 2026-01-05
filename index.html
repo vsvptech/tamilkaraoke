@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#your-color-here">
-<!-- For PWA install -->
-<link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#your-color-here">
+    <!-- For PWA install -->
+    <link rel="manifest" href="manifest.json">
     <title>Chillax Tamil Karaoke</title>
     <link rel="shortcut icon" href="images/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -61,8 +61,10 @@
                     <li data-type="female"><i class="fas fa-venus"></i> Solo Female</li>
                     <li data-type="duet"><i class="fas fa-venus-mars"></i> Duet</li>
                     <li data-type="song"><i class="fas fa-music"></i> Song</li>
-                    <li data-type="podcast"><i class="fas fa-podcast"></i> Lyrics</li>
                     <li data-type="favourite"><i class="far fa-heart"></i> Favourite</li>
+                    <!-- Add About and another button here -->
+                    <li data-type="about"><i class="fas fa-info-circle"></i> About</li>
+                    <li data-type="settings"><i class="fas fa-cog"></i> Settings</li>
                     <li data-type="developed"><i class="fas fa-tools"></i> Designed & Developed by Chillax Technologies</li>
                 </ul>
             </div>
@@ -84,12 +86,11 @@
     <main>
         <section class="player-section">
             <div class="player-header">
-            
                 <h2 class="player-title">Now Playing</h2> <!-- Changed from "Now Playing" to "Now" -->
                 <div class="player-controls">
-                <button class="control-btn type-filter-btn active" data-type="list">
-                <i class="fas fa-list"></i>
-                </button>
+                    <button class="control-btn type-filter-btn active" data-type="list">
+                        <i class="fas fa-list"></i>
+                    </button>
                     <button class="control-btn type-filter-btn" data-type="male">
                         <i class="fas fa-mars"></i>
                     </button>
@@ -110,8 +111,8 @@
                     </button>
                     <!-- Auto Play Toggle Button -->
                     <button class="control-btn auto-play-toggle-btn" id="autoPlayToggleBtn">
-                <i class="fas fa-play-circle"></i>
-                </button>
+                        <i class="fas fa-play-circle"></i>
+                    </button>
                 </div>
             </div>
            
@@ -184,9 +185,13 @@
         <div class="lyrics-swipe-indicator"></div>
         <div class="lyrics-container">
             <div class="lyrics-header">
-                                                <h3 class="lyrics-title">
-  <i class="fas fa-podcast" aria-hidden="true"></i> Lyrics
-</h3>
+                <div class="lyrics-header-left">
+                    <i class="fas fa-podcast lyrics-podcast-icon"></i>
+                    <div class="lyrics-song-info">
+                        <h3 class="lyrics-song-title" id="lyricsSongTitle">Song Title</h3>
+                        <p class="lyrics-song-artist" id="lyricsSongArtist">Artist Name</p>
+                    </div>
+                </div>
                 <button class="close-lyrics" id="closeLyrics">
                     <i class="fas fa-times"></i>
                 </button>
@@ -203,7 +208,7 @@
                         <span id="lyricsCurrentTime">0:00</span> / <span id="lyricsTotalTime">0:00</span>
                     </div>
                 </div>
-                
+              
                 <div class="lyrics-player-controls">
                     <div class="lyrics-progress-container">
                         <div class="progress-bar" id="lyricsProgressBar">
@@ -227,6 +232,51 @@
         </div>
     </div>
     
+    <!-- About Modal -->
+    <div class="about-modal" id="aboutModal">
+        <div class="about-container">
+            <div class="about-header">
+                <h2 class="about-title">About Chillax Tamil Karaoke</h2>
+                <button class="close-about" id="closeAbout">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="about-content">
+                <h3>Welcome to Chillax Tamil Karaoke!</h3>
+                <p>Your ultimate companion for Tamil karaoke and music enjoyment. Sing along with your favorite Tamil songs with high-quality karaoke tracks.</p>
+                
+                <h3>Features:</h3>
+                <ul>
+                    <li>🎵 Extensive collection of Tamil karaoke songs</li>
+                    <li>🎤 Multiple versions: Male, Female, Duet, Original</li>
+                    <li>📱 Mobile-friendly responsive design</li>
+                    <li>🌙 Dark/Light mode support</li>
+                    <li>❤️ Add songs to favorites</li>
+                    <li>📖 Lyrics display with sync</li>
+                    <li>🔍 Easy search functionality</li>
+                    <li>🎧 Background audio support</li>
+                </ul>
+                
+                <h3>How to Use:</h3>
+                <p>1. Browse songs by category or use search</p>
+                <p>2. Select a song to start playing</p>
+                <p>3. Switch between different versions</p>
+                <p>4. View lyrics in sync with music</p>
+                <p>5. Add your favorite songs to Favorites</p>
+                
+                <h3>Tips:</h3>
+                <p>• Use headphones for better karaoke experience</p>
+                <p>• Enable Auto Play for continuous playback</p>
+                <p>• Use Dark mode in low-light conditions</p>
+                
+                <div class="app-version">
+                    <p>Version 2.0.0</p>
+                    <p>© 2024 Chillax Technologies. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
@@ -236,11 +286,4 @@
     <!-- Main Script -->
     <script src="script.js"></script>
 </body>
-
 </html>
-
-
-
-
-
-
