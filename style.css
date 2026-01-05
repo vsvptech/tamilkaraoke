@@ -272,6 +272,7 @@ main {
     border-bottom: 1px solid var(--border-color);
     width: 100%;
 }
+
 /* Network Notification Styles */
 .network-notification {
     position: fixed;
