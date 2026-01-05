@@ -390,7 +390,7 @@ body.dark-mode .network-notification.warning {
         padding-left: 0;
         padding-right: 0;
     }
-    
+
     .progress-container {
         top: 100px;
         padding: 10px 15px;
@@ -1393,6 +1393,7 @@ main {
         padding-left: 0;
         padding-right: 0;
         width: calc(100% - 40px); /* Account for container padding */
+        height: 500px;
     }
     
     .player-section {
@@ -1561,11 +1562,3 @@ main {
     margin-right: -50vw;
 
 }
-
-
-
-
-
-
-
-
