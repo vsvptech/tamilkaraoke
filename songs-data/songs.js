@@ -9,7 +9,20 @@ const songs = [
 
 
 
-
+{ 
+        id: 142,
+        title: "Vinmeen Vithaiyil",
+        artist: "Thegidi",
+        image: getFirebaseUrl("images/Thegidi.jpg"),
+        audio: {
+            male: getFirebaseUrl("songs/male/Vinmeen-Vithaiyil-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Vinmeen-Vithaiyil-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Vinmeen-Vithaiyil-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Vinmeen-Vithaiyil-Song.mp3")
+        },  
+        lyrics: "lyrics/Vinmeen-Vithaiyil.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    }, 
 
 { 
         id: 141,
