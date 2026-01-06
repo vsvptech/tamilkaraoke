@@ -1695,7 +1695,7 @@ function renderSongList() {
     songListContainer.appendChild(fragment);
 }
 
-// Load a song - UPDATED: Title with version, artist clean
+// Load a song - FIXED VERSION
 function loadSong(index, autoPlay = true) {
     if (isAudioLoading) {
         return;
@@ -1756,6 +1756,8 @@ function loadSong(index, autoPlay = true) {
         const audioPath = getAudioForType(song, currentType);
         
         if (audioPath) {
+            console.log("Loading audio from:", audioPath);
+            
             // Stop current audio
             audioPlayer.pause();
             audioPlayer.currentTime = 0;
@@ -1782,6 +1784,7 @@ function loadSong(index, autoPlay = true) {
             
             // Load the audio
             const playAudioAfterLoad = () => {
+                console.log("Audio loaded successfully, readyState:", audioPlayer.readyState);
                 audioLoading.classList.remove('active');
                 audioLoading.textContent = "";
                 isAudioLoading = false;
@@ -1802,6 +1805,7 @@ function loadSong(index, autoPlay = true) {
                 // Auto play if enabled
                 const shouldAutoPlay = autoPlay && isAutoPlayEnabled;
                 if (shouldAutoPlay) {
+                    console.log("Auto-playing audio...");
                     setTimeout(() => {
                         playAudio();
                     }, 300);
@@ -1814,7 +1818,7 @@ function loadSong(index, autoPlay = true) {
             
             // Handle errors
             audioPlayer.onerror = (e) => {
-                console.error("Audio loading error:", e);
+                console.error("Audio loading error:", e, audioPlayer.error);
                 
                 let versionName = "";
                 if (currentType === "male") versionName = "Male";
@@ -1840,11 +1844,13 @@ function loadSong(index, autoPlay = true) {
                         case 4:
                             errorMessage = `${versionName} version not supported`;
                             break;
+                        default:
+                            errorMessage = `Error code ${audioPlayer.error.code}: ${audioPlayer.error.message}`;
                     }
                 }
                 
                 // Check if it's a network error
-                if (errorMessage.includes("Network")) {
+                if (errorMessage.includes("Network") || errorMessage.includes("network")) {
                     showNetworkNotification("Network error. Check your connection.", "error", 3000);
                 }
                 
@@ -2261,35 +2267,45 @@ function applyFilter(type) {
     updateSidebarWithCounts();
 }
 
-// Play audio - UPDATED FOR ANDROID BACKGROUND
+// Play audio - FIXED VERSION
 function playAudio() {
     if (!audioPlayer.src || audioPlayer.src === "") {
+        console.log("No audio source, loading song...");
         loadSong(currentSongIndex, true);
         return;
     }
     
     if (audioPlayer.error) {
+        console.log("Audio player error, reloading song...");
         showNotification("Audio error - trying to reload...", 2000);
         loadSong(currentSongIndex, true);
         return;
     }
     
+    // Check if audio is ready to play
     if (audioPlayer.readyState < 2) {
+        console.log("Audio not ready yet (readyState:", audioPlayer.readyState, "), waiting...");
         audioLoading.classList.add('active');
         audioLoading.textContent = "Loading audio...";
         
-        const onCanPlay = () => {
-            audioPlayer.removeEventListener('canplay', onCanPlay);
-            audioLoading.classList.remove('active');
-            audioLoading.textContent = "";
-            attemptPlay();
+        // Use a simpler approach
+        const checkAndPlay = () => {
+            if (audioPlayer.readyState >= 2) {
+                console.log("Audio ready, attempting to play...");
+                audioLoading.classList.remove('active');
+                audioLoading.textContent = "";
+                attemptPlay();
+            } else {
+                console.log("Still loading, waiting 100ms...");
+                setTimeout(checkAndPlay, 100);
+            }
         };
         
-        audioPlayer.addEventListener('canplay', onCanPlay);
+        checkAndPlay();
         
+        // Timeout after 10 seconds
         setTimeout(() => {
-            audioPlayer.removeEventListener('canplay', onCanPlay);
-            if (audioPlayer.readyState < 2) {
+            if (!isPlaying && audioPlayer.readyState < 2) {
                 audioLoading.textContent = "Audio taking too long to load";
                 setTimeout(() => {
                     audioLoading.classList.remove('active');
@@ -2307,50 +2323,54 @@ function playAudio() {
     function attemptPlay() {
         hasUserInteracted = true;
         
-        const playPromise = audioPlayer.play();
+        console.log("Attempting to play audio...");
         
-        if (playPromise !== undefined) {
-            playPromise
-                .then(() => {
-                    isPlaying = true;
+        // IMPORTANT: Use a simpler promise handling
+        audioPlayer.play()
+            .then(() => {
+                console.log("✅ Audio playback started successfully");
+                isPlaying = true;
+                updatePlayButtons();
+                startProgressUpdate();
+                showNotification("Now playing", 1500);
+                
+                checkScrollForProgress();
+                
+                // Request wake lock for background play
+                if (document.hidden && isWakeLockSupported) {
+                    requestWakeLock();
+                }
+                
+                // Start background checks
+                startBackgroundCheck();
+            })
+            .catch(error => {
+                console.error("❌ Playback error:", error);
+                
+                if (error.name === 'NotAllowedError') {
+                    showNotification("Click play button again to start", 3000);
+                    isPlaying = false;
                     updatePlayButtons();
-                    startProgressUpdate();
-                    showNotification("Now playing", 1500);
                     
-                    checkScrollForProgress();
+                    // Add a click handler to retry
+                    const retryHandler = () => {
+                        document.removeEventListener('click', retryHandler);
+                        if (!isPlaying) {
+                            playAudio();
+                        }
+                    };
+                    document.addEventListener('click', retryHandler, { once: true });
                     
-                    // Request wake lock for background play
-                    if (document.hidden && isWakeLockSupported) {
-                        requestWakeLock();
-                    }
-                    
-                    // Start background checks
-                    startBackgroundCheck();
-                    
-                    console.log("✅ Playback started successfully");
-                })
-                .catch(error => {
-                    console.error("Playback error:", error);
-                    if (error.name === 'NotAllowedError') {
-                        showNotification("Click play button again to start", 3000);
-                        isPlaying = false;
-                        updatePlayButtons();
-                        
-                        document.addEventListener('click', function retryPlay() {
-                            document.removeEventListener('click', retryPlay);
-                            if (!isPlaying) {
-                                playAudio();
-                            }
-                        }, { once: true });
-                    } else if (error.name === 'AbortError') {
-                        // Ignore abort errors
-                    } else {
-                        showNotification(`Playback error: ${error.message}`, 3000);
-                        isPlaying = false;
-                        updatePlayButtons();
-                    }
-                });
-        }
+                } else if (error.name === 'AbortError') {
+                    // Ignore abort errors
+                    console.log("Audio playback was aborted");
+                } else {
+                    console.error("Other playback error:", error);
+                    showNotification(`Playback error: ${error.message}`, 3000);
+                    isPlaying = false;
+                    updatePlayButtons();
+                }
+            });
     }
 }
 
@@ -2388,24 +2408,7 @@ function togglePlayPause() {
     if (isPlaying) {
         pauseAudio();
     } else {
-        if (audioPlayer.readyState < 2) {
-            audioLoading.classList.add('active');
-            audioLoading.textContent = "Preparing audio...";
-            
-            const checkReady = () => {
-                if (audioPlayer.readyState >= 2) {
-                    audioLoading.classList.remove('active');
-                    audioLoading.textContent = "";
-                    playAudio();
-                } else {
-                    setTimeout(checkReady, 100);
-                }
-            };
-            
-            setTimeout(checkReady, 100);
-        } else {
-            playAudio();
-        }
+        playAudio();
     }
 }
 
@@ -2552,7 +2555,7 @@ function showNotification(message, duration = 3000) {
     }, duration);
 }
 
-// Set up audio event listeners - UPDATED FOR ANDROID BACKGROUND
+// Set up audio event listeners
 function setupAudioEvents() {
     audioPlayer.addEventListener('loadedmetadata', () => {
         if (!isNaN(audioPlayer.duration)) {
