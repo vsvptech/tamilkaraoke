@@ -122,20 +122,6 @@ let backgroundCheckInterval = null;
 // Silent audio for keeping audio context alive
 let silentAudio = null;
 
-// Audio context for background playback
-let audioContext = null;
-let mediaElementSource = null;
-let isAudioContextActive = false;
-
-// Track visibility state
-let lastVisibilityState = document.visibilityState;
-
-// Check if browser supports background playback
-const supportsBackgroundPlayback = (function() {
-    const audio = document.createElement('audio');
-    return typeof audio.play === 'function';
-})();
-
 // ==================== HELPER FUNCTIONS ====================
 
 // Get icon based on song type
@@ -705,11 +691,11 @@ function hideNetworkNotification() {
     }
 }
 
-// ==================== ANDROID BACKGROUND AUDIO FIXES ====================
+// ==================== ANDROID BACKGROUND AUDIO FUNCTIONS ====================
 
 // Initialize background audio features for Android
 function initBackgroundAudio() {
-    console.log("Initializing background audio...");
+    console.log("Initializing background audio for Android...");
     
     // Check if wake lock is supported
     isWakeLockSupported = 'wakeLock' in navigator;
@@ -750,9 +736,6 @@ function initBackgroundAudio() {
     // Setup silent audio for keeping audio context alive
     setupSilentAudio();
     
-    // Initialize audio context for background playback
-    initAudioContext();
-    
     // Handle page visibility changes
     document.addEventListener('visibilitychange', handlePageVisibility);
     
@@ -761,110 +744,12 @@ function initBackgroundAudio() {
         releaseWakeLock();
         stopBackgroundCheck();
         stopSilentAudio();
-        closeAudioContext();
     });
     
     // Setup media session for Android lock screen controls
     if ('mediaSession' in navigator) {
         setupMediaSession();
     }
-    
-    // Prevent device from sleeping while audio is playing
-    setupPreventSleep();
-}
-
-// Initialize Audio Context for better background playback
-function initAudioContext() {
-    try {
-        // Create audio context if supported
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) {
-            audioContext = new AudioContext();
-            
-            // Create media element source
-            if (audioContext.state !== 'closed') {
-                mediaElementSource = audioContext.createMediaElementSource(audioPlayer);
-                mediaElementSource.connect(audioContext.destination);
-                
-                // Resume audio context on user interaction (required by browsers)
-                const resumeAudioContext = () => {
-                    if (audioContext && audioContext.state === 'suspended') {
-                        audioContext.resume().then(() => {
-                            console.log('AudioContext resumed');
-                            isAudioContextActive = true;
-                        }).catch(err => {
-                            console.error('Failed to resume AudioContext:', err);
-                        });
-                    }
-                };
-                
-                // Resume on any user interaction
-                document.addEventListener('click', resumeAudioContext, { once: true });
-                document.addEventListener('touchstart', resumeAudioContext, { once: true });
-                document.addEventListener('keydown', resumeAudioContext, { once: true });
-            }
-        }
-    } catch (error) {
-        console.error("Failed to initialize AudioContext:", error);
-    }
-}
-
-// Close audio context
-function closeAudioContext() {
-    if (audioContext && audioContext.state !== 'closed') {
-        audioContext.close().then(() => {
-            console.log('AudioContext closed');
-        }).catch(err => {
-            console.error('Failed to close AudioContext:', err);
-        });
-    }
-}
-
-// Setup prevent sleep functionality
-function setupPreventSleep() {
-    // Keep audio playing in background
-    audioPlayer.addEventListener('play', () => {
-        console.log("🎵 Audio started - preventing sleep");
-        startPreventingSleep();
-    });
-    
-    audioPlayer.addEventListener('pause', () => {
-        console.log("⏸️ Audio paused - allowing sleep");
-        stopPreventingSleep();
-    });
-    
-    audioPlayer.addEventListener('ended', () => {
-        console.log("⏹️ Audio ended - allowing sleep");
-        stopPreventingSleep();
-    });
-}
-
-// Start preventing device sleep
-function startPreventingSleep() {
-    // Request wake lock
-    if (isWakeLockSupported) {
-        requestWakeLock();
-    }
-    
-    // Start periodic checks to keep audio alive
-    startBackgroundCheck();
-    
-    // Start silent audio to keep audio context alive
-    if (document.hidden) {
-        startSilentAudio();
-    }
-}
-
-// Stop preventing device sleep
-function stopPreventingSleep() {
-    // Release wake lock
-    releaseWakeLock();
-    
-    // Stop background checks
-    stopBackgroundCheck();
-    
-    // Stop silent audio
-    stopSilentAudio();
 }
 
 // Setup silent audio to keep audio context alive
@@ -876,6 +761,7 @@ function setupSilentAudio() {
         silentAudio.muted = true; // Muted by default
         
         // Create a Blob with silent audio (1 second of silence in MP3 format)
+        // This is a base64 encoded silent MP3
         const silentMP3 = "data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
         
         silentAudio.src = silentMP3;
@@ -921,7 +807,7 @@ function stopSilentAudio() {
 // Handle page visibility changes
 function handlePageVisibility() {
     if (document.hidden) {
-        console.log("📱 Page went to background/sleep mode");
+        console.log("Page went to background/sleep mode");
         isInBackground = true;
         
         // Start silent audio to keep audio context alive
@@ -935,7 +821,7 @@ function handlePageVisibility() {
         }
         
     } else {
-        console.log("📱 Page came to foreground");
+        console.log("Page came to foreground");
         isInBackground = false;
         
         // Stop silent audio when in foreground
@@ -955,16 +841,14 @@ function startBackgroundCheck() {
     
     if (!isPlaying) return;
     
-    console.log("Starting background audio check for sleep mode");
+    console.log("Starting background audio check for Android sleep mode");
     
     // Set up periodic check to keep audio alive
     backgroundCheckInterval = setInterval(() => {
         if (isInBackground && isPlaying) {
             checkAndResumeAudio();
         }
-    }, 5000); // Check every 5 seconds when in background/sleep
-    
-    console.log("Background check interval started:", backgroundCheckInterval);
+    }, 10000); // Check every 10 seconds when in background/sleep
 }
 
 // Adjust background check frequency based on visibility
@@ -972,15 +856,12 @@ function adjustBackgroundCheckFrequency() {
     if (!backgroundCheckInterval) return;
     
     clearInterval(backgroundCheckInterval);
-    backgroundCheckInterval = null;
     
     if (isPlaying) {
         backgroundCheckInterval = setInterval(() => {
             checkAndResumeAudio();
-        }, 15000); // Check every 15 seconds when in foreground
+        }, 30000); // Check every 30 seconds when in foreground
     }
-    
-    console.log("Background check frequency adjusted:", backgroundCheckInterval);
 }
 
 // Stop background check
@@ -992,7 +873,7 @@ function stopBackgroundCheck() {
     }
 }
 
-// Check and resume audio if needed - ENHANCED VERSION
+// Check and resume audio if needed
 function checkAndResumeAudio() {
     if (!isPlaying) return;
     
@@ -1000,50 +881,34 @@ function checkAndResumeAudio() {
     
     // Check if audio is paused but should be playing
     if (audioPlayer.paused) {
-        console.log("⚠️ Audio paused in background/sleep mode, attempting to resume...");
+        console.log("Audio paused in background/sleep mode, attempting to resume...");
         
         // Start silent audio first to wake up audio context
         startSilentAudio();
         
-        // Try to resume main audio playback with multiple attempts
-        const attemptResume = (attempt = 1) => {
-            if (attempt > 3) {
-                console.log("❌ Failed to resume audio after 3 attempts");
-                return;
-            }
-            
-            console.log(`🔄 Attempt ${attempt} to resume audio...`);
-            
-            const playPromise = audioPlayer.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    console.log("✅ Audio successfully resumed in background");
-                    // Ensure audio is actually playing
-                    if (audioPlayer.paused) {
-                        setTimeout(() => attemptResume(attempt + 1), 1000);
-                    }
-                }).catch(error => {
-                    console.error(`❌ Attempt ${attempt} failed:`, error);
-                    
-                    // If wake lock issue, try to reacquire
-                    if (error.name === 'NotAllowedError' && isWakeLockSupported && document.hidden) {
-                        console.log("Trying to reacquire wake lock...");
-                        requestWakeLock().then(() => {
-                            // Try playing again after getting wake lock
-                            setTimeout(() => attemptResume(attempt + 1), 500);
-                        });
-                    } else {
-                        // Try again after delay
-                        setTimeout(() => attemptResume(attempt + 1), 1000);
-                    }
-                });
-            }
-        };
+        // Try to resume main audio playback
+        const playPromise = audioPlayer.play();
         
-        attemptResume();
-    } else {
-        console.log("✅ Audio is playing normally");
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log("Audio successfully resumed in background");
+            }).catch(error => {
+                console.error("Failed to resume audio in background:", error);
+                
+                // If wake lock issue, try to reacquire
+                if (error.name === 'NotAllowedError' && isWakeLockSupported && document.hidden) {
+                    console.log("Trying to reacquire wake lock...");
+                    requestWakeLock().then(() => {
+                        // Try playing again after getting wake lock
+                        setTimeout(() => {
+                            audioPlayer.play().catch(e => {
+                                console.error("Still can't resume audio:", e);
+                            });
+                        }, 500);
+                    });
+                }
+            });
+        }
     }
     
     // Re-acquire wake lock if lost
@@ -1060,7 +925,7 @@ function checkAndResumeAudio() {
 function setupMediaSession() {
     if (!('mediaSession' in navigator)) return;
     
-    console.log("Setting up media session");
+    console.log("Setting up Android media session");
     
     navigator.mediaSession.setActionHandler('play', () => {
         console.log("Media session: Play button pressed");
@@ -1225,7 +1090,7 @@ function createAboutModal() {
                     
                     <div class="app-version">
                         <p>Version 2.0.0</p>
-                        <p>© 2026 Chillax Technologies. All rights reserved.</p>
+                        <p>© 2024 Chillax Technologies. All rights reserved.</p>
                     </div>
                 </div>
             </div>
@@ -1316,7 +1181,7 @@ function toggleMobileSearch() {
 
 // Initialize the app
 function init() {
-    console.log("=== INITIALIZING APP FOR BACKGROUND AUDIO ===");
+    console.log("=== INITIALIZING APP FOR ANDROID BACKGROUND AUDIO ===");
     
     favoriteSongs = JSON.parse(localStorage.getItem('favoriteSongs')) || [];
     
@@ -1465,24 +1330,6 @@ function init() {
                 aboutModal.classList.remove('active');
             }
         });
-    }
-    
-    // Restore playback state on load
-    const wasPlaying = localStorage.getItem('wasPlaying');
-    if (wasPlaying === 'true') {
-        const savedIndex = parseInt(localStorage.getItem('currentSongIndex') || '0');
-        const savedTime = parseFloat(localStorage.getItem('currentTime') || '0');
-        
-        if (savedIndex >= 0 && savedIndex < songs.length) {
-            setTimeout(() => {
-                setActiveSong(savedIndex);
-                audioPlayer.currentTime = savedTime;
-                if (isAutoPlayEnabled) {
-                    playAudio();
-                }
-                console.log("🔄 Restored playback from previous session");
-            }, 1500);
-        }
     }
 }
 
@@ -2414,7 +2261,7 @@ function applyFilter(type) {
     updateSidebarWithCounts();
 }
 
-// Play audio - ENHANCED FOR BACKGROUND PLAYBACK
+// Play audio - UPDATED FOR ANDROID BACKGROUND
 function playAudio() {
     if (!audioPlayer.src || audioPlayer.src === "") {
         loadSong(currentSongIndex, true);
@@ -2460,15 +2307,6 @@ function playAudio() {
     function attemptPlay() {
         hasUserInteracted = true;
         
-        // Resume audio context if suspended
-        if (audioContext && audioContext.state === 'suspended') {
-            audioContext.resume().then(() => {
-                console.log('AudioContext resumed for playback');
-            }).catch(err => {
-                console.error('Failed to resume AudioContext:', err);
-            });
-        }
-        
         const playPromise = audioPlayer.play();
         
         if (playPromise !== undefined) {
@@ -2489,16 +2327,7 @@ function playAudio() {
                     // Start background checks
                     startBackgroundCheck();
                     
-                    // Start silent audio to keep context alive
-                    if (document.hidden) {
-                        startSilentAudio();
-                    }
-                    
                     console.log("✅ Playback started successfully");
-                    
-                    // Save playback state
-                    localStorage.setItem('wasPlaying', 'true');
-                    localStorage.setItem('currentSongIndex', currentSongIndex.toString());
                 })
                 .catch(error => {
                     console.error("Playback error:", error);
@@ -2540,9 +2369,6 @@ function pauseAudio() {
     
     // Stop silent audio
     stopSilentAudio();
-    
-    // Clear playback state
-    localStorage.removeItem('wasPlaying');
 }
 
 // Toggle play/pause
@@ -2637,11 +2463,6 @@ function updateProgress() {
             lyricsProgress.style.transform = `translateZ(0)`;
             mobileProgress.style.transform = `translateZ(0)`;
         });
-        
-        // Save current time for restoration
-        if (isPlaying) {
-            localStorage.setItem('currentTime', currentTime.toString());
-        }
     } else {
         if (audioPlayer.readyState >= 1) {
             currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
@@ -2731,7 +2552,7 @@ function showNotification(message, duration = 3000) {
     }, duration);
 }
 
-// Set up audio event listeners - ENHANCED FOR BACKGROUND PLAYBACK
+// Set up audio event listeners - UPDATED FOR ANDROID BACKGROUND
 function setupAudioEvents() {
     audioPlayer.addEventListener('loadedmetadata', () => {
         if (!isNaN(audioPlayer.duration)) {
@@ -2760,13 +2581,6 @@ function setupAudioEvents() {
         // Start silent audio to keep context alive
         if (document.hidden) {
             startSilentAudio();
-        }
-        
-        // Ensure audio context is active
-        if (audioContext && audioContext.state === 'suspended') {
-            audioContext.resume().catch(err => {
-                console.error('Failed to resume AudioContext:', err);
-            });
         }
     });
     
@@ -2930,36 +2744,23 @@ function setupAudioEvents() {
         }
     });
     
-    // Handle iOS specific events
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-        console.log("iOS device detected - setting up iOS-specific audio handling");
+    // Restore playback state on load
+    const wasPlaying = localStorage.getItem('wasPlaying');
+    if (wasPlaying === 'true') {
+        const savedIndex = parseInt(localStorage.getItem('currentSongIndex') || '0');
+        const savedTime = parseFloat(localStorage.getItem('currentTime') || '0');
         
-        // iOS requires special handling for background audio
-        audioPlayer.addEventListener('pause', () => {
-            // On iOS, sometimes pause events fire even when audio should continue
-            // Check if we're in background and should still be playing
-            if (document.hidden && isPlaying) {
-                setTimeout(() => {
-                    if (isPlaying && audioPlayer.paused) {
-                        console.log("🔄 iOS: Audio paused in background, attempting to resume");
-                        audioPlayer.play().catch(e => {
-                            console.log("iOS background resume failed:", e);
-                        });
-                    }
-                }, 100);
-            }
-        });
-    }
-    
-    // Add periodic audio check for all platforms
-    setInterval(() => {
-        if (isPlaying && audioPlayer.paused && !document.hidden) {
-            console.log("🔄 Periodic check: Audio paused but should be playing");
-            audioPlayer.play().catch(e => {
-                console.log("Periodic resume failed:", e);
-            });
+        if (savedIndex >= 0 && savedIndex < songs.length) {
+            setTimeout(() => {
+                setActiveSong(savedIndex);
+                audioPlayer.currentTime = savedTime;
+                if (isAutoPlayEnabled) {
+                    playAudio();
+                }
+                console.log("🔄 Restored playback from sleep mode");
+            }, 1000);
         }
-    }, 30000); // Check every 30 seconds
+    }
 }
 
 // Handle search function
