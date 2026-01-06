@@ -1269,45 +1269,97 @@ main {
     display: block;
 }
 
-/* Add this to your CSS file */
-audio {
-    display: none !important;
-    visibility: hidden !important;
-    position: absolute !important;
-    width: 0 !important;
-    height: 0 !important;
-    opacity: 0 !important;
-}
-
-/* Ensure the audio player is completely hidden */
-#audioPlayer {
+/* Network Error Modal Styles */
+.network-error-modal {
     display: none;
-}
-
-/* Add this for debugging */
-.debug-info {
     position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background: rgba(0,0,0,0.8);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
     z-index: 9999;
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
 }
 
-/* Make sure volume is not muted */
-body {
-    -webkit-tap-highlight-color: transparent;
+.network-error-modal.active {
+    opacity: 1;
+    visibility: visible;
 }
 
-/* Prevent iOS from pausing audio */
-html, body {
-    -webkit-overflow-scrolling: touch;
+.network-error-container {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
 }
 
+.network-error-modal.active .network-error-container {
+    transform: translateY(0);
+}
+
+.network-error-icon {
+    font-size: 80px;
+    color: #ff6b6b;
+    margin-bottom: 20px;
+}
+
+.network-error-title {
+    font-size: 28px;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.network-error-message {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.network-error-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.network-error-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.network-error-btn:active {
+    transform: translateY(0);
+}
+
+.network-error-note {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.4;
+}
 /* Update lyrics content to remove top spacing */
 .lyrics-content {
     flex: 1;
