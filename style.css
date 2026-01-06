@@ -1269,6 +1269,45 @@ main {
     display: block;
 }
 
+/* Add this to your CSS file */
+audio {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+}
+
+/* Ensure the audio player is completely hidden */
+#audioPlayer {
+    display: none;
+}
+
+/* Add this for debugging */
+.debug-info {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 9999;
+    display: none;
+}
+
+/* Make sure volume is not muted */
+body {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent iOS from pausing audio */
+html, body {
+    -webkit-overflow-scrolling: touch;
+}
+
 /* Update lyrics content to remove top spacing */
 .lyrics-content {
     flex: 1;
