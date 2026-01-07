@@ -1064,7 +1064,7 @@ const songs = [
         id: 67,
         title: "Partha Muthal Naale",
         artist: "Vettaiyadu Vilaiyadu",
-        image: "images/Vettaiyadu-Vilaiyadu.jpg",
+        image: "images/VettaiyaduVilaiyadu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Partha-Muthal-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Partha-Muthal-Female.mp3"),
@@ -1092,7 +1092,7 @@ const songs = [
         id: 65,
         title: "Iragai Pole",
         artist: "Naan Mahaan Alla",
-        image: "images/NaanMahaanAlla.jpg",
+        image: "images/NaanMahanAlla.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Iragai-Pole-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Iragai-Pole-Female.mp3"),
