@@ -1194,7 +1194,7 @@ function createAboutModal() {
                     
                     <div class="app-version">
                         <p>Version 2.0.0</p>
-                        <p>© 2026 Chillax Technologies. All rights reserved.</p>
+                        <p>© 2024 Chillax Technologies. All rights reserved.</p>
                     </div>
                 </div>
             </div>
@@ -3165,4 +3165,3 @@ function updatePlayButtons() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
-
