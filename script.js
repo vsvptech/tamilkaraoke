@@ -132,7 +132,7 @@ const musicDirectors = [
 "Jassie Gift",
 "Krishna Kumar",
 "M S Viswanathan",
-"Nivas Prasanna",
+"Nivas K Prasanna",
 "R P Patnaik",
 "S A Rajkumar",
 "Shyam",
@@ -544,7 +544,7 @@ function getTypeDisplayName(type) {
     return names[type] || type;
 }
 
-// Update sidebar with song counts
+// Update sidebar with song counts - MODIFIED for small font counts
 function updateSidebarWithCounts() {
     const menu = document.querySelector('.menu');
     if (!menu) return;
@@ -590,7 +590,10 @@ function updateSidebarWithCounts() {
             const count = countSongsByType(item.type);
             li.innerHTML = `
                 <i class="fas ${item.icon}"></i>
-                <span>${getTypeDisplayName(item.type)} (${count})</span>
+                <span>
+                    ${getTypeDisplayName(item.type)} 
+                    <span class="song-count">(${count})</span>
+                </span>
             `;
         }
         
@@ -2991,3 +2994,4 @@ function updatePlayButtons() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
