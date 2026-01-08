@@ -136,7 +136,6 @@ const musicDirectors = [
 "R P Patnaik",
 "S A Rajkumar",
 "Shyam",
-"S Thaman",
 "T Rajendar",
 "Vijay Antony",
 "Yuvan Shankar Raja"
@@ -2994,4 +2993,5 @@ function updatePlayButtons() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
 
