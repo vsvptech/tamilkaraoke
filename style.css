@@ -496,7 +496,7 @@ body.dark-mode .network-notification.warning {
     color: var(--text-secondary);
     background: rgba(128, 128, 128, 0.1);
     padding: 2px 2px;
-    border-radius: 10px;
+    border-radius: 4px;
     margin-left: 8px;
     border: 1px solid rgba(128, 128, 128, 0.2);
     font-family: 'Montserrat', sans-serif;
@@ -2066,6 +2066,7 @@ main {
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
 
 
