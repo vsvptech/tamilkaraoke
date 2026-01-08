@@ -11,6 +11,7 @@ const songs = [
         id: 143,
         title: "Devathaiyai Kanden",
         artist: "Kadhalil Vizhunthen",
+        music: "Yuvan Shankar Raja", 
         image: "images/KadhalilVizhunthen.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Devathayai-Kanden-Male.mp3"),
@@ -26,6 +27,7 @@ const songs = [
         id: 142,
         title: "Vinmeen Vithaiyil",
         artist: "Thegidi",
+        music: "Nivas K Prasanna", 
         image: "images/Thegidi.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Vinmeen-Vithaiyil-Male.mp3"),
@@ -38,9 +40,10 @@ const songs = [
     }, 
 
 { 
-        id: 141,
+        id: 138,
         title: "Kannathil Kannam Vaikka",
-        artist: "Watchman Vadivelu",
+        artist: "Watchman Vadivel",
+        music: "Deva", 
         image: "images/Watchman.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kannathil-Kannam-Male.mp3"),
@@ -52,9 +55,10 @@ const songs = [
         availableTypes: ["male", "female", "duet", "song", "podcast"],
     }, 	
 { 
-        id: 140,
+        id: 137,
         title: "Ennai Thottu Allikonda",
         artist: "Unnai Ninachen Paattu Padichen",
+        music: "Ilaiyaraaja",
         image: "images/UnnaiNenachen.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ennai-Thottu-Male.mp3"),
@@ -66,9 +70,10 @@ const songs = [
         availableTypes: ["male", "female", "duet", "song", "podcast"],
     }, 
 { 
-        id: 139,
+        id: 136,
         title: "Thenmadurai Vaigai Nathi",
         artist: "Dharmathin Thalaivan",
+        music: "Ilaiyaraaja",
         image: "images/Dharmathin.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Thenmadurai-Male.mp3"),
@@ -80,9 +85,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 138,
+        id: 135,
         title: "Enaku Piditha Paadal",
         artist: "Julie Ganapathi",
+        music: "Ilaiyaraaja",
         image: "images/Julie.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Enaku-Piditha-Paadal-Male.mp3"),
@@ -94,9 +100,10 @@ const songs = [
         availableTypes: ["female", "song", "podcast"],
     }, 
 { 
-        id: 137,
+        id: 134,
         title: "Per Vachalum",
         artist: "Michael Madana Kama Rajan",
+        music: "Ilaiyaraaja",
         image: "images/Michel.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Per-Vachalum-Male.mp3"),
@@ -108,9 +115,10 @@ const songs = [
         availableTypes: ["male", "female", "duet", "song", "podcast"],
     }, 
 { 
-        id: 136,
+        id: 133,
         title: "Sorgame Endralum",
         artist: "Oru Vittu Oru Vanthu",
+        music: "Ilaiyaraaja",
         image: "images/Oruvittu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Sorgame-Male.mp3"),
@@ -122,9 +130,10 @@ const songs = [
         availableTypes: ["male", "female", "duet", "song", "podcast"],
     }, 
 { 
-        id: 135,
+        id: 132,
         title: "Valaiyosai",
         artist: "Sathya",
+        music: "Ilaiyaraaja",
         image: "images/Sathya.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Valaiyosai-Male.mp3"),
@@ -136,9 +145,10 @@ const songs = [
         availableTypes: ["male", "female", "duet", "song", "podcast"],
     }, 
 { 
-        id: 134,
+        id: 131,
         title: "Kalyana Maalai",
         artist: "Puthu Puthu Arthangal",
+        music: "Ilaiyaraaja",
         image: "images/PuthuPuthuArthangal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kalyana-Maalai-Male.mp3"),
@@ -150,9 +160,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 133,
+        id: 130,
         title: "Oru Maina Maina",
         artist: "Uzhaippali",
+        music: "Ilaiyaraaja",
         image: "images/Uzhaippali.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Oru-Maina-Male.mp3"),
@@ -164,9 +175,10 @@ const songs = [
         availableTypes: ["male", "female", "duet", "song", "podcast"],
     }, 
 { 
-        id: 132,
+        id: 129,
         title: "Andhiyile Vaanam",
         artist: "Chinnavar",
+        music: "Ilaiyaraaja",
         image: "images/Chinnavar.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Andhiyile-Vaanam-Male.mp3"),
@@ -178,9 +190,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 131,
+        id: 128,
         title: "Adi Vaanmathi",
         artist: "Siva",
+        music: "Ilaiyaraaja",
         image: "images/Siva.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Adi-Vaanmathi-Male.mp3"),
@@ -192,9 +205,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 130,
+        id: 127,
         title: "Abc Nee Vasi",
         artist: "Oru Kaidhiyin Diary",
+        music: "Ilaiyaraaja",
         image: "images/OruKaidhiyinDiary.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Abc-Nee-Vasi-Male.mp3"),
@@ -206,9 +220,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 129,
+        id: 126,
         title: "Aasai Aasai",
         artist: "Dhool",
+        music: "Vidyasagar",
         image: "images/Dhool.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Aasai-Aasai-Male.mp3"),
@@ -220,9 +235,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 128,
+        id: 125,
         title: "Dailamo Dailamo",
         artist: "Dishyum",
+        music: "Vijay Antony",
         image: "images/Dishyum.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Dailamo-Dailamo-Male.mp3"),
@@ -234,9 +250,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 127,
+        id: 124,
         title: "Chocolate Chocolate Polave",
         artist: "Unnai Ninaithu",
+        music: "Sirpy",
         image: "images/UnnaiNinaithu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Chocolate-Chocolate-Male.mp3"),
@@ -248,9 +265,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 126,
+        id: 123,
         title: "Azhagiya Theeye",
         artist: "Minnale",
+        music: "Harris Jayaraj",
         image: "images/Minnale.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Azhagiya-Theeye-Male.mp3"),
@@ -262,9 +280,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 125,
+        id: 122,
         title: "Anjukajam Kanchi Pattu",
         artist: "RasaMagan",
+        music: "Ilaiyaraaja",
         image: "images/RasaMagan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Anjukajam-Kanchi-Male.mp3"),
@@ -276,9 +295,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 124,
+        id: 121,
         title: "Endhan Paadalgalil",
         artist: "Uravai Katha Kili",
+        music: "T Rajendar",
         image: "images/UravaiKathaKili.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Endhan-Paadalgalil-Male.mp3"),
@@ -290,9 +310,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     },     
 { 
-        id: 123,
+        id: 120,
         title: "Kalyana Thean Nila",
         artist: "Mounam Sammadham",
+        music: "Ilaiyaraaja",
         image: "images/MounamSammadham.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kalyana-Thean-Male.mp3"),
@@ -304,9 +325,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 122,
+        id: 119,
         title: "Maasi Masam",
         artist: "Dharmadurai",
+        music: "Ilaiyaraaja",
         image: "images/Dharmadurai.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Maasi-Masam-Male.mp3"),
@@ -318,9 +340,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 121,
+        id: 118,
         title: "Konji Pesida Venam",
         artist: "Sethupathi",
+        music: "Nivas K Prasanna",
         image: "images/Sethupathi.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Konji-Pesida-Male.mp3"),
@@ -332,9 +355,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 120,
+        id: 117,
         title: "Kanne En Kanmaniye",
         artist: "Kavithai Paadum Alaigal",
+        music: "Ilaiyaraaja",
         image: "images/KavithaiPaadumAlaigal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kanne-EnKanmaniye-Male.mp3"),
@@ -346,9 +370,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 119,
+        id: 116,
         title: "Kanna Unnai Thedugiren",
         artist: "Unakkave Vazhkiren",
+        music: "Ilaiyaraaja",
         image: "images/UnakkaveVazhkiren.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/KannaUnnai-Thedugiren-Male.mp3"),
@@ -360,9 +385,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 118,
+        id: 115,
         title: "Kannamma KadhalEnnum",
         artist: "Vanna Vanna Pookkal",
+        music: "Ilaiyaraaja",
         image: "images/VannaVannaPookkal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kannamma-KadhalEnnum-Male.mp3"),
@@ -374,9 +400,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 117,
+        id: 114,
         title: "Nagumo",
         artist: "Arunachalam",
+        music: "Ilaiyaraaja",
         image: "images/Arunachalam.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Nagumo-Male.mp3"),
@@ -388,9 +415,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 116,
+        id: 113,
         title: "Mutham Podhaathey",
         artist: "Enakkul Oruvan",
+        music: "Ilaiyaraaja",
         image: "images/EnakkulOruvan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Mutham-Podhaathey-Male.mp3"),
@@ -402,9 +430,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 115,
+        id: 112,
         title: "Muthal Kanave",
         artist: "Majnu",
+        music: "Harris Jayaraj",
         image: "images/Majnu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/MuthalKanave-Male.mp3"),
@@ -416,9 +445,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 114,
+        id: 111,
         title: "Mottu Ondru Malarnthida",
         artist: "Kushi",
+        music: "Deva",
         image: "images/Kushi.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Mottu-Ondru-Male.mp3"),
@@ -430,9 +460,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 113,
+        id: 110,
         title: "Minsaram EnMeethu",
         artist: "Run",
+        music: "Vidyasagar",
         image: "images/Run.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Minsaram-EnMeethu-Male.mp3"),
@@ -444,9 +475,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 112,
+        id: 109,
         title: "Oodha Oodha Oodha Poo",
         artist: "Minsara Kanna",
+        music: "Deva",
         image: "images/MinsaraKanna.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Oodha-Oodha-Male.mp3"),
@@ -458,9 +490,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 111,
+        id: 108,
         title: "Oh Vasantha Raja",
         artist: "Neengal Kettavai",
+        music: "Ilaiyaraaja",
         image: "images/NeengalKettavai.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Oh-Vasantha-Raja-Male.mp3"),
@@ -472,9 +505,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 110,
+        id: 107,
         title: "Pacha Mala Poovu",
         artist: "Kizhkku Vasal",
+        music: "Ilaiyaraaja",
         image: "images/KizhkkuVasal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Pacha-Mala-Male.mp3"),
@@ -486,9 +520,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 109,
+        id: 106,
         title: "Paattu Thalaivan",
         artist: "IdhayaKovil",
+        music: "Ilaiyaraaja",
         image: "images/IdhayaKovil.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Paattu-Thalaivan-Male.mp3"),
@@ -500,9 +535,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 108,
+        id: 105,
         title: "Ottrai Kannala",
         artist: "Vel",
+        music: "Yuvan Shankar Raja",
         image: "images/Vel.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ottrai-Kannala-Male.mp3"),
@@ -514,9 +550,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 107,
+        id: 104,
         title: "Sangeetha Vaanil",
         artist: "Chinna Poove Mella Pesu",
+        music: "S A Rajkumar",
         image: "images/ChinnaPooveMellaPesu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Sangeetha-Vaanil-Male.mp3"),
@@ -528,9 +565,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 106,
+        id: 103,
         title: "Poongkaatrilae",
         artist: "Uyire",
+        music: "A R Rahman",
         image: "images/Uyire.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Poongkaatrilae-Male.mp3"),
@@ -542,9 +580,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 105,
+        id: 102,
         title: "Poongathave Thazhthiravai",
         artist: "Nizhalgal",
+        music: "Ilaiyaraaja",
         image: "images/Nizhalgal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Poongathave-Male.mp3"),
@@ -556,9 +595,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 104,
+        id: 101,
         title: "Pathukulle Number Onnu",
         artist: "Vasool Raja MBBS",
+        music: "Bharadwaj",
         image: "images/VasoolRaja.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Pathukulle-Male.mp3"),
@@ -570,9 +610,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 103,
+        id: 100,
         title: "Suttrum Vizhi Sudare",
         artist: "Ghajini",
+        music: "Harris Jayaraj",
         image: "images/Ghajini.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Suttum-Vizhi-Male.mp3"),
@@ -584,9 +625,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     },     
 { 
-        id: 102,
+        id: 99,
         title: "Sithagathi Pookale",
         artist: "Rajakumaran",
+        music: "Ilaiyaraaja",
         image: "images/Rajakumaran.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Sithagathi-Pookale-Male.mp3"),
@@ -598,9 +640,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 101,
+        id: 98,
         title: "Sirikkadhey",
         artist: "Remo",
+        music: "Anirudh Ravichander",
         image: "images/Remo.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Sirikkadhey-Male.mp3"),
@@ -612,9 +655,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 100,
+        id: 97,
         title: "Sempoove Poove",
         artist: "Siraichalai",
+        music: "Ilaiyaraaja",
         image: "images/Siraichalai.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Sempoove-Poove-Male.mp3"),
@@ -626,9 +670,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 99,
+        id: 96,
         title: "Santhana Kaatre",
         artist: "Thanikattu Raja",
+        music: "Ilaiyaraaja",
         image: "images/ThanikattuRaja.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Santhana-Kaatre-Male.mp3"),
@@ -640,9 +685,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 98,
+        id: 95,
         title: "Thanga Nilavukku",
         artist: "Rickshaw Mama",
+        music: "Ilaiyaraaja",
         image: "images/RickshawMama.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Thanga-Nilavukku-Male.mp3"),
@@ -654,9 +700,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 97,
+        id: 94,
         title: "Thalattuthe Vaanam",
         artist: "Kadal Meengal",
+        music: "Ilaiyaraaja",
         image: "images/KadalMeengal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Thalattuthe-Vaanam-Male.mp3"),
@@ -668,9 +715,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 96,
+        id: 93,
         title: "Yaradhu Yaradhu",
         artist: "Kaavalan",
+        music: "Vidyasagar",
         image: "images/Kaavalan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Yaradhu-Yaradhu-Male.mp3"),
@@ -682,9 +730,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 95,
+        id: 92,
         title: "Vaa Ponmayile",
         artist: "Poonthalir",
+        music: "Ilaiyaraaja",
         image: "images/Poonthalir.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Vaa-Ponmayile-Male.mp3"),
@@ -696,51 +745,10 @@ const songs = [
         availableTypes: ["male", "song", "podcast"],
     }, 
 { 
-        id: 94,
-        title: "Mazhai  Tharumo Ven Megam",
-        artist: "Manidharil Ithanai Nirangala",
-        image: "images/ManidharilIthanaiNirangala.jpg",
-        audio: {
-            male: getFirebaseUrl("songs/male/Mazhai-Tharumo-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Mazhai-Tharumo-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Mazhai-Tharumo-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Mazhai-Tharumo-Song.mp3")
-        },  
-        lyrics: "lyrics/Mazhai-Tharumo.txt",
-        availableTypes: ["male", "song", "podcast"],
-    }, 
-{ 
-        id: 93,
-        title: "Paada Vandhadhor Gaanam",
-        artist: "Ilamai Kaalangal",
-        image: "images/IlamaiKaalangal.jpg",
-        audio: {
-            male: getFirebaseUrl("songs/male/Paada-Vandhadhor-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Paada-Vandhadhor-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Paada-Vandhadhor-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Paada-Vandhadhor-Song.mp3")
-        },  
-        lyrics: "lyrics/Paada-Vandhadhor.txt",
-        availableTypes: ["male", "song", "podcast"],
-    }, 
-{ 
-        id: 92,
-        title: "Sangeetha Megham",
-        artist: "Udhaya Geetham",
-        image: "images/UdhayaGeetham.jpg",
-        audio: {
-            male: getFirebaseUrl("songs/male/Sangeetha-Megham-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Sangeetha-Megham-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Sangeetha-Megham-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Sangeetha-Megham-Song.mp3")
-        },  
-        lyrics: "lyrics/Sangeetha-Megham.txt",
-        availableTypes: ["male", "song", "podcast"],
-    }, 
-{ 
         id: 91,
         title: "Kalakalakum Mani Osai",
         artist: "Eeramana Rojave",
+        music: "Ilaiyaraaja",
         image: "images/EeramanaRojave.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kalakalakum-Mani-Male.mp3"),
@@ -755,6 +763,7 @@ const songs = [
         id: 90,
         title: "Oru KolaKili",
         artist: "Uzhaippali",
+        music: "Ilaiyaraaja",
         image: "images/Uzhaippali.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Oru-KolaKili-Male.mp3"),
@@ -769,6 +778,7 @@ const songs = [
         id: 89,
         title: "Oh PonManguil",
         artist: "Manasukkul Mathappu",
+        music: "S A Rajkumar",
         image: "images/ManasukkulMathappu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Oh-PonManguil-Male.mp3"),
@@ -783,6 +793,7 @@ const songs = [
         id: 88,
         title: "Kaadhal Kaditham Theettavae",
         artist: "Jodi",
+        music: "A R Rahman",
         image: "images/Jodi.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kadhal-Kaditham-Male.mp3"),
@@ -797,6 +808,7 @@ const songs = [
         id: 87,
         title: "Kaatre En Vaasal",
         artist: "Rhythm",
+        music: "A R Rahman",
         image: "images/Rhythm.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kaatre-En-Vaasal-Male.mp3"),
@@ -811,6 +823,7 @@ const songs = [
         id: 86,
         title: "Un Mela Aasadhaan",
         artist: "Aayirathil Oruvan",
+        music: "G V Prakash Kumar",
         image: "images/AayirathilOruvan.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Un-Mela-Aasadhaan-Male.mp3"),
@@ -825,6 +838,7 @@ const songs = [
         id: 85,
         title: "Latcham Calorie",
         artist: "Yaan",
+        music: "Harris Jayaraj",
         image: "images/Yaan.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Latcham-Calorie-Male.mp3"),
@@ -839,6 +853,7 @@ const songs = [
         id: 84,
         title: "Kangal Irandal",
         artist: "Subramaniyapuram",
+        music: "James Vasanthan",
         image: "images/Subramaniyapuram.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/KangalIrandal-Male.mp3"),
@@ -853,6 +868,7 @@ const songs = [
         id: 83,
         title: "Unnaale Unnaale",
         artist: "Unnale Unnale",
+        music: "Harris Jayaraj",
         image: "images/Unnaale-Unnaale.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Unnaale-Unnaale-Male.mp3"),
@@ -867,6 +883,7 @@ const songs = [
         id: 82,
         title: "Loosu Penne",
         artist: "Vallavan",
+        music: "Yuvan Shankar Raja",
         image: "images/Vallavan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Loosu-Penne-Male.mp3"),
@@ -881,6 +898,7 @@ const songs = [
         id: 81,
         title: "Thaniye Thananthaniye",
         artist: "Rhythm",
+        music: "A R Rahman",
         image: "images/Rhythm.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Thaniye-Thananthaniye-Male.mp3"),
@@ -895,6 +913,7 @@ const songs = [
         id: 80,
         title: "June Ponaal",
         artist: "Unnale Unnale",
+        music: "Harris Jayaraj",
         image: "images/Unnaale-Unnaale.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/June-Ponaal-Male.mp3"),
@@ -909,6 +928,7 @@ const songs = [
         id: 79,
         title: "Po Nee Po",
         artist: "Moonu",
+        music: "Anirudh Ravichander",
         image: "images/Moonu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Po-Nee-Po-Male.mp3"),
@@ -923,6 +943,7 @@ const songs = [
         id: 78,
         title: "Maalai Mangum Neram",
         artist: "Rowthiram",
+        music: "Prakash Nikki",
         image: "images/Rowthiram.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Maalai-Mangum-Neram-Male.mp3"),
@@ -937,6 +958,7 @@ const songs = [
         id: 77,
         title: "Yaaro Ivan",
         artist: "Udhayam NH4",
+        music: "G V Prakash Kumar",
         image: "images/Udhayam.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Yaaro-Ivan-Male.mp3"),
@@ -951,6 +973,7 @@ const songs = [
         id: 76,
         title: "Kadhal Vaithu",
         artist: "Deepavali",
+        music: "Yuvan Shankar Raja",
         image: "images/Deepavali.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kadhal-Vaithu-Male.mp3"),
@@ -965,6 +988,7 @@ const songs = [
         id: 75,
         title: "En Kadhal Solla",
         artist: "Paiyaa",
+        music: "Yuvan Shankar Raja",
         image: "images/Paiyaa.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/En-Kadhal-Solla-Male.mp3"),
@@ -979,6 +1003,7 @@ const songs = [
         id: 74,
         title: "Irumbile Oru Idhaiyam",
         artist: "Endhiran",
+        music: "A R Rahman",
         image: "images/Endhiran.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Irumbile-Oru-Idhaiyam-Male.mp3"),
@@ -993,6 +1018,7 @@ const songs = [
         id: 73,
         title: "Kalasala Kalasala",
         artist: "Minnale",
+        music: "A R Rahman",
         image: "images/Osthe.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kalasala-Kalasala-Male.mp3"),
@@ -1007,6 +1033,7 @@ const songs = [
         id: 72,
         title: "Siragugal Vanthathu",
         artist: "Sarvam",
+        music: "Yuvan Shankar Raja",
         image: "images/Sarvam.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Siragugal-Vanthathu-Male.mp3"),
@@ -1021,6 +1048,7 @@ const songs = [
         id: 71,
         title: "Ayayayo Aananthamey",
         artist: "Kumki",
+        music: "D Imman",
         image: "images/Kumki.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ayayayo-Aananthamey-Male.mp3"),
@@ -1035,6 +1063,7 @@ const songs = [
         id: 70,
         title: "Naan Pogiren Mele Mele",
         artist: "Naanayam",
+        music: "James Vasanthan",
         image: "images/Naanayam.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Naan-Pogiren-Male.mp3"),
@@ -1049,6 +1078,7 @@ const songs = [
         id: 69,
         title: "Velicha Poove Vaa",
         artist: "Ethir Neechal",
+        music: "Anirudh Ravichander",
         image: "images/EthirNeechal.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Velicha-Poove-Vaa-Male.mp3"),
@@ -1063,6 +1093,7 @@ const songs = [
         id: 68,
         title: "Saayndhu Saayndhu",
         artist: "Neethaane En Ponvasantham",
+        music: "Ilaiyaraaja",
         image: "images/Neethaane.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Saayndhu-Saayndhu-Male.mp3"),
@@ -1077,6 +1108,7 @@ const songs = [
         id: 67,
         title: "Partha Muthal Naale",
         artist: "Vettaiyadu Vilaiyadu",
+        music: "Harris Jayaraj",
         image: "images/VettaiyaduVilaiyadu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Partha-Muthal-Male.mp3"),
@@ -1091,6 +1123,7 @@ const songs = [
         id: 66,
         title: "Hasili Fisiliye",
         artist: "Aadhavan",
+        music: "Harris Jayaraj",
         image: "images/Aadhavan.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Hasili-Fisiliye-Male.mp3"),
@@ -1105,6 +1138,7 @@ const songs = [
         id: 65,
         title: "Iragai Pole",
         artist: "Naan Mahaan Alla",
+        music: "Yuvan Shankar Raja",
         image: "images/NaanMahanAlla.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Iragai-Pole-Male.mp3"),
@@ -1119,6 +1153,7 @@ const songs = [
         id: 64,
         title: "Sahana Saaral",
         artist: "Sivaji",
+        music: "A R Rahman",
         image: "images/Sivaji.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Sahana-Saaral-Male.mp3"),
@@ -1133,6 +1168,7 @@ const songs = [
         id: 63,
         title: "Kaatrukulle Vaasam Pola",
         artist: "Sarvam",
+        music: "Yuvan Shankar Raja",
         image: "images/Sarvam.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kaatrukulle-Male.mp3"),
@@ -1147,6 +1183,7 @@ const songs = [
         id: 62,
         title: "Pachchai Nirame",
         artist: "Alaipayuthe",
+        music: "A R Rahman",
         image: "images/Alaipayuthe.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Pachchai-Nirame-Male.mp3"),
@@ -1161,6 +1198,7 @@ const songs = [
         id: 61,
         title: "Vaarayo Vaarayo Monolisa",
         artist: "Aadhavan",
+        music: "Harris Jayaraj",
         image: "images/Aadhavan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Vaarayo-Vaarayo-Male.mp3"),
@@ -1175,6 +1213,7 @@ const songs = [
         id: 60,
         title: "Akkam Pakkam Yarumilla",
         artist: "Kireedam",
+        music: "G V Prakash Kumar",
         image: "images/Kireedam.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Akkam-Pakkam-Male.mp3"),
@@ -1189,6 +1228,7 @@ const songs = [
         id: 59,
         title: "Vizhi Moodi Yosithaal",
         artist: "Ayan",
+        music: "Harris Jayaraj",
         image: "images/Ayan.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Vizhi-Moodi-Yosithaal-Male.mp3"),
@@ -1203,6 +1243,7 @@ const songs = [
         id: 58,
         title: "Vaseegara",
         artist: "Minnale",
+        music: "A R Rahman",
         image: "images/Minnale.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Vaseegara-Male.mp3"),
@@ -1217,6 +1258,7 @@ const songs = [
         id: 57,
         title: "Hosanna",
         artist: "Vinnaithaandi Varuvaaya",
+        music: "A R Rahman",
         image: "images/VinnaithaandiVaruvaaya.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Hosanna-Male.mp3"),
@@ -1231,6 +1273,7 @@ const songs = [
         id: 56,
         title: "Thuli Thuli Mazhaiyaai",
         artist: "Paiyaa",
+        music: "Yuvan Shankar Raja",
         image: "images/Paiyaa.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Thuli-Thuli-Mazhaiyaai-Male.mp3"),
@@ -1245,6 +1288,7 @@ const songs = [
         id: 55,
         title: "Ennamo Yeadho",
         artist: "Ko",
+        music: "Harris Jayaraj",
         image: "images/Ko.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ennamo-Yeadho-Male.mp3"),
@@ -1259,6 +1303,7 @@ const songs = [
         id: 54,
         title: "Manjal Veiyil",
         artist: "Vettaiyadu Vilaiyadu",
+        music: "Harris Jayaraj",
         image: "images/VettaiyaduVilaiyadu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Manjal-Veiyil-Male.mp3"),
@@ -1273,6 +1318,7 @@ const songs = [
         id: 53,
         title: "Engeyo Paartha Mayakkam",
         artist: "Yaaradi Nee Mohini",
+        music: "Yuvan Shankar Raja",
         image: "images/YaaradiNeeMohini.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Engeyo-Paartha-Mayakkam-Male.mp3"),
@@ -1287,6 +1333,7 @@ const songs = [
         id: 52,
         title: "Venmegam Pennaga",
         artist: "Yaaradi Nee Mohini",
+        music: "Yuvan Shankar Raja",
         image: "images/YaaradiNeeMohini.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Venmegam-Pennaga-Male.mp3"),
@@ -1301,6 +1348,7 @@ const songs = [
         id: 51,
         title: "Idhu Varai Illadha",
         artist: "Goa",
+        music: "Yuvan Shankar Raja",
         image: "images/Goa.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Idhu-Varai-Illadha-Male.mp3"),
@@ -1315,6 +1363,7 @@ const songs = [
         id: 50,
         title: "Munbe Vaa",
         artist: "Vaaranam Aayiram",
+        music: "Harris Jayaraj",
         image: "images/VaaranamAayiram.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Munbe-Vaa-Male.mp3"),
@@ -1329,6 +1378,7 @@ const songs = [
         id: 49,
         title: "Nee Paartha Vizhigal",
         artist: "Moonu",
+        music: "Anirudh Ravichander",
         image: "images/Moonu.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Nee-Paartha-Vizhigal-Male.mp3"),
@@ -1343,6 +1393,7 @@ const songs = [
         id: 48,
         title: "Azhagiye Marry Me",
         artist: "Kaatru Veliyidai",
+        music: "A R Rahman",
         image: "images/KaatruVeliyidai.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Azhagiye-Male.mp3"),
@@ -1357,6 +1408,7 @@ const songs = [
         id: 47,
         title: "Mudhal Mazhai",
         artist: "Bheema",
+        music: "Harris Jayaraj",
         image: "images/Bheema.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Mudhal-Mazhai-Male.mp3"),
@@ -1371,6 +1423,7 @@ const songs = [
         id: 46,
         title: "Thean Thean Thean",
         artist: "Kuruvi",
+        music: "Vidyasagar",
         image: "images/Kuruvi.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Thean-Thean-Thean-Male.mp3"),
@@ -1385,6 +1438,7 @@ const songs = [
         id: 45,
         title: "Anal Mele Panithuli",
         artist: "Vaaranam Aayiram",
+        music: "Harris Jayaraj",
         image: "images/VaaranamAayiram.jpg",
         audio: {
            //male: getFirebaseUrl("songs/male/Anal-Mele-Male.mp3"),
@@ -1399,6 +1453,7 @@ const songs = [
         id: 44,
         title: "Naani Koni",
         artist: "Maatraan",
+        music: "Harris Jayaraj",
         image: "images/Maatran.jpg",
         audio: {
            //male: getFirebaseUrl("songs/male/Naani-Koni-Male.mp3"),
@@ -1413,6 +1468,7 @@ const songs = [
         id: 43,
         title: "Amali Thumali",
         artist: "Ko",
+        music: "Harris Jayaraj",
         image: "images/Ko.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Amali-Thumali-Male.mp3"),
@@ -1427,6 +1483,7 @@ const songs = [
         id: 42,
         title: "Andha Arabi Kadaloram",
         artist: "Bombay",
+        music: "A R Rahman",
         image: "images/Bombay.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Andha-Arabi-Kadaloram-Male.mp3"),
@@ -1441,6 +1498,7 @@ const songs = [
         id: 41,
         title: "Oru Maalai Iravinil",
         artist: "Ghajini",
+        music: "Harris Jayaraj",
         image: "images/Ghajini.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Oru-Maalai-Iravinil-Male.mp3"),
@@ -1455,6 +1513,7 @@ const songs = [
         id: 40,
         title: "Uyirin Uyire",
         artist: "Kakka Kakka",
+        music: "Harris Jayaraj",
         image: "images/KakkaKakka.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Uyirin-Uyire-Male.mp3"),
@@ -1469,6 +1528,7 @@ const songs = [
         id: 39,
         title: "Pathinettu Vayathu",
         artist: "Suriyan",
+        music: "Deva",
         image: "images/Suriyan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Pathinettu-Vayathu-Male.mp3"),
@@ -1483,6 +1543,7 @@ const songs = [
         id: 38,
         title: "Engey Enn Jeevane",
         artist: "Uyarndha Ullam",
+        music: "Ilaiyaraaja",
         image: "images/UyarndhaUllam.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Engey-Enn-Jeevane-Male.mp3"),
@@ -1497,6 +1558,7 @@ const songs = [
         id: 37,
         title: "Dheivam Thantha Veedu",
         artist: "Aval Oru Thodar Kathai",
+        music: "M S Viswanathan",
         image: "images/AvalOruThodarKathai.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Deivam-Thantha-Veedu-Male.mp3"),
@@ -1511,6 +1573,7 @@ const songs = [
         id: 36,
         title: "Un Uthadora Sivape",
         artist: "Panchalankurichi",
+        music: "Deva",
         image: "images/Panchalankurichi.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Un-Uthadora-Sivape-Male.mp3"),
@@ -1525,6 +1588,7 @@ const songs = [
         id: 35,
         title: "Vaayamoodi Summa Iru Da",
         artist: "Mugamoodi",
+        music: "Krishna Kumar",
         image: "images/Mugamoodi.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Vaayamoodi-Summa-Iru-Da-Male.mp3"),
@@ -1539,6 +1603,7 @@ const songs = [
         id: 34,
         title: "Oliyile Therivadhu",
         artist: "Azhagi",
+        music: "Ilaiyaraaja",
         image: "images/Azhagi.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Oliyile-Therivadhu-Male.mp3"),
@@ -1553,6 +1618,7 @@ const songs = [
         id: 33,
         title: "Nenjinile Nenjinile",
         artist: "Uyire",
+        music: "A R Rahman",
         image: "images/Uyire.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Nenjinile-Nenjinile-Male.mp3"),
@@ -1567,6 +1633,7 @@ const songs = [
         id: 32,
         title: "Lajjavathiye",
         artist: "4Students",
+        music: "Jassie Gift",
         image: "images/4Students.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Lajjavathiye-Male.mp3"),
@@ -1581,6 +1648,7 @@ const songs = [
         id: 31,
         title: "Manmadhane Nee",
         artist: "Manmadhan",
+        music: "Yuvan Shankar Raja",
         image: "images/Manmadhan.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Manmadhane-Nee-Male.mp3"),
@@ -1595,6 +1663,7 @@ const songs = [
         id: 30,
         title: "Manasellam Mazhaiye",
         artist: "Saguni",
+        music: "G V Prakash Kumar",
         image: "images/Saguni.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Manasellam-Mazhaiye-Male.mp3"),
@@ -1609,6 +1678,7 @@ const songs = [
         id: 29,
         title: "Thendral Thaan Thingal Thaan",
         artist: "PuthuPuthu Arthangal",
+        music: "Ilaiyaraaja",
         image: "images/PuthuPuthuArthangal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Thendral-Thaan-Thingal-Male.mp3"),
@@ -1623,6 +1693,7 @@ const songs = [
         id: 28,
         title: "Paada Vandhadhor Gaanam",
         artist: "Ilamai Kaalangal",
+        music: "Ilaiyaraaja",
         image: "images/IlamaiKaalangal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Paada-Vandhadhor-Male.mp3"),
@@ -1637,6 +1708,7 @@ const songs = [
         id: 27,
         title: "Pesa Koodathu",
         artist: "Adutha Varisu",
+        music: "Ilaiyaraaja",
         image: "images/AduthaVarisu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Pesa-Koodathu-Male.mp3"),
@@ -1651,6 +1723,7 @@ const songs = [
         id: 26,
         title: "Mazhai Tharumo En Megam",
         artist: "Manidharil Ithanai Nirangala",
+        music: "Shyam",
         image: "images/ManidharilIthanaiNirangala.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Mazhai-Tharumo-Male.mp3"),
@@ -1665,6 +1738,7 @@ const songs = [
         id: 25,
         title: "Oru Pattam Poochi",
         artist: "Kadhalukku Mariyadhai",
+        music: "Ilaiyaraaja",
         image: "images/KadhalukkuMariyadhai.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Oru-Pattam-Poochi-Male.mp3"),
@@ -1679,6 +1753,7 @@ const songs = [
         id: 24,
         title: "Ennavale Ennavale Engirunthai",
         artist: "Ninaithen Vanthai",
+        music: "Deva",
         image: "images/NinaithenVanthai.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Ennavale-Ennavale-Engirunthai-Male.mp3"),
@@ -1694,6 +1769,7 @@ const songs = [
         id: 23,
         title: "Enna Solli Paaduvatho",
         artist: "En Mana Vaanil",
+        music: "Ilaiyaraaja",
         image: "images/EnManaVaanil.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Enna-Solli-Paaduvatho-Male.mp3"),
@@ -1708,6 +1784,7 @@ const songs = [
         id: 22,
         title: "Ennulle Ennulle",
         artist: "Valli",
+        music: "Ilaiyaraaja",
         image: "images/Valli.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Ennulle-Ennulle-Male.mp3"),
@@ -1722,6 +1799,7 @@ const songs = [
         id: 21,
         title: "Ennai Konjam Maatri",
         artist: "Kakka Kakka",
+        music: "Harris Jayaraj",
         image: "images/KakkaKakka.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ennai-Konjam-Maatri-Male.mp3"),
@@ -1736,6 +1814,7 @@ const songs = [
         id: 20,
         title: "Thodu Thodu Enave",
         artist: "Thullatha Manamum Thullum",
+        music: "S A Rajkumar",
         image: "images/ThullathaManamumThullum.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Thodu-Thodu-Enave-Male.mp3"),
@@ -1750,6 +1829,7 @@ const songs = [
         id: 19,
         title: "Sangeetha Megham",
         artist: "Udhaya Geetham",
+        music: "Ilaiyaraaja",
         image: "images/UdhayaGeetham.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Sangeetha-Megham-Male.mp3"),
@@ -1764,6 +1844,7 @@ const songs = [
         id: 18,
         title: "Thuli Thuliyai Kottum",
         artist: "Paarvai Ondre Pothume",
+        music: "Bharani",
         image: "images/PaarvaiOndrePothume.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Thuli-Thuliyai-Kottum-Male.mp3"),
@@ -1778,6 +1859,7 @@ const songs = [
         id: 17,
         title: "Ennamma Kannu Sowkiyama",
         artist: "Mr Bharath",
+        music: "Ilaiyaraaja",
         image: "images/MrBharath.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ennamma-Kannu-Sowkiyama-Male.mp3"),
@@ -1792,6 +1874,7 @@ const songs = [
         id: 16,
         title: "Kavidhaye Theriyuma",
         artist: "Jayam",
+        music: "R P Patnaik",
         image: "images/Jayam.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kavithayae-Theriyuma-Male.mp3"),
@@ -1806,6 +1889,7 @@ const songs = [
         id: 15,
         title: "Unna Nenachen",
         artist: "Apoorva Sagodharargal",
+        music: "Ilaiyaraaja",
         image: "images/ApoorvaSagodharargal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Unna-Nenachen-Male.mp3"),
@@ -1820,6 +1904,7 @@ const songs = [
         id: 14,
         title: "Idhayam Oru Kovil",
         artist: "Idhaya Kovil",
+        music: "Ilaiyaraaja",
         image: "images/IdhayaKovil.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Idhayam-Oru-Kovil-Male.mp3"),
@@ -1833,7 +1918,8 @@ const songs = [
  { 
         id: 13,
         title: "Elangaathu Veesudhey",
-        artist: "Unnai Thedi Varuven",
+        artist: "Pithamagan",
+        music: "Ilaiyaraaja",
         image: "images/Pithamagan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Elangaathu-Veesudhey-Male.mp3"),
@@ -1848,6 +1934,7 @@ const songs = [
         id: 12,
         title: "En Anbe Anbe En Manam",
         artist: "Unnai Thedi Varuven",
+        music: "Ilaiyaraaja",
         image: "images/UnnaiThediVaruven.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/En-Anbe-Anbe-Male.mp3"),
@@ -1862,6 +1949,7 @@ const songs = [
         id: 11,
         title: "Enna Thaan Sugamo",
         artist: "Mappillai",
+        music: "Ilaiyaraaja",
         image: "images/Mappillai.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ennathaan-Sugamo-Male.mp3"),
@@ -1876,6 +1964,7 @@ const songs = [
         id: 10,
         title: "Maalayil Yaro",
         artist: "Chatriyan",
+        music: "Ilaiyaraaja",
         image: "images/Chatriyan.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Maalayil-Yaro-male.mp3"),
@@ -1890,6 +1979,7 @@ const songs = [
         id: 9,
         title: "Kadhal Oviyam",
         artist: "Alaigal Oivathillai",
+        music: "Ilaiyaraaja",
         image: "images/AlaigalOivathillai.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Kadhal-Oviyam-Male.mp3"),
@@ -1904,6 +1994,7 @@ const songs = [
         id: 8,
         title: "Malare Mounama",
         artist: "Karna",
+        music: "Vidyasagar",
         image: "images/Karna.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Malare-Mounama-Male.mp3"),
@@ -1918,6 +2009,7 @@ const songs = [
         id: 7,
         title: "Valli Valli Ena Vanthan",
         artist: "Deiva Vaakku",
+        music: "Ilaiyaraaja",
         image: "images/DeivaVaakku.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Valli-Valli-Ena-Vanthan-Male.mp3"),
@@ -1932,6 +2024,7 @@ const songs = [
         id: 6,
         title: "Nethu Oruthara Oruthara",
         artist: "Puthu Pattu",
+        music: "Ilaiyaraaja",
         image: "images/PuthuPattu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Nethu-Oruthara-Oruthara-Male.mp3"),
@@ -1946,6 +2039,7 @@ const songs = [
         id: 5,
         title: "Innum Ennai Enna",
         artist: "Singaravelan",
+        music: "Ilaiyaraaja",
         image: "images/Singaravelan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Innum-Ennai-Enna-Male.mp3"),
@@ -1959,6 +2053,7 @@ const songs = [
       {
         id: 4,
         title: "Aagaya Gangai",
+        music: "Ilaiyaraaja",
         artist: "Dharma Yuddham",
         image: "images/DharmaYuddham.jpg",
         audio: {
@@ -1974,6 +2069,7 @@ const songs = [
         id: 3,
         title: "Engengo Sellum",
         artist: "Pattakkathi Bhairavan",
+        music: "Ilaiyaraaja",
         image: "images/PattakkathiBhairavan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Engengo-Sellum-Male.mp3"),
@@ -1988,6 +2084,7 @@ const songs = [
         id: 2,
         title: "Oru Kadhal Enbathu",
         artist: "Chinna Thambi Periya Thambi",
+        music: "Gangai Amaran",
         image: "images/ChinnaThambi.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Oru-Kadhal-Enbathu-Male.mp3"),
@@ -2002,6 +2099,7 @@ const songs = [
         id: 1,
         title: "Guruvayurappa",
         artist: "Puthu Puthu Arthangal",
+        music: "Ilaiyaraaja",
         image: "images/PuthuPuthuArthangal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Guruvayurappa-Guruvayurappa-Male.mp3"),
