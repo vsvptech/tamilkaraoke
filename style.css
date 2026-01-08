@@ -501,6 +501,46 @@ body.dark-mode .network-notification.warning {
     border: 1px solid rgba(128, 128, 128, 0.2);
     font-family: 'Montserrat', sans-serif;
 }
+/* ==================== SIDEBAR SONG COUNT STYLING ==================== */
+
+.menu li[data-type] span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.song-count {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-left: 2px;
+    font-weight: 400;
+}
+
+.dark-mode .song-count {
+    color: var(--text-secondary);
+    opacity: 0.8;
+}
+
+/* For developed and about items (no count) */
+.menu li[data-type="developed"] span,
+.menu li[data-type="about"] span,
+.menu li[data-type="music"] span {
+    gap: 0;
+}
+
+.menu li[data-type="developed"] .song-count,
+.menu li[data-type="about"] .song-count,
+.menu li[data-type="music"] .song-count {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .song-count {
+        font-size: 11px;
+    }
+}
+
 
 /* Responsive styles for music director modal */
 @media (max-width: 768px) {
@@ -2066,6 +2106,7 @@ main {
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
 
 
