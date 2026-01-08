@@ -13,10 +13,10 @@ const songs = [
         artist: "Kadhalil Vizhunthen",
         image: "images/KadhalilVizhunthen.jpg",
         audio: {
-            male: getFirebaseUrl("songs/male/Devathaiyai-Kanden-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Devathaiyai-Kanden-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Devathaiyai-Kanden-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Devathaiyai-Kanden-Song.mp3")
+            male: getFirebaseUrl("songs/male/Devathayai-Kanden-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Devathayai-Kanden-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Devathayai-Kanden-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Devathayai-Kanden-Song.mp3")
         },  
         lyrics: "lyrics/Devathaiyai.txt",
         availableTypes: ["male", "song", "podcast"],
