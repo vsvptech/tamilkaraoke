@@ -1911,6 +1911,7 @@ main {
     .version-selector {
         flex-wrap: wrap;
         gap: 3px;
+        width: max-content;
     }
     
     .lyrics-list-btn {
@@ -2065,5 +2066,6 @@ main {
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
 
