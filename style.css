@@ -1986,11 +1986,11 @@ main {
     
     .player-title {
         font-size: 14px;
-        margin-right: 5px;
+        margin-right: 2px;
         flex-shrink: 1;
-        /* overflow: hidden; */
+        overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 140px;
+        max-width: 200px;
         font-weight: 800;
     }
     
@@ -2065,4 +2065,5 @@ main {
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
