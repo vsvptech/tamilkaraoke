@@ -56,6 +56,7 @@
                 </div>
 
                 <ul class="menu">
+                    <li data-type="music"><i class="fas fa-drum"></i> Music Director</li>
                     <li data-type="list"><i class="fas fa-list"></i> Song List</li>
                     <li data-type="male"><i class="fas fa-mars"></i> Solo Male</li>
                     <li data-type="female"><i class="fas fa-venus"></i> Solo Female</li>
@@ -88,6 +89,9 @@
             <div class="player-header">
                 <h2 class="player-title">Now Playing</h2> <!-- Changed from "Now Playing" to "Now" -->
                 <div class="player-controls">
+                    <button class="control-btn type-filter-btn" data-type="music">
+                        <i class="fas fa-drum"></i>
+                    </button>
                     <button class="control-btn type-filter-btn active" data-type="list">
                         <i class="fas fa-list"></i>
                     </button>
@@ -276,6 +280,22 @@
             </div>
         </div>
     </div>
+
+    <!-- Music Director Modal -->
+<div class="music-director-modal" id="musicDirectorModal">
+    <div class="music-director-container">
+        <div class="music-director-header">
+            <i class="fas fa-drum music-director-icon"></i>
+            <h3 class="music-director-title">Music Directors</h3>
+            <button class="close-music-director" id="closeMusicDirector">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="music-director-list" id="musicDirectorList">
+            <!-- Music directors will be populated here -->
+        </div>
+    </div>
+</div>
     
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
