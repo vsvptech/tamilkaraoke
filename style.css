@@ -370,6 +370,169 @@ body.dark-mode .network-notification.warning {
     background: #ffa502;
 }
 
+/* ==================== MUSIC DIRECTOR MODAL ==================== */
+
+.music-director-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    z-index: 2001;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.music-director-modal.active {
+    display: flex;
+}
+
+.music-director-container {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+.music-director-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.music-director-icon {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+.music-director-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-color);
+    flex: 1;
+}
+
+.close-music-director {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-music-director:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--primary-color);
+}
+
+.music-director-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    padding: 10px 0;
+}
+
+.music-director-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    background-color: var(--player-bg);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.music-director-item:hover {
+    background-color: rgba(var(--primary-color), 0.1);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.music-director-item.active {
+    background-color: rgba(var(--primary-color), 0.2);
+    border-color: var(--primary-color);
+}
+
+.music-director-bullet {
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.music-director-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* Music director tag in song list */
+.music-director-tag {
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: rgba(128, 128, 128, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Responsive styles for music director modal */
+@media (max-width: 768px) {
+    .music-director-container {
+        max-width: 90%;
+        padding: 20px;
+    }
+    
+    .music-director-title {
+        font-size: 20px;
+    }
+    
+    .music-director-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .music-director-container {
+        max-width: 95%;
+        padding: 15px;
+    }
+    
+    .music-director-title {
+        font-size: 18px;
+    }
+    
+    .music-director-name {
+        font-size: 15px;
+    }
+}
+
 /* Responsive adjustments for player header */
 @media (max-width: 768px) {
     .player-header {
