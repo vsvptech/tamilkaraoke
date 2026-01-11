@@ -7,7 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 147,
+        title: "Enna Solla Pogirai",
+        artist: "Kandukonden Kandukonden",
+        music: "A R Rahman", 
+        image: "images/Kandukonden.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Enna-Solla-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Enna-Solla-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Enna-Solla-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Enna-Solla-SongM.mp3")
+        },  
+        lyrics: "lyrics/Enna-Solla.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
 { 
         id: 146,
         title: "Ninaithu Ninaithu",
