@@ -492,14 +492,25 @@ body.dark-mode .network-notification.warning {
 
 /* Music director tag in song list */
 .music-director-tag {
-    font-size: 12px;
+    font-size: 10px;
+    font-weight: 600;
     color: var(--text-secondary);
-    background: rgba(128, 128, 128, 0.1);
-    padding: 2px 2px;
+    background: var(--bg-color);
+    padding: 3px 8px;
     border-radius: 4px;
-    margin-left: 8px;
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    line-height: 1;
+    margin: 0 2px;
+    border: 1px solid var(--border-color);
+    min-width: 40px;
+    text-align: center;
+    cursor: default;
+    user-select: none;
+    order: 999; /* Ensures it's always last */
 }
 /* ==================== SIDEBAR SONG COUNT STYLING ==================== */
 
@@ -2106,6 +2117,7 @@ main {
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
 
 
