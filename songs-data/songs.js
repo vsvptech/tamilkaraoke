@@ -7,6 +7,38 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
+
+	
+{ 
+        id: 145,
+        title: "Enai-Kaanavillaiye",
+        artist: "Kadhal Desam",
+        music: "A R Rahman", 
+        image: "images/Kadhal-Desam.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Enai-Kaanavillaiye-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Enai-Kaanavillaiye-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Enai-Kaanavillaiye-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Enai-Kaanavillaiye-Song.mp3")
+        },  
+        lyrics: "lyrics/Enai-Kaanavillaiye.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },
+{ 
+        id: 144,
+        title: "Nilaave Vaa",
+        artist: "Mouna Ragam",
+        music: "Ilaiyaraaja", 
+        image: "images/Mouna-Ragam.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Nilaave-Vaa-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Nilaave-Vaa-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Nilaave-Vaa-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Nilaave-Vaa-Song.mp3")
+        },  
+        lyrics: "lyrics/Nilaave-Vaa.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },
 { 
         id: 143,
         title: "Devathaiyai Kanden",
