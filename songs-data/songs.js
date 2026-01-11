@@ -18,7 +18,7 @@ const songs = [
             male: getFirebaseUrl("songs/male/Ninaithu-Ninaithu-Male.mp3"),
             female: getFirebaseUrl("songs/female/Ninaithu-Ninaithu-Female.mp3"),
             //duet: getFirebaseUrl("songs/duet/Ninaithu-Ninaithu-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Ninaithu-NinaithuM-Song.mp3")
+            song: getFirebaseUrl("songs/song/Ninaithu-Ninaithu-SongM.mp3")
         },  
         lyrics: "lyrics/Ninaithu-Ninaithu.txt",
         availableTypes: ["male", "female", "song", "podcast"],
