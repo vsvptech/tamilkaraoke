@@ -116,6 +116,11 @@ let lastActiveSongType = null;
 // Song list visibility state
 let isSongListVisible = true;
 
+// Search state variables
+let currentSearchTerm = "";
+let isSearchActive = false;
+let searchedSongs = [];
+
 // Music directors list
 const musicDirectors = [
 "A R Rahman",
@@ -302,6 +307,9 @@ function applyMusicDirectorFilter() {
     // Filter songs by music director
     filteredSongs = musicDirectorSongs;
     
+    // Clear search when changing to music director
+    clearSearch();
+    
     // Update player title
     if (playerTitle) {
         playerTitle.textContent = currentMusicDirector;
@@ -452,6 +460,11 @@ function getTitleForType(song, type, context = "default") {
     
     // For carousel context, show plain title without version suffix
     if (context === "carousel") {
+        return baseTitle;
+    }
+    
+    // For search context, show plain title for easier searching
+    if (context === "search") {
         return baseTitle;
     }
     
@@ -1040,7 +1053,119 @@ function createAboutModal() {
     document.body.insertAdjacentHTML('beforeend', aboutModalHTML);
 }
 
-// ==================== SEARCH BOX HANDLING ====================
+// ==================== SEARCH FUNCTIONS ====================
+
+// Clear search function
+function clearSearch() {
+    currentSearchTerm = "";
+    isSearchActive = false;
+    searchedSongs = [];
+    
+    if (searchInput) searchInput.value = '';
+    if (mobileSearchInput) mobileSearchInput.value = '';
+    
+    updateSearchClearButtons();
+}
+
+// Handle search function
+function handleSearch(e) {
+    markUserInteraction();
+    const searchTerm = e.target.value.toLowerCase();
+    currentSearchTerm = searchTerm;
+    
+    if (searchTerm.trim().length === 0) {
+        isSearchActive = false;
+        searchedSongs = [];
+        // Show all songs in current filter
+        renderFilteredSongList();
+    } else {
+        isSearchActive = true;
+        
+        // Filter songs based on search term
+        searchedSongs = filteredSongs.filter(song => {
+            const displayTitle = getTitleForType(song, song.currentType || song.availableTypes[0], "search");
+            const cleanArtist = getArtistForType(song, song.currentType || song.availableTypes[0]);
+            
+            return displayTitle.toLowerCase().includes(searchTerm) || 
+                   cleanArtist.toLowerCase().includes(searchTerm) ||
+                   (song.music && song.music.toLowerCase().includes(searchTerm));
+        });
+        
+        // Show only searched songs
+        renderSearchedSongList();
+    }
+    
+    updateSearchClearButtons();
+}
+
+// Render searched song list
+function renderSearchedSongList() {
+    const songItems = document.querySelectorAll('.song-item');
+    
+    if (searchedSongs.length === 0 && currentSearchTerm.trim() !== "") {
+        // If no songs found in search, show message
+        const existingMessage = document.querySelector('.no-songs-search-message');
+        if (existingMessage) existingMessage.remove();
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'no-songs-search-message';
+        messageDiv.style.cssText = 'text-align: center; padding: 40px; color: var(--text-secondary);';
+        messageDiv.innerHTML = `
+            <i class="fas fa-search" style="font-size: 48px; margin-bottom: 10px;"></i>
+            <p>No songs found for "${currentSearchTerm}"</p>
+            <p style="font-size: 14px; margin-top: 10px;">Try a different search term</p>
+        `;
+        
+        // Insert at the beginning of song list container
+        if (songListContainer.firstChild) {
+            songListContainer.insertBefore(messageDiv, songListContainer.firstChild);
+        } else {
+            songListContainer.appendChild(messageDiv);
+        }
+        
+        // Hide all song items
+        songItems.forEach(item => {
+            item.style.display = 'none';
+        });
+        return;
+    }
+    
+    // Remove any existing search message
+    const existingMessage = document.querySelector('.no-songs-search-message');
+    if (existingMessage) existingMessage.remove();
+    
+    // Show only songs that match the search
+    songItems.forEach(item => {
+        const songId = parseInt(item.dataset.id);
+        const isInSearchResults = searchedSongs.some(s => s.id === songId);
+        
+        if (isInSearchResults) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    
+    // If no search term, show all
+    if (currentSearchTerm.trim() === "") {
+        songItems.forEach(item => {
+            item.style.display = 'flex';
+        });
+    }
+}
+
+// Render filtered song list (for when no search is active)
+function renderFilteredSongList() {
+    const songItems = document.querySelectorAll('.song-item');
+    
+    // Remove any existing search message
+    const existingMessage = document.querySelector('.no-songs-search-message');
+    if (existingMessage) existingMessage.remove();
+    
+    songItems.forEach(item => {
+        item.style.display = 'flex';
+    });
+}
 
 // Close mobile search when clicking outside
 function closeMobileSearchOnOutsideClick(e) {
@@ -1097,8 +1222,10 @@ function closeMobileSearch() {
     mobileSearchContainer.classList.remove('active');
     
     // Clear search if needed
-    mobileSearchInput.value = '';
-    handleSearch({ target: mobileSearchInput });
+    clearSearch();
+    if (mobileSearchInput) {
+        handleSearch({ target: mobileSearchInput });
+    }
     
     // Remove click listeners
     document.removeEventListener('click', closeMobileSearchOnOutsideClick);
@@ -1408,79 +1535,92 @@ function renderSongList() {
         
         let versionSelector = '';
         
-        // Determine which types to show
-        let typesToShow = [];
+        // Define the EXACT ORDER of buttons you want
+        const buttonOrder = ["male", "female", "duet", "song", "podcast", "music-director-tag", "favourite"];
         
-        if (currentFilterType === "list" || currentMusicDirector) {
-            // In list mode or music director mode: show ALL available types INCLUDING podcast
-            typesToShow = song.availableTypes.filter(t => getAudioForType(song, t) || t === "podcast");
-        } else if (currentFilterType === "favourite") {
-            // In favourite mode: show ALL available types for favorited songs
-            typesToShow = song.availableTypes.filter(t => getAudioForType(song, t) || t === "podcast");
-        } else {
-            // In other filter modes (male, female, duet, song): 
-            // Show ALL audio types that the song has, plus podcast if available
-            const audioTypes = song.availableTypes.filter(t => getAudioForType(song, t));
-            const hasPodcast = song.availableTypes.includes("podcast") && song.lyrics && song.lyrics.trim() !== '';
-            
-            typesToShow = [...audioTypes];
-            if (hasPodcast) {
-                typesToShow.push("podcast");
-            }
-        }
+        // Check which buttons should actually be shown
+        const hasMale = song.availableTypes.includes("male") && getAudioForType(song, "male");
+        const hasFemale = song.availableTypes.includes("female") && getAudioForType(song, "female");
+        const hasDuet = song.availableTypes.includes("duet") && getAudioForType(song, "duet");
+        const hasSong = song.availableTypes.includes("song") && getAudioForType(song, "song");
+        const hasPodcast = song.availableTypes.includes("podcast") && song.lyrics && song.lyrics.trim() !== '';
+        const hasMusicDirector = song.music && song.music !== "Unknown";
         
-        typesToShow.forEach(type => {
-            // Check if this button should be active
-            const isCurrent = (song.active && type === song.currentType && type !== "podcast");
-            const audioPath = getAudioForType(song, type);
-            
-            if (type === "podcast") {
-                // Show lyrics button if song has lyrics
-                if (song.lyrics && song.lyrics.trim() !== '') {
-                    versionSelector += `
-                        <button class="version-btn lyrics-btn" 
-                                data-id="${song.id}" 
-                                data-type="${type}"
-                                title="Show Lyrics">
-                            <i class="fas fa-podcast"></i>
-                        </button>
-                    `;
-                }
-            } else if (audioPath) {
-                const btnTitle = type === "song" ? "Original" : 
-                                type === "male" ? "Male" :
-                                type === "female" ? "Female" : 
-                                "Duet";
-                
+        // Build buttons in the exact order you specified
+        buttonOrder.forEach(type => {
+            if (type === "male" && hasMale) {
+                const isCurrent = (song.active && song.currentType === "male");
                 versionSelector += `
                     <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
                             data-id="${song.id}" 
-                            data-type="${type}"
-                            title="${btnTitle} Version">
-                        <i class="${getSongTypeIcon(type)}"></i>
+                            data-type="male"
+                            title="Male Version">
+                        <i class="fas fa-mars"></i>
                     </button>
                 `;
             }
+            else if (type === "female" && hasFemale) {
+                const isCurrent = (song.active && song.currentType === "female");
+                versionSelector += `
+                    <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
+                            data-id="${song.id}" 
+                            data-type="female"
+                            title="Female Version">
+                        <i class="fas fa-venus"></i>
+                    </button>
+                `;
+            }
+            else if (type === "duet" && hasDuet) {
+                const isCurrent = (song.active && song.currentType === "duet");
+                versionSelector += `
+                    <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
+                            data-id="${song.id}" 
+                            data-type="duet"
+                            title="Duet Version">
+                        <i class="fas fa-venus-mars"></i>
+                    </button>
+                `;
+            }
+            else if (type === "song" && hasSong) {
+                const isCurrent = (song.active && song.currentType === "song");
+                versionSelector += `
+                    <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
+                            data-id="${song.id}" 
+                            data-type="song"
+                            title="Original Version">
+                        <i class="fas fa-music"></i>
+                    </button>
+                `;
+            }
+            else if (type === "podcast" && hasPodcast) {
+                versionSelector += `
+                    <button class="version-btn lyrics-btn" 
+                            data-id="${song.id}" 
+                            data-type="podcast"
+                            title="Show Lyrics">
+                        <i class="fas fa-podcast"></i>
+                    </button>
+                `;
+            }
+            else if (type === "music-director-tag" && hasMusicDirector) {
+                versionSelector += `
+                    <span class="music-director-tag">${song.music}</span>
+                `;
+            }
+            else if (type === "favourite") {
+                // Show favorite button ONLY for NON-list modes and non-music-director modes
+                if (currentFilterType !== "list" && !currentMusicDirector) {
+                    versionSelector += `
+                        <button class="version-btn favorite-btn ${isFavorite ? 'active' : ''}" 
+                                data-id="${song.id}" 
+                                data-type="favourite"
+                                title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}">
+                            <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                    `;
+                }
+            }
         });
-        
-        // Add music director tag
-        if (song.music && song.music !== "Unknown") {
-            versionSelector += `
-                <span class="music-director-tag">${song.music}</span>
-            `;
-        }
-        
-        // Show favorite button in version-selector ONLY for NON-list modes and non-music-director modes
-        if (currentFilterType !== "list" && !currentMusicDirector) {
-            versionSelector += `
-                <button class="version-btn favorite-btn ${isFavorite ? 'active' : ''}" 
-                        data-id="${song.id}" 
-                        data-type="favourite"
-                        title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}">
-                    <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
-                </button>
-            `;
-        }
         
         // Determine which title and artist to show
         let displayTitle = '';
@@ -1496,17 +1636,10 @@ function renderSongList() {
             artistName = getArtistForType(song, currentType);
         }
         
-        // Determine which icon to show in .song-item-type
-        let typeIconHtml = '';
-        if (currentFilterType === "list" || currentMusicDirector) {
-            // In list mode or music director mode: show heart icon
-            typeIconHtml = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart" 
+        // ALWAYS show heart icon in song-item-type
+        let typeIconHtml = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart" 
                                data-id="${song.id}"
                                title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}"></i>`;
-        } else {
-            // In other modes: show the normal version icon
-            typeIconHtml = `<i class="${iconClass}"></i>`;
-        }
         
         songItem.innerHTML = `
             <div class="song-item-art">
@@ -1537,26 +1670,24 @@ function renderSongList() {
             }
         }
         
-        // Handle heart icon in .song-item-type (for list mode)
-        if (currentFilterType === "list" || currentMusicDirector) {
-            const heartIcon = songItem.querySelector('.song-item-type i');
-            if (heartIcon) {
-                heartIcon.addEventListener('click', (e) => {
-                    markUserInteraction();
-                    e.stopPropagation();
-                    const songId = parseInt(e.currentTarget.dataset.id);
-                    const wasAdded = toggleFavorite(songId);
-                    
-                    // Update the icon immediately
-                    if (wasAdded) {
-                        e.currentTarget.className = 'fas fa-heart';
-                        e.currentTarget.title = 'Remove from Favorites';
-                    } else {
-                        e.currentTarget.className = 'far fa-heart';
-                        e.currentTarget.title = 'Add to Favorites';
-                    }
-                });
-            }
+        // Handle heart icon in .song-item-type (for ALL modes)
+        const heartIcon = songItem.querySelector('.song-item-type i');
+        if (heartIcon) {
+            heartIcon.addEventListener('click', (e) => {
+                markUserInteraction();
+                e.stopPropagation();
+                const songId = parseInt(e.currentTarget.dataset.id);
+                const wasAdded = toggleFavorite(songId);
+                
+                // Update the icon immediately
+                if (wasAdded) {
+                    e.currentTarget.className = 'fas fa-heart';
+                    e.currentTarget.title = 'Remove from Favorites';
+                } else {
+                    e.currentTarget.className = 'far fa-heart';
+                    e.currentTarget.title = 'Add to Favorites';
+                }
+            });
         }
         
         // Version button click handler
@@ -1601,9 +1732,31 @@ function renderSongList() {
                 updateSelectedSongUI(songId, versionType);
                 loadSong(songIndex, isAutoPlayEnabled);
                 
+                // ENHANCED: If search is active, only show the selected song
+                if (isSearchActive && currentSearchTerm.trim() !== "") {
+                    // Show only this specific song in the search results
+                    const song = songs.find(s => s.id === songId);
+                    if (song) {
+                        searchedSongs = [song];
+                        renderSearchedSongList();
+                    }
+                }
+                
                 if (currentFilterType !== "list" && currentFilterType !== "favourite" && versionType !== currentFilterType) {
                     currentFilterType = versionType;
                     filteredSongs = filterSongsByType(versionType);
+                    
+                    // ENHANCED: If search was active, reapply search to new filtered songs
+                    if (isSearchActive && currentSearchTerm.trim() !== "") {
+                        searchedSongs = filteredSongs.filter(s => {
+                            const displayTitle = getTitleForType(s, s.currentType || s.availableTypes[0], "search");
+                            const cleanArtist = getArtistForType(s, s.currentType || s.availableTypes[0]);
+                            
+                            return displayTitle.toLowerCase().includes(currentSearchTerm) || 
+                                   cleanArtist.toLowerCase().includes(currentSearchTerm) ||
+                                   (s.music && s.music.toLowerCase().includes(currentSearchTerm));
+                        });
+                    }
                     
                     setTimeout(() => {
                         updateActiveFilterButton(versionType);
@@ -1618,6 +1771,11 @@ function renderSongList() {
                         }
                         
                         updateSelectedSongUI(songId, versionType);
+                        
+                        // ENHANCED: If search is active, show only searched songs
+                        if (isSearchActive && currentSearchTerm.trim() !== "") {
+                            renderSearchedSongList();
+                        }
                     }, 50);
                 }
             });
@@ -1629,8 +1787,8 @@ function renderSongList() {
                 return;
             }
             
-            // Don't trigger if clicking on heart icon in list mode
-            if ((currentFilterType === "list" || currentMusicDirector) && e.target.closest('.song-item-type i')) {
+            // Don't trigger if clicking on heart icon
+            if (e.target.closest('.song-item-type i')) {
                 return;
             }
             
@@ -1653,6 +1811,11 @@ function renderSongList() {
     });
     
     songListContainer.appendChild(fragment);
+    
+    // If search is active, apply search filter after rendering
+    if (isSearchActive && currentSearchTerm.trim() !== "") {
+        renderSearchedSongList();
+    }
 }
 
 // Load a song
@@ -1898,6 +2061,12 @@ function setActiveSong(index) {
         s.active = (i === index);
     });
     
+    // ENHANCED: If search is active, only show this song
+    if (isSearchActive && currentSearchTerm.trim() !== "") {
+        searchedSongs = [song];
+        renderSearchedSongList();
+    }
+    
     // Update UI
     updateSelectedSongUI(song.id, currentType);
     
@@ -2026,6 +2195,9 @@ async function loadLyrics(lyricsFile, songTitle, songArtist) {
 function applyFilter(type) {
     console.log("=== APPLY FILTER CALLED ===");
     console.log("Filter type:", type);
+    
+    // Clear search when changing filters
+    clearSearch();
     
     // Clear music director filter when switching to other filters
     if (type !== "music" && currentMusicDirector) {
@@ -2658,26 +2830,6 @@ function setupAudioEvents() {
     }
 }
 
-// Handle search function
-function handleSearch(e) {
-    markUserInteraction();
-    const searchTerm = e.target.value.toLowerCase();
-    const songItems = document.querySelectorAll('.song-item');
-    
-    songItems.forEach(item => {
-        const title = item.querySelector('.song-item-title').textContent.toLowerCase();
-        const artist = item.querySelector('.song-item-artist').textContent.toLowerCase();
-        
-        if (title.includes(searchTerm) || artist.includes(searchTerm)) {
-            item.style.display = 'flex';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-    
-    updateSearchClearButtons();
-}
-
 // Setup sidebar menu
 function setupSidebarMenu() {
     document.querySelectorAll('.menu li[data-type]').forEach(item => {
@@ -2840,6 +2992,15 @@ function setupEventListeners() {
         searchInput.addEventListener('input', (e) => {
             handleSearch(e);
         });
+        
+        // Clear search when pressing Escape key
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                handleSearch({ target: searchInput });
+                clearSearch();
+            }
+        });
     }
     
     if (mobileSearchInput) {
@@ -2855,21 +3016,32 @@ function setupEventListeners() {
         });
     }
     
+    // Search clear buttons
     if (searchClear) {
         searchClear.addEventListener('click', () => {
             searchInput.value = '';
+            currentSearchTerm = "";
+            isSearchActive = false;
+            searchedSongs = [];
             searchInput.focus();
             handleSearch({ target: searchInput });
             updateSearchClearButtons();
+            // Show all songs in current filter
+            renderFilteredSongList();
         });
     }
     
     if (mobileSearchClear) {
         mobileSearchClear.addEventListener('click', () => {
             mobileSearchInput.value = '';
+            currentSearchTerm = "";
+            isSearchActive = false;
+            searchedSongs = [];
             mobileSearchInput.focus();
             handleSearch({ target: mobileSearchInput });
             updateSearchClearButtons();
+            // Show all songs in current filter
+            renderFilteredSongList();
         });
     }
     
@@ -2993,5 +3165,3 @@ function updatePlayButtons() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
-
-
