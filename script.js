@@ -116,10 +116,9 @@ let lastActiveSongType = null;
 // Song list visibility state
 let isSongListVisible = true;
 
-// Search state variables
+// Search state
 let currentSearchTerm = "";
-let isSearchActive = false;
-let searchedSongs = [];
+let isSearchActive = false; // NEW: Track if search is active
 
 // Music directors list
 const musicDirectors = [
@@ -307,8 +306,14 @@ function applyMusicDirectorFilter() {
     // Filter songs by music director
     filteredSongs = musicDirectorSongs;
     
-    // Clear search when changing to music director
-    clearSearch();
+    // Apply search filter if there's a search term
+    if (currentSearchTerm) {
+        const searchLower = currentSearchTerm.toLowerCase();
+        filteredSongs = filteredSongs.filter(song => 
+            song.title.toLowerCase().includes(searchLower) ||
+            song.artist.toLowerCase().includes(searchLower)
+        );
+    }
     
     // Update player title
     if (playerTitle) {
@@ -369,7 +374,7 @@ function clearMusicDirectorFilter() {
 
 // ==================== ANDROID BACKGROUND AUDIO FIXES ====================
 
-// Enhanced background audio features for Android to prevent 140-second stop
+// Enhanced background audio features for Android to prevent 120-second stop
 function initBackgroundAudio() {
     console.log("Initializing enhanced background audio for Android...");
     
@@ -393,6 +398,15 @@ function initBackgroundAudio() {
                 
                 // Store reference
                 window.silentAudio = silentAudio;
+                
+                // Also try to keep the main audio playing
+                if (audioPlayer.paused) {
+                    setTimeout(() => {
+                        audioPlayer.play().catch(e => {
+                            console.log("Failed to resume main audio:", e);
+                        });
+                    }, 100);
+                }
             }
         } else {
             // Clean up silent audio
@@ -403,7 +417,7 @@ function initBackgroundAudio() {
         }
     });
     
-    // Periodic check to prevent audio stopping
+    // Periodic check to prevent audio stopping (check every 5 seconds instead of 30)
     setInterval(() => {
         if (document.hidden && isPlaying && audioPlayer.paused) {
             console.log("Audio stopped in background, attempting to resume...");
@@ -415,7 +429,10 @@ function initBackgroundAudio() {
                 }
             });
         }
-    }, 30000); // Check every 30 seconds
+    }, 5000); // Check every 5 seconds
+    
+    // Additional sleep mode prevention
+    setupSleepModePrevention();
 }
 
 // Setup silent audio to keep audio context alive
@@ -433,6 +450,78 @@ function setupSilentAudio() {
     } catch (error) {
         console.error("Failed to setup silent audio:", error);
     }
+}
+
+// Setup sleep mode prevention for Android
+function setupSleepModePrevention() {
+    console.log("Setting up sleep mode prevention...");
+    
+    // Use wake lock API if available
+    if ('wakeLock' in navigator) {
+        let wakeLock = null;
+        
+        const requestWakeLock = async () => {
+            try {
+                wakeLock = await navigator.wakeLock.request('screen');
+                console.log('Wake Lock is active');
+                
+                wakeLock.addEventListener('release', () => {
+                    console.log('Wake Lock was released');
+                });
+            } catch (err) {
+                console.error(`Failed to acquire wake lock: ${err.message}`);
+            }
+        };
+        
+        // Request wake lock when playing
+        const originalPlayAudio = playAudio;
+        playAudio = function() {
+            if (isPlaying) {
+                requestWakeLock();
+            }
+            return originalPlayAudio.apply(this, arguments);
+        };
+        
+        // Release wake lock when paused
+        const originalPauseAudio = pauseAudio;
+        pauseAudio = function() {
+            if (wakeLock !== null) {
+                wakeLock.release();
+                wakeLock = null;
+                console.log('Wake Lock released');
+            }
+            return originalPauseAudio.apply(this, arguments);
+        };
+    }
+    
+    // Additional audio context keep-alive
+    let audioContext = null;
+    let oscillator = null;
+    
+    const startAudioContext = () => {
+        if (!audioContext) {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                console.log("AudioContext created for sleep prevention");
+            } catch (e) {
+                console.log("Could not create AudioContext:", e);
+            }
+        }
+    };
+    
+    // Start audio context on user interaction
+    document.addEventListener('click', () => {
+        if (isPlaying && !audioContext) {
+            startAudioContext();
+        }
+    }, { once: true });
+    
+    // Resume audio context when page becomes visible
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+    });
 }
 
 // ==================== HELPER FUNCTIONS ====================
@@ -460,11 +549,6 @@ function getTitleForType(song, type, context = "default") {
     
     // For carousel context, show plain title without version suffix
     if (context === "carousel") {
-        return baseTitle;
-    }
-    
-    // For search context, show plain title for easier searching
-    if (context === "search") {
         return baseTitle;
     }
     
@@ -1053,119 +1137,7 @@ function createAboutModal() {
     document.body.insertAdjacentHTML('beforeend', aboutModalHTML);
 }
 
-// ==================== SEARCH FUNCTIONS ====================
-
-// Clear search function
-function clearSearch() {
-    currentSearchTerm = "";
-    isSearchActive = false;
-    searchedSongs = [];
-    
-    if (searchInput) searchInput.value = '';
-    if (mobileSearchInput) mobileSearchInput.value = '';
-    
-    updateSearchClearButtons();
-}
-
-// Handle search function
-function handleSearch(e) {
-    markUserInteraction();
-    const searchTerm = e.target.value.toLowerCase();
-    currentSearchTerm = searchTerm;
-    
-    if (searchTerm.trim().length === 0) {
-        isSearchActive = false;
-        searchedSongs = [];
-        // Show all songs in current filter
-        renderFilteredSongList();
-    } else {
-        isSearchActive = true;
-        
-        // Filter songs based on search term
-        searchedSongs = filteredSongs.filter(song => {
-            const displayTitle = getTitleForType(song, song.currentType || song.availableTypes[0], "search");
-            const cleanArtist = getArtistForType(song, song.currentType || song.availableTypes[0]);
-            
-            return displayTitle.toLowerCase().includes(searchTerm) || 
-                   cleanArtist.toLowerCase().includes(searchTerm) ||
-                   (song.music && song.music.toLowerCase().includes(searchTerm));
-        });
-        
-        // Show only searched songs
-        renderSearchedSongList();
-    }
-    
-    updateSearchClearButtons();
-}
-
-// Render searched song list
-function renderSearchedSongList() {
-    const songItems = document.querySelectorAll('.song-item');
-    
-    if (searchedSongs.length === 0 && currentSearchTerm.trim() !== "") {
-        // If no songs found in search, show message
-        const existingMessage = document.querySelector('.no-songs-search-message');
-        if (existingMessage) existingMessage.remove();
-        
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'no-songs-search-message';
-        messageDiv.style.cssText = 'text-align: center; padding: 40px; color: var(--text-secondary);';
-        messageDiv.innerHTML = `
-            <i class="fas fa-search" style="font-size: 48px; margin-bottom: 10px;"></i>
-            <p>No songs found for "${currentSearchTerm}"</p>
-            <p style="font-size: 14px; margin-top: 10px;">Try a different search term</p>
-        `;
-        
-        // Insert at the beginning of song list container
-        if (songListContainer.firstChild) {
-            songListContainer.insertBefore(messageDiv, songListContainer.firstChild);
-        } else {
-            songListContainer.appendChild(messageDiv);
-        }
-        
-        // Hide all song items
-        songItems.forEach(item => {
-            item.style.display = 'none';
-        });
-        return;
-    }
-    
-    // Remove any existing search message
-    const existingMessage = document.querySelector('.no-songs-search-message');
-    if (existingMessage) existingMessage.remove();
-    
-    // Show only songs that match the search
-    songItems.forEach(item => {
-        const songId = parseInt(item.dataset.id);
-        const isInSearchResults = searchedSongs.some(s => s.id === songId);
-        
-        if (isInSearchResults) {
-            item.style.display = 'flex';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-    
-    // If no search term, show all
-    if (currentSearchTerm.trim() === "") {
-        songItems.forEach(item => {
-            item.style.display = 'flex';
-        });
-    }
-}
-
-// Render filtered song list (for when no search is active)
-function renderFilteredSongList() {
-    const songItems = document.querySelectorAll('.song-item');
-    
-    // Remove any existing search message
-    const existingMessage = document.querySelector('.no-songs-search-message');
-    if (existingMessage) existingMessage.remove();
-    
-    songItems.forEach(item => {
-        item.style.display = 'flex';
-    });
-}
+// ==================== SEARCH BOX HANDLING ====================
 
 // Close mobile search when clicking outside
 function closeMobileSearchOnOutsideClick(e) {
@@ -1222,10 +1194,8 @@ function closeMobileSearch() {
     mobileSearchContainer.classList.remove('active');
     
     // Clear search if needed
-    clearSearch();
-    if (mobileSearchInput) {
-        handleSearch({ target: mobileSearchInput });
-    }
+    mobileSearchInput.value = '';
+    handleSearch({ target: mobileSearchInput });
     
     // Remove click listeners
     document.removeEventListener('click', closeMobileSearchOnOutsideClick);
@@ -1438,7 +1408,17 @@ function initSwiper() {
 function renderCarousel() {
     carouselContainer.innerHTML = '';
     
-    filteredSongs.forEach((song, index) => {
+    // Apply search filter if active
+    let songsToRender = filteredSongs;
+    if (isSearchActive && currentSearchTerm) {
+        const searchLower = currentSearchTerm.toLowerCase();
+        songsToRender = songsToRender.filter(song => 
+            song.title.toLowerCase().includes(searchLower) ||
+            song.artist.toLowerCase().includes(searchLower)
+        );
+    }
+    
+    songsToRender.forEach((song, index) => {
         const slide = document.createElement('div');
         const isActive = songs.find(s => s.id === song.id)?.active || false;
         slide.className = `swiper-slide ${isActive ? 'active' : ''}`;
@@ -1486,7 +1466,17 @@ function renderCarousel() {
 function renderSongList() {
     songListContainer.innerHTML = '';
     
-    if (filteredSongs.length === 0 && currentFilterType === "favourite") {
+    // Apply search filter if active
+    let songsToRender = filteredSongs;
+    if (isSearchActive && currentSearchTerm) {
+        const searchLower = currentSearchTerm.toLowerCase();
+        songsToRender = songsToRender.filter(song => 
+            song.title.toLowerCase().includes(searchLower) ||
+            song.artist.toLowerCase().includes(searchLower)
+        );
+    }
+    
+    if (songsToRender.length === 0 && currentFilterType === "favourite") {
         songListContainer.innerHTML = `
             <div class="no-songs-message" style="text-align: center; padding: 40px; color: var(--text-secondary);">
                 <i class="fas fa-heart" style="font-size: 48px; margin-bottom: 10px; color: #ff4757;"></i>
@@ -1497,7 +1487,7 @@ function renderSongList() {
         return;
     }
     
-    if (filteredSongs.length === 0 && currentMusicDirector) {
+    if (songsToRender.length === 0 && currentMusicDirector) {
         songListContainer.innerHTML = `
             <div class="no-songs-message" style="text-align: center; padding: 40px; color: var(--text-secondary);">
                 <i class="fas fa-drum" style="font-size: 48px; margin-bottom: 10px; color: var(--primary-color);"></i>
@@ -1508,7 +1498,7 @@ function renderSongList() {
         return;
     }
     
-    if (filteredSongs.length === 0) {
+    if (songsToRender.length === 0) {
         songListContainer.innerHTML = `
             <div class="no-songs-message" style="text-align: center; padding: 40px; color: var(--text-secondary);">
                 <i class="${getSongTypeIcon(currentFilterType)}" style="font-size: 48px; margin-bottom: 10px;"></i>
@@ -1521,7 +1511,7 @@ function renderSongList() {
     
     const fragment = document.createDocumentFragment();
     
-    filteredSongs.forEach((song, index) => {
+    songsToRender.forEach((song, index) => {
         const songItem = document.createElement('div');
         const isActive = songs.find(s => s.id === song.id)?.active || false;
         songItem.className = `song-item ${isActive ? 'active' : ''}`;
@@ -1690,7 +1680,7 @@ function renderSongList() {
             });
         }
         
-        // Version button click handler
+        // Version button click handler - FIXED: Don't change filter type when in search mode
         songItem.querySelectorAll('.version-btn.audio-btn, .version-btn.lyrics-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 markUserInteraction();
@@ -1732,31 +1722,11 @@ function renderSongList() {
                 updateSelectedSongUI(songId, versionType);
                 loadSong(songIndex, isAutoPlayEnabled);
                 
-                // ENHANCED: If search is active, only show the selected song
-                if (isSearchActive && currentSearchTerm.trim() !== "") {
-                    // Show only this specific song in the search results
-                    const song = songs.find(s => s.id === songId);
-                    if (song) {
-                        searchedSongs = [song];
-                        renderSearchedSongList();
-                    }
-                }
-                
-                if (currentFilterType !== "list" && currentFilterType !== "favourite" && versionType !== currentFilterType) {
+                // FIXED: Only change filter type if NOT in search mode
+                // When in search mode, keep the current filter and just update the song
+                if (!isSearchActive && currentFilterType !== "list" && currentFilterType !== "favourite" && versionType !== currentFilterType) {
                     currentFilterType = versionType;
                     filteredSongs = filterSongsByType(versionType);
-                    
-                    // ENHANCED: If search was active, reapply search to new filtered songs
-                    if (isSearchActive && currentSearchTerm.trim() !== "") {
-                        searchedSongs = filteredSongs.filter(s => {
-                            const displayTitle = getTitleForType(s, s.currentType || s.availableTypes[0], "search");
-                            const cleanArtist = getArtistForType(s, s.currentType || s.availableTypes[0]);
-                            
-                            return displayTitle.toLowerCase().includes(currentSearchTerm) || 
-                                   cleanArtist.toLowerCase().includes(currentSearchTerm) ||
-                                   (s.music && s.music.toLowerCase().includes(currentSearchTerm));
-                        });
-                    }
                     
                     setTimeout(() => {
                         updateActiveFilterButton(versionType);
@@ -1771,11 +1741,21 @@ function renderSongList() {
                         }
                         
                         updateSelectedSongUI(songId, versionType);
+                    }, 50);
+                }
+                // If in search mode, just refresh the UI without changing filters
+                else if (isSearchActive) {
+                    // Just refresh the current view to show updated active states
+                    setTimeout(() => {
+                        renderSongList();
+                        renderCarousel();
                         
-                        // ENHANCED: If search is active, show only searched songs
-                        if (isSearchActive && currentSearchTerm.trim() !== "") {
-                            renderSearchedSongList();
+                        if (swiper) {
+                            swiper.destroy(true, true);
+                            initSwiper();
                         }
+                        
+                        updateSelectedSongUI(songId, versionType);
                     }, 50);
                 }
             });
@@ -1811,11 +1791,6 @@ function renderSongList() {
     });
     
     songListContainer.appendChild(fragment);
-    
-    // If search is active, apply search filter after rendering
-    if (isSearchActive && currentSearchTerm.trim() !== "") {
-        renderSearchedSongList();
-    }
 }
 
 // Load a song
@@ -2061,12 +2036,6 @@ function setActiveSong(index) {
         s.active = (i === index);
     });
     
-    // ENHANCED: If search is active, only show this song
-    if (isSearchActive && currentSearchTerm.trim() !== "") {
-        searchedSongs = [song];
-        renderSearchedSongList();
-    }
-    
     // Update UI
     updateSelectedSongUI(song.id, currentType);
     
@@ -2196,13 +2165,19 @@ function applyFilter(type) {
     console.log("=== APPLY FILTER CALLED ===");
     console.log("Filter type:", type);
     
-    // Clear search when changing filters
-    clearSearch();
-    
     // Clear music director filter when switching to other filters
     if (type !== "music" && currentMusicDirector) {
         currentMusicDirector = null;
         musicDirectorSongs = [];
+    }
+    
+    // Clear search when changing filter type (unless it's the same type)
+    if (type !== currentFilterType) {
+        isSearchActive = false;
+        currentSearchTerm = "";
+        if (searchInput) searchInput.value = "";
+        if (mobileSearchInput) mobileSearchInput.value = "";
+        updateSearchClearButtons();
     }
     
     // Check network if loading audio files
@@ -2480,6 +2455,15 @@ function playAudio() {
                 showNotification("Now playing", 1500);
                 
                 checkScrollForProgress();
+                
+                // Start wake lock if available
+                if ('wakeLock' in navigator && isPlaying) {
+                    navigator.wakeLock.request('screen').then(wakeLock => {
+                        console.log("Wake lock acquired for background playback");
+                    }).catch(err => {
+                        console.log("Wake lock error:", err);
+                    });
+                }
             })
             .catch(error => {
                 console.error("❌ Playback error:", error);
@@ -2774,26 +2758,31 @@ function setupAudioEvents() {
             
             // Try to keep audio playing if it paused
             if (isPlaying && audioPlayer.paused) {
+                console.log("🔊 Audio paused when page hidden, attempting enhanced resume...");
+                
+                // Multiple attempts to resume
+                const tryResume = (attempt = 1) => {
+                    if (attempt > 3) return;
+                    
+                    audioPlayer.play().then(() => {
+                        console.log(`✅ Audio resumed on attempt ${attempt}`);
+                    }).catch(e => {
+                        console.log(`❌ Resume attempt ${attempt} failed:`, e);
+                        setTimeout(() => {
+                            tryResume(attempt + 1);
+                        }, 500);
+                    });
+                };
+                
+                tryResume();
+            }
+        } else {
+            // When page becomes visible again, ensure audio is playing if it should be
+            if (isPlaying && audioPlayer.paused) {
                 setTimeout(() => {
-                    if (isPlaying && audioPlayer.paused) {
-                        console.log("🔊 Audio paused when page hidden, attempting enhanced resume...");
-                        
-                        // Multiple attempts to resume
-                        const tryResume = (attempt = 1) => {
-                            if (attempt > 3) return;
-                            
-                            audioPlayer.play().then(() => {
-                                console.log(`✅ Audio resumed on attempt ${attempt}`);
-                            }).catch(e => {
-                                console.log(`❌ Resume attempt ${attempt} failed:`, e);
-                                setTimeout(() => {
-                                    tryResume(attempt + 1);
-                                }, 500);
-                            });
-                        };
-                        
-                        tryResume();
-                    }
+                    audioPlayer.play().catch(e => {
+                        console.log("Failed to resume after visibility change:", e);
+                    });
                 }, 100);
             }
         }
@@ -2830,6 +2819,58 @@ function setupAudioEvents() {
     }
 }
 
+// Handle search function - FIXED: Keep search results when selecting a version
+function handleSearch(e) {
+    markUserInteraction();
+    const searchTerm = e.target.value.toLowerCase();
+    currentSearchTerm = searchTerm;
+    
+    // Update search active state
+    isSearchActive = searchTerm.length > 0;
+    
+    // Apply search filter to current filtered songs
+    const songsToShow = filteredSongs.filter(song => 
+        song.title.toLowerCase().includes(searchTerm) ||
+        song.artist.toLowerCase().includes(searchTerm)
+    );
+    
+    // Update UI based on search
+    if (searchTerm) {
+        // Re-render the list and carousel with filtered results
+        renderSongList();
+        renderCarousel();
+        
+        // Re-initialize swiper if it exists
+        if (swiper) {
+            swiper.destroy(true, true);
+            initSwiper();
+        }
+        
+        // If no songs match, show appropriate message
+        if (songsToShow.length === 0) {
+            songListContainer.innerHTML = `
+                <div class="no-songs-message" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    <i class="fas fa-search" style="font-size: 48px; margin-bottom: 10px;"></i>
+                    <p>No songs found for "${searchTerm}"</p>
+                    <p style="font-size: 14px; margin-top: 10px;">Try a different search term</p>
+                </div>
+            `;
+        }
+    } else {
+        // Clear search - re-render with all songs in current filter
+        isSearchActive = false;
+        renderSongList();
+        renderCarousel();
+        
+        if (swiper) {
+            swiper.destroy(true, true);
+            initSwiper();
+        }
+    }
+    
+    updateSearchClearButtons();
+}
+
 // Setup sidebar menu
 function setupSidebarMenu() {
     document.querySelectorAll('.menu li[data-type]').forEach(item => {
@@ -2856,6 +2897,13 @@ function setupSidebarMenu() {
                 toggleSidebar();
                 return;
             } else {
+                // Clear search when changing filter via sidebar
+                isSearchActive = false;
+                currentSearchTerm = "";
+                if (searchInput) searchInput.value = "";
+                if (mobileSearchInput) mobileSearchInput.value = "";
+                updateSearchClearButtons();
+                
                 applyFilter(type);
             }
             
@@ -2970,11 +3018,18 @@ function setupEventListeners() {
     lyricsPrevBtn.addEventListener('click', playPrevSong);
     lyricsNextBtn.addEventListener('click', playNextSong);
 
-    // Filter buttons
+    // Filter buttons - FIXED: Clear search when changing filter
     document.querySelectorAll('.control-btn[data-type]').forEach(btn => {
         btn.addEventListener('click', (e) => {
             markUserInteraction();
             const type = e.currentTarget.dataset.type;
+            // Clear search when changing filter
+            isSearchActive = false;
+            currentSearchTerm = "";
+            if (searchInput) searchInput.value = "";
+            if (mobileSearchInput) mobileSearchInput.value = "";
+            updateSearchClearButtons();
+            
             applyFilter(type);
         });
     });
@@ -2983,6 +3038,13 @@ function setupEventListeners() {
         btn.addEventListener('click', (e) => {
             markUserInteraction();
             const type = e.currentTarget.dataset.type;
+            // Clear search when changing filter
+            isSearchActive = false;
+            currentSearchTerm = "";
+            if (searchInput) searchInput.value = "";
+            if (mobileSearchInput) mobileSearchInput.value = "";
+            updateSearchClearButtons();
+            
             applyFilter(type);
         });
     });
@@ -2991,15 +3053,6 @@ function setupEventListeners() {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             handleSearch(e);
-        });
-        
-        // Clear search when pressing Escape key
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                searchInput.value = '';
-                handleSearch({ target: searchInput });
-                clearSearch();
-            }
         });
     }
     
@@ -3016,32 +3069,25 @@ function setupEventListeners() {
         });
     }
     
-    // Search clear buttons
     if (searchClear) {
         searchClear.addEventListener('click', () => {
             searchInput.value = '';
-            currentSearchTerm = "";
-            isSearchActive = false;
-            searchedSongs = [];
             searchInput.focus();
+            isSearchActive = false;
+            currentSearchTerm = "";
             handleSearch({ target: searchInput });
             updateSearchClearButtons();
-            // Show all songs in current filter
-            renderFilteredSongList();
         });
     }
     
     if (mobileSearchClear) {
         mobileSearchClear.addEventListener('click', () => {
             mobileSearchInput.value = '';
-            currentSearchTerm = "";
-            isSearchActive = false;
-            searchedSongs = [];
             mobileSearchInput.focus();
+            isSearchActive = false;
+            currentSearchTerm = "";
             handleSearch({ target: mobileSearchInput });
             updateSearchClearButtons();
-            // Show all songs in current filter
-            renderFilteredSongList();
         });
     }
     
