@@ -813,7 +813,11 @@ main {
     align-items: center;
     justify-content: center;
 }
-
+.version-suffix {
+    font-size: 0.8em;
+    opacity: 0.8;
+    font-weight: normal;
+}
 .version-btn:hover {
     background: rgba(128, 128, 128, 0.2);
 }
@@ -2117,6 +2121,7 @@ main {
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
 
 
