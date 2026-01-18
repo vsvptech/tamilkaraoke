@@ -15,8 +15,8 @@ const songs = [
         image: "images/Idhu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Anbe-Anbe-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Anbe-Anbe-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Anbe-Anbe-Duet.mp3"),
+            female: getFirebaseUrl("songs/female/Anbe-Anbe-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Anbe-Anbe-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Anbe-Anbe-Song.mp3")
         },  
         lyrics: "lyrics/Anbe-Anbe.txt",
