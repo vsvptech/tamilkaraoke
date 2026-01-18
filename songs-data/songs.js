@@ -10,7 +10,7 @@ const songs = [
 { 
         id: 148,
         title: "Anbe Anbe Ellam Anbe",
-        artist: "Idhu Kathirvel Kadhal",
+        artist: "Idhu Kathirvelan Kadhal",
         music: "Harris Jayaraj", 
         image: "images/Idhu.jpg",
         audio: {
