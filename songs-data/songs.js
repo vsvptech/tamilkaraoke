@@ -8,6 +8,21 @@ const songs = [
 
 
 { 
+        id: 148,
+        title: "Anbe Anbe Ellam Anbe",
+        artist: "Idhu Kathirvel Kadhal",
+        music: "Harris Jayaraj", 
+        image: "images/Idhu.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Anbe-Anbe-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Anbe-Anbe-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Anbe-Anbe-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Anbe-Anbe-Song.mp3")
+        },  
+        lyrics: "lyrics/Anbe-Anbe.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
+{ 
         id: 147,
         title: "Enna Solla Pogirai",
         artist: "Kandukonden Kandukonden",
