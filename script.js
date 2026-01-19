@@ -1,4 +1,4 @@
-// ==================== COMPLETE SCRIPT.JS ====================
+// ==================== COMPLETE FIXED SCRIPT.JS ====================
 
 // DOM Elements
 const themeToggle = document.getElementById('themeToggle');
@@ -545,7 +545,7 @@ function getSongTypeIcon(type) {
     }
 }
 
-// Get display title based on type
+// Get display title based on type - UPDATED FOR SMALL FONT SUFFIX
 function getTitleForType(song, type, context = "default") {
     if (!song || !song.title) return "Unknown Song";
     
@@ -558,13 +558,13 @@ function getTitleForType(song, type, context = "default") {
     
     // Only add version suffix for audio types in other contexts
     if (type === "male") {
-        return `${baseTitle} (Male)`;
+        return `${baseTitle} <span class="version-suffix">(Male)</span>`;
     } else if (type === "female") {
-        return `${baseTitle} (Female)`;
+        return `${baseTitle} <span class="version-suffix">(Female)</span>`;
     } else if (type === "duet") {
-        return `${baseTitle} (Duet)`;
+        return `${baseTitle} <span class="version-suffix">(Duet)</span>`;
     } else if (type === "song") {
-        return `${baseTitle} (Original)`;
+        return `${baseTitle} <span class="version-suffix">(Original)</span>`;
     } 
     
     // For list, favourite, podcast, music - return plain title
@@ -885,19 +885,31 @@ function resetAllActiveStates() {
     });
 }
 
-// Set correct active state for song and carousel
+// ==================== FIXED: Set correct active state ====================
 function setCorrectActiveState(songId, versionType) {
+    console.log("Setting active state for:", songId, "type:", versionType, "Search mode:", isSearchActive);
+    
+    // First, update the songs array
+    songs.forEach(song => {
+        song.active = (song.id === songId);
+        if (song.id === songId) {
+            song.currentType = versionType;
+        }
+    });
+    
+    // Update ALL song items in DOM
     document.querySelectorAll('.song-item').forEach(item => {
         const itemSongId = parseInt(item.dataset.id);
+        
         if (itemSongId === songId) {
+            // This is the ACTIVE song
             item.classList.add('active');
             
-            // Also update the active state of version buttons
+            // Update all version buttons for this song
             item.querySelectorAll('.version-btn').forEach(btn => {
                 const btnType = btn.dataset.type;
                 const btnSongId = parseInt(btn.dataset.id);
                 
-                // Only update buttons for this specific song
                 if (btnSongId === songId) {
                     if (btnType === versionType) {
                         btn.classList.add('active');
@@ -907,7 +919,20 @@ function setCorrectActiveState(songId, versionType) {
                 }
             });
             
+            // Update rotation for this active song
+            const songItemArt = item.querySelector('.song-item-art');
+            if (songItemArt) {
+                if (isPlaying && versionType !== "podcast") {
+                    songItemArt.classList.add('rotating');
+                    songItemArt.classList.remove('selected');
+                } else {
+                    songItemArt.classList.add('selected');
+                    songItemArt.classList.remove('rotating');
+                }
+            }
+            
         } else {
+            // This is NOT the active song
             item.classList.remove('active');
             
             // Deactivate all version buttons for inactive songs
@@ -918,12 +943,12 @@ function setCorrectActiveState(songId, versionType) {
             // Remove rotation from inactive songs
             const songItemArt = item.querySelector('.song-item-art');
             if (songItemArt) {
-                songItemArt.classList.remove('playing', 'paused');
-                songItemArt.classList.remove('selected'); // Remove selected class too
+                songItemArt.classList.remove('rotating', 'selected');
             }
         }
     });
     
+    // Update swiper slides
     document.querySelectorAll('.swiper-slide').forEach(slide => {
         const slideSongId = parseInt(slide.dataset.id);
         if (slideSongId === songId) {
@@ -932,9 +957,6 @@ function setCorrectActiveState(songId, versionType) {
             slide.classList.remove('active');
         }
     });
-    
-    // Update rotation after setting active state
-    updateSongArtRotation();
 }
 
 // Update UI for selected song
@@ -950,28 +972,22 @@ function updateSelectedSongUI(songId, versionType) {
     
     requestAnimationFrame(() => {
         try {
-            // Deactivate ALL songs first
-            songs.forEach(song => {
-                song.active = false;
-            });
-            
-            // Then activate only the selected song
-            songs.forEach((song, index) => {
-                if (song.id === songId) {
-                    song.active = true;
-                    currentSongIndex = index;
-                    song.currentType = versionType;
-                    lastActiveSongId = songId;
-                    lastActiveSongType = versionType;
-                }
-            });
+            // Update last active song info
+            lastActiveSongId = songId;
+            lastActiveSongType = versionType;
             
             // Update UI with correct active state
             setCorrectActiveState(songId, versionType);
             
             // Update swiper to show correct slide
             if (swiper) {
-                const slideIndex = filteredSongs.findIndex(s => s.id === songId);
+                let slideIndex = -1;
+                if (isSearchActive && searchResults.length > 0) {
+                    slideIndex = searchResults.findIndex(s => s.id === songId);
+                } else {
+                    slideIndex = filteredSongs.findIndex(s => s.id === songId);
+                }
+                
                 if (slideIndex >= 0) {
                     setTimeout(() => {
                         swiper.slideToLoop(slideIndex);
@@ -985,15 +1001,15 @@ function updateSelectedSongUI(songId, versionType) {
                 const displayTitle = getTitleForType(song, versionType);
                 const cleanArtist = getArtistForType(song, versionType);
                 
-                // Update all displays
-                songTitleDisplay.textContent = displayTitle;
+                // Update all displays with innerHTML for version suffixes
+                songTitleDisplay.innerHTML = displayTitle;
                 songArtistDisplay.textContent = cleanArtist;
-                mobileSongTitle.textContent = displayTitle;
+                mobileSongTitle.innerHTML = displayTitle;
                 mobileSongArtist.textContent = cleanArtist;
-                lyricsPlayerTitle.textContent = `${displayTitle} - ${cleanArtist}`;
+                lyricsPlayerTitle.innerHTML = `${displayTitle} - ${cleanArtist}`;
                 
                 // Update lyrics header
-                lyricsSongTitle.textContent = displayTitle;
+                lyricsSongTitle.innerHTML = displayTitle;
                 lyricsSongArtist.textContent = cleanArtist;
             }
             
@@ -1297,7 +1313,6 @@ function init() {
         newListButton.addEventListener('click', (e) => {
             markUserInteraction();
             e.stopPropagation();
-            console.log("List button specifically clicked - Song List Loaded");
             applyFilter("list");
         });
         
@@ -1311,7 +1326,6 @@ function init() {
                 newBtn.addEventListener('click', (e) => {
                     markUserInteraction();
                     e.stopPropagation();
-                    console.log("Type filter list button clicked - Song List Loaded");
                     applyFilter("list");
                 });
             }
@@ -1432,13 +1446,13 @@ function renderCarousel() {
         
         const currentType = song.currentType || currentFilterType;
         
-        // Use plain title for carousel
+        // Use plain title for carousel (no version suffix)
         const displayTitle = getTitleForType(song, currentType, "carousel");
         const cleanArtist = getArtistForType(song, currentType);
         
         slide.innerHTML = `
             <div class="carousel-slide">
-                <img src="${song.image}" alt="${displayTitle}" onerror="this.src='images/defaultphoto.jpg'">
+                <img src="${song.image}" alt="${song.title}" onerror="this.src='images/defaultphoto.jpg'">
                 <div class="carousel-info">
                     <h4 class="carousel-title">${displayTitle}</h4>
                     <p class="carousel-artist">${cleanArtist}</p>
@@ -1457,6 +1471,7 @@ function renderCarousel() {
             lastActiveSongId = song.id;
             lastActiveSongType = currentType;
             
+            // FIX: Find the correct index in the ORIGINAL songs array
             const originalIndex = songs.findIndex(s => s.id === song.id);
             if (originalIndex >= 0) {
                 setActiveSong(originalIndex);
@@ -1465,6 +1480,288 @@ function renderCarousel() {
         
         carouselContainer.appendChild(slide);
     });
+}
+
+// ==================== FIXED: Create Song Item ====================
+function createSongItem(song, index) {
+    const isActive = songs.find(s => s.id === song.id)?.active || false;
+    const currentType = song.currentType || song.availableTypes[0];
+    const isFavorite = favoriteSongs.includes(song.id);
+    
+    const songItem = document.createElement('div');
+    songItem.className = `song-item ${isActive ? 'active' : ''}`;
+    songItem.dataset.id = song.id;
+    songItem.dataset.index = index;
+    
+    let versionSelector = '';
+    
+    // Define the EXACT ORDER of buttons you want
+    const buttonOrder = ["male", "female", "duet", "song", "podcast", "music-director-tag", "favourite"];
+    
+    // Check which buttons should actually be shown
+    const hasMale = song.availableTypes.includes("male") && getAudioForType(song, "male");
+    const hasFemale = song.availableTypes.includes("female") && getAudioForType(song, "female");
+    const hasDuet = song.availableTypes.includes("duet") && getAudioForType(song, "duet");
+    const hasSong = song.availableTypes.includes("song") && getAudioForType(song, "song");
+    const hasPodcast = song.availableTypes.includes("podcast") && song.lyrics && song.lyrics.trim() !== '';
+    const hasMusicDirector = song.music && song.music !== "Unknown";
+    
+    // Build buttons in the exact order you specified
+    buttonOrder.forEach(type => {
+        if (type === "male" && hasMale) {
+            const isCurrent = (isActive && currentType === "male");
+            versionSelector += `
+                <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
+                        data-id="${song.id}" 
+                        data-type="male"
+                        title="Male Version">
+                    <i class="fas fa-mars"></i>
+                </button>
+            `;
+        }
+        else if (type === "female" && hasFemale) {
+            const isCurrent = (isActive && currentType === "female");
+            versionSelector += `
+                <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
+                        data-id="${song.id}" 
+                        data-type="female"
+                        title="Female Version">
+                    <i class="fas fa-venus"></i>
+                </button>
+            `;
+        }
+        else if (type === "duet" && hasDuet) {
+            const isCurrent = (isActive && currentType === "duet");
+            versionSelector += `
+                <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
+                        data-id="${song.id}" 
+                        data-type="duet"
+                        title="Duet Version">
+                    <i class="fas fa-venus-mars"></i>
+                </button>
+            `;
+        }
+        else if (type === "song" && hasSong) {
+            const isCurrent = (isActive && currentType === "song");
+            versionSelector += `
+                <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
+                        data-id="${song.id}" 
+                        data-type="song"
+                        title="Original Version">
+                    <i class="fas fa-music"></i>
+                </button>
+            `;
+        }
+        else if (type === "podcast" && hasPodcast) {
+            versionSelector += `
+                <button class="version-btn lyrics-btn" 
+                        data-id="${song.id}" 
+                        data-type="podcast"
+                        title="Show Lyrics">
+                    <i class="fas fa-podcast"></i>
+                </button>
+            `;
+        }
+        else if (type === "music-director-tag" && hasMusicDirector) {
+            versionSelector += `
+                <span class="music-director-tag">${song.music}</span>
+            `;
+        }
+        else if (type === "favourite") {
+            // Show favorite button in ALL modes including search
+            versionSelector += `
+                <button class="version-btn favorite-btn ${isFavorite ? 'active' : ''}" 
+                        data-id="${song.id}" 
+                        data-type="favourite"
+                        title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}">
+                    <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
+                </button>
+            `;
+        }
+    });
+    
+    // Determine which title and artist to show
+    let displayTitle = '';
+    let artistName = '';
+    
+    if (currentFilterType === "list" || currentMusicDirector || isSearchActive) {
+        // In list mode, music director mode, or search mode: Show plain title and clean artist name
+        displayTitle = song.title;
+        artistName = getArtistForType(song, currentType);
+    } else {
+        // In other modes: Show versioned title with HTML and clean artist name
+        displayTitle = getTitleForType(song, currentType);
+        artistName = getArtistForType(song, currentType);
+    }
+    
+    // ALWAYS show heart icon in song-item-type
+    let typeIconHtml = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart" 
+                           data-id="${song.id}"
+                           title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}"></i>`;
+    
+    songItem.innerHTML = `
+        <div class="song-item-art">
+            <img src="${song.image}" alt="${song.title}" onerror="this.src='images/defaultphoto.jpg'">
+        </div>
+        <div class="song-item-info">
+            <h4 class="song-item-title">${displayTitle}</h4>
+            <p class="song-item-artist">${artistName}</p>
+            <div class="version-selector">
+                ${versionSelector}
+            </div>
+        </div>
+        <div class="song-item-type">
+            ${typeIconHtml}
+        </div>
+    `;
+    
+    // Handle favorite button
+    const favoriteBtn = songItem.querySelector('.favorite-btn');
+    if (favoriteBtn) {
+        favoriteBtn.addEventListener('click', (e) => {
+            markUserInteraction();
+            e.stopPropagation();
+            const songId = parseInt(e.currentTarget.dataset.id);
+            toggleFavorite(songId);
+        });
+    }
+    
+    // Handle heart icon in .song-item-type
+    const heartIcon = songItem.querySelector('.song-item-type i');
+    if (heartIcon) {
+        heartIcon.addEventListener('click', (e) => {
+            markUserInteraction();
+            e.stopPropagation();
+            const songId = parseInt(e.currentTarget.dataset.id);
+            const wasAdded = toggleFavorite(songId);
+            
+            // Update the icon immediately
+            if (wasAdded) {
+                e.currentTarget.className = 'fas fa-heart';
+                e.currentTarget.title = 'Remove from Favorites';
+            } else {
+                e.currentTarget.className = 'far fa-heart';
+                e.currentTarget.title = 'Add to Favorites';
+            }
+        });
+    }
+    
+    // ==================== FIXED: Version button click handler ====================
+    songItem.querySelectorAll('.version-btn.audio-btn, .version-btn.lyrics-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            markUserInteraction();
+            e.stopPropagation();
+            
+            // Close mobile search when a version is selected
+            closeMobileSearchOnSongSelect();
+            
+            const songId = parseInt(btn.dataset.id);
+            const versionType = btn.dataset.type;
+            
+            // FIX: Find the correct index in the ORIGINAL songs array
+            const songIndex = songs.findIndex(s => s.id === songId);
+            if (songIndex < 0) return;
+            
+            lastClickedSongId = songId;
+            lastActiveSongId = songId;
+            lastActiveSongType = versionType;
+            
+            // If it's a lyrics button, open lyrics modal
+            if (versionType === "podcast") {
+                const song = songs[songIndex];
+                const displayTitle = getTitleForType(song, song.currentType);
+                const cleanArtist = getArtistForType(song, song.currentType);
+                loadLyrics(song.lyrics, displayTitle, cleanArtist);
+                lyricsModal.classList.add('active');
+                
+                // DON'T activate the song or change its currentType
+                return;
+            }
+            
+            // For audio versions only:
+            songs.forEach(s => {
+                s.active = false;
+            });
+            
+            songs[songIndex].active = true;
+            songs[songIndex].currentType = versionType;
+            currentSongIndex = songIndex; // FIX: Ensure currentSongIndex is updated
+            
+            // FIX: Update UI with correct active state BEFORE loading song
+            setCorrectActiveState(songId, versionType);
+            
+            // FIX: Use the original songIndex
+            loadSong(songIndex, isAutoPlayEnabled);
+            
+            // If in search mode, re-render to show updated active state
+            if (isSearchActive) {
+                setTimeout(() => {
+                    // Re-render search results to reflect active state
+                    renderSearchResults(searchResults);
+                    updateSongArtRotation();
+                }, 50);
+            }
+            
+            // Don't change filter type if in search mode
+            if (!isSearchActive && currentFilterType !== "list" && currentFilterType !== "favourite" && versionType !== currentFilterType) {
+                currentFilterType = versionType;
+                filteredSongs = filterSongsByType(versionType);
+                
+                setTimeout(() => {
+                    updateActiveFilterButton(versionType);
+                    updateSidebarWithCounts();
+                    
+                    renderSongList();
+                    renderCarousel();
+                    
+                    if (swiper) {
+                        swiper.destroy(true, true);
+                        initSwiper();
+                    }
+                    
+                    setCorrectActiveState(songId, versionType);
+                }, 50);
+            }
+        });
+    });
+    
+    // ==================== FIXED: Song item click handler ====================
+    songItem.addEventListener('click', (e) => {
+        // Don't trigger if clicking on version buttons
+        if (e.target.closest('.version-btn')) {
+            return;
+        }
+        
+        // Don't trigger if clicking on heart icon
+        if (e.target.closest('.song-item-type i')) {
+            return;
+        }
+        
+        markUserInteraction();
+        
+        // Close mobile search when a song is selected
+        closeMobileSearchOnSongSelect();
+        
+        lastClickedSongId = song.id;
+        lastActiveSongId = song.id;
+        lastActiveSongType = song.currentType || song.availableTypes[0];
+        
+        // FIX: Find the correct index in the ORIGINAL songs array
+        const originalIndex = songs.findIndex(s => s.id === song.id);
+        if (originalIndex >= 0) {
+            setActiveSong(originalIndex);
+            
+            // If in search mode, update the search results
+            if (isSearchActive) {
+                setTimeout(() => {
+                    renderSearchResults(searchResults);
+                    updateSongArtRotation();
+                }, 50);
+            }
+        }
+    });
+    
+    return songItem;
 }
 
 // Render song list
@@ -1517,309 +1814,28 @@ function renderSongList() {
     const fragment = document.createDocumentFragment();
     
     songsToRender.forEach((song, index) => {
-        const songItem = document.createElement('div');
-        const isActive = songs.find(s => s.id === song.id)?.active || false;
-        songItem.className = `song-item ${isActive ? 'active' : ''}`;
-        songItem.dataset.id = song.id;
-        songItem.dataset.index = index;
-        
-        // Get the current type for this song
-        const currentType = song.currentType || song.availableTypes[0];
-        const iconClass = getSongTypeIcon(currentType);
-        const isFavorite = favoriteSongs.includes(song.id);
-        
-        let versionSelector = '';
-        
-        // Define the EXACT ORDER of buttons you want
-        const buttonOrder = ["male", "female", "duet", "song", "podcast", "music-director-tag", "favourite"];
-        
-        // Check which buttons should actually be shown
-        const hasMale = song.availableTypes.includes("male") && getAudioForType(song, "male");
-        const hasFemale = song.availableTypes.includes("female") && getAudioForType(song, "female");
-        const hasDuet = song.availableTypes.includes("duet") && getAudioForType(song, "duet");
-        const hasSong = song.availableTypes.includes("song") && getAudioForType(song, "song");
-        const hasPodcast = song.availableTypes.includes("podcast") && song.lyrics && song.lyrics.trim() !== '';
-        const hasMusicDirector = song.music && song.music !== "Unknown";
-        
-        // Build buttons in the exact order you specified
-        buttonOrder.forEach(type => {
-            if (type === "male" && hasMale) {
-                const isCurrent = (song.active && song.currentType === "male");
-                versionSelector += `
-                    <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
-                            data-id="${song.id}" 
-                            data-type="male"
-                            title="Male Version">
-                        <i class="fas fa-mars"></i>
-                    </button>
-                `;
-            }
-            else if (type === "female" && hasFemale) {
-                const isCurrent = (song.active && song.currentType === "female");
-                versionSelector += `
-                    <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
-                            data-id="${song.id}" 
-                            data-type="female"
-                            title="Female Version">
-                        <i class="fas fa-venus"></i>
-                    </button>
-                `;
-            }
-            else if (type === "duet" && hasDuet) {
-                const isCurrent = (song.active && song.currentType === "duet");
-                versionSelector += `
-                    <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
-                            data-id="${song.id}" 
-                            data-type="duet"
-                            title="Duet Version">
-                        <i class="fas fa-venus-mars"></i>
-                    </button>
-                `;
-            }
-            else if (type === "song" && hasSong) {
-                const isCurrent = (song.active && song.currentType === "song");
-                versionSelector += `
-                    <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
-                            data-id="${song.id}" 
-                            data-type="song"
-                            title="Original Version">
-                        <i class="fas fa-music"></i>
-                    </button>
-                `;
-            }
-            else if (type === "podcast" && hasPodcast) {
-                versionSelector += `
-                    <button class="version-btn lyrics-btn" 
-                            data-id="${song.id}" 
-                            data-type="podcast"
-                            title="Show Lyrics">
-                        <i class="fas fa-podcast"></i>
-                    </button>
-                `;
-            }
-            else if (type === "music-director-tag" && hasMusicDirector) {
-                versionSelector += `
-                    <span class="music-director-tag">${song.music}</span>
-                `;
-            }
-            else if (type === "favourite") {
-                // Show favorite button ONLY for NON-list modes and non-music-director modes
-                if (currentFilterType !== "list" && !currentMusicDirector) {
-                    versionSelector += `
-                        <button class="version-btn favorite-btn ${isFavorite ? 'active' : ''}" 
-                                data-id="${song.id}" 
-                                data-type="favourite"
-                                title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}">
-                            <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
-                        </button>
-                    `;
-                }
-            }
-        });
-        
-        // Determine which title and artist to show
-        let displayTitle = '';
-        let artistName = '';
-        
-        if (currentFilterType === "list" || currentMusicDirector) {
-            // In list mode or music director mode: Show plain title and clean artist name
-            displayTitle = song.title;
-            artistName = getArtistForType(song, currentType);
-        } else {
-            // In other modes: Show versioned title and clean artist name
-            displayTitle = getTitleForType(song, currentType);
-            artistName = getArtistForType(song, currentType);
-        }
-        
-        // ALWAYS show heart icon in song-item-type
-        let typeIconHtml = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart" 
-                               data-id="${song.id}"
-                               title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}"></i>`;
-        
-        songItem.innerHTML = `
-            <div class="song-item-art">
-                <img src="${song.image}" alt="${displayTitle}" onerror="this.src='images/defaultphoto.jpg'">
-            </div>
-            <div class="song-item-info">
-                <h4 class="song-item-title">${displayTitle}</h4>
-                <p class="song-item-artist">${artistName}</p>
-                <div class="version-selector">
-                    ${versionSelector}
-                </div>
-            </div>
-            <div class="song-item-type">
-                ${typeIconHtml}
-            </div>
-        `;
-        
-        // Handle favorite button in version-selector (for non-list modes only)
-        if (currentFilterType !== "list" && !currentMusicDirector) {
-            const favoriteBtn = songItem.querySelector('.favorite-btn');
-            if (favoriteBtn) {
-                favoriteBtn.addEventListener('click', (e) => {
-                    markUserInteraction();
-                    e.stopPropagation();
-                    const songId = parseInt(e.currentTarget.dataset.id);
-                    toggleFavorite(songId);
-                });
-            }
-        }
-        
-        // Handle heart icon in .song-item-type (for ALL modes)
-        const heartIcon = songItem.querySelector('.song-item-type i');
-        if (heartIcon) {
-            heartIcon.addEventListener('click', (e) => {
-                markUserInteraction();
-                e.stopPropagation();
-                const songId = parseInt(e.currentTarget.dataset.id);
-                const wasAdded = toggleFavorite(songId);
-                
-                // Update the icon immediately
-                if (wasAdded) {
-                    e.currentTarget.className = 'fas fa-heart';
-                    e.currentTarget.title = 'Remove from Favorites';
-                } else {
-                    e.currentTarget.className = 'far fa-heart';
-                    e.currentTarget.title = 'Add to Favorites';
-                }
-            });
-        }
-        
-        // Version button click handler - FIXED: Don't change filter type when in search mode
-        songItem.querySelectorAll('.version-btn.audio-btn, .version-btn.lyrics-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                markUserInteraction();
-                e.stopPropagation();
-                
-                // Close mobile search when a version is selected
-                closeMobileSearchOnSongSelect();
-                
-                const songId = parseInt(btn.dataset.id);
-                const versionType = btn.dataset.type;
-                
-                const songIndex = songs.findIndex(s => s.id === songId);
-                if (songIndex < 0) return;
-                
-                lastClickedSongId = songId;
-                lastActiveSongId = songId;
-                lastActiveSongType = versionType;
-                
-                // If it's a lyrics button, open lyrics modal
-                if (versionType === "podcast") {
-                    const song = songs[songIndex];
-                    const displayTitle = getTitleForType(song, song.currentType);
-                    const cleanArtist = getArtistForType(song, song.currentType);
-                    loadLyrics(song.lyrics, displayTitle, cleanArtist);
-                    lyricsModal.classList.add('active');
-                    
-                    // DON'T activate the song or change its currentType
-                    return;
-                }
-                
-                // For audio versions only:
-                songs.forEach(s => {
-                    s.active = false;
-                });
-                
-                songs[songIndex].active = true;
-                songs[songIndex].currentType = versionType;
-                
-                updateSelectedSongUI(songId, versionType);
-                loadSong(songIndex, isAutoPlayEnabled);
-                
-                // CRITICAL FIX: When in search mode AND clicking version button in SONG LIST
-                // Do NOT change the filter type, keep showing search results
-                if (isSearchActive) {
-                    // We are in search mode, keep the current filter
-                    // Just update the current song's type and refresh UI
-                    
-                    // Save the current filtered songs before search (to restore if needed)
-                    if (originalFilteredSongsBeforeSearch.length === 0) {
-                        originalFilteredSongsBeforeSearch = [...filteredSongs];
-                    }
-                    
-                    // Update the song's current type in the filtered songs
-                    const filteredIndex = filteredSongs.findIndex(s => s.id === songId);
-                    if (filteredIndex >= 0) {
-                        filteredSongs[filteredIndex].currentType = versionType;
-                    }
-                    
-                    // Refresh UI without changing filter
-                    setTimeout(() => {
-                        renderSongList();
-                        renderCarousel();
-                        
-                        if (swiper) {
-                            swiper.destroy(true, true);
-                            initSwiper();
-                        }
-                        
-                        updateSelectedSongUI(songId, versionType);
-                    }, 50);
-                    
-                    return; // Don't proceed to filter change logic
-                }
-                
-                // Only change filter if NOT in search mode
-                if (currentFilterType !== "list" && currentFilterType !== "favourite" && versionType !== currentFilterType) {
-                    currentFilterType = versionType;
-                    filteredSongs = filterSongsByType(versionType);
-                    
-                    setTimeout(() => {
-                        updateActiveFilterButton(versionType);
-                        updateSidebarWithCounts();
-                        
-                        renderSongList();
-                        renderCarousel();
-                        
-                        if (swiper) {
-                            swiper.destroy(true, true);
-                            initSwiper();
-                        }
-                        
-                        updateSelectedSongUI(songId, versionType);
-                    }, 50);
-                }
-            });
-        });
-        
-        songItem.addEventListener('click', (e) => {
-            // Don't trigger if clicking on version buttons
-            if (e.target.closest('.version-btn')) {
-                return;
-            }
-            
-            // Don't trigger if clicking on heart icon
-            if (e.target.closest('.song-item-type i')) {
-                return;
-            }
-            
-            markUserInteraction();
-            
-            // Close mobile search when a song is selected
-            closeMobileSearchOnSongSelect();
-            
-            lastClickedSongId = song.id;
-            lastActiveSongId = song.id;
-            lastActiveSongType = song.currentType || song.availableTypes[0];
-            
-            const originalIndex = songs.findIndex(s => s.id === song.id);
-            if (originalIndex >= 0) {
-                setActiveSong(originalIndex);
-            }
-        });
-        
+        const songItem = createSongItem(song, index);
         fragment.appendChild(songItem);
     });
     
     songListContainer.appendChild(fragment);
+    
+    // Ensure active state is visible
+    if (lastActiveSongId) {
+        const song = songs.find(s => s.id === lastActiveSongId);
+        if (song && song.active) {
+            setCorrectActiveState(song.id, song.currentType);
+        }
+    }
 }
 
-// Load a song
+// ==================== FIXED: Load a song ====================
 function loadSong(index, autoPlay = true) {
     if (isAudioLoading) {
         return;
     }
+    
+    console.log("loadSong called, index:", index, "Search active:", isSearchActive);
     
     // Check network before loading
     if (!isOnline) {
@@ -1830,47 +1846,65 @@ function loadSong(index, autoPlay = true) {
     audioLoading.classList.add('active');
     isAudioLoading = true;
     
+    // FIX: Ensure currentSongIndex is updated
     currentSongIndex = index;
     const song = songs[index];
-    const currentType = song.currentType || song.availableTypes[0];
+    
+    // FIX: If song doesn't have currentType, set it
+    if (!song.currentType) {
+        const audioTypes = song.availableTypes.filter(type => 
+            type !== "podcast" && getAudioForType(song, type)
+        );
+        song.currentType = audioTypes.length > 0 ? audioTypes[0] : "male";
+    }
+    
+    const currentType = song.currentType;
     
     lastClickedSongId = song.id;
     lastActiveSongId = song.id;
     lastActiveSongType = currentType;
     
-    // Set this song as active
+    // Set this song as active in the songs array
     songs.forEach((s, i) => {
         s.active = (i === index);
     });
     
+    // FIX: Ensure correct active state is set - THIS IS CRITICAL
     setCorrectActiveState(song.id, currentType);
     
     // Get versioned title and clean artist
     const displayTitle = getTitleForType(song, currentType);
     const cleanArtist = getArtistForType(song, currentType);
     
-    // Update all displays
-    songTitleDisplay.textContent = displayTitle;
+    // Update all displays with innerHTML for version suffixes
+    songTitleDisplay.innerHTML = displayTitle;
     songArtistDisplay.textContent = cleanArtist;
-    mobileSongTitle.textContent = displayTitle;
+    mobileSongTitle.innerHTML = displayTitle;
     mobileSongArtist.textContent = cleanArtist;
-    lyricsPlayerTitle.textContent = `${displayTitle} - ${cleanArtist}`;
+    lyricsPlayerTitle.innerHTML = `${displayTitle} - ${cleanArtist}`;
     
-    // Update lyrics header
-    lyricsSongTitle.textContent = displayTitle;
+    // Update lyrics header - IMPORTANT FOR LYRIC BUTTON
+    lyricsSongTitle.innerHTML = displayTitle;
     lyricsSongArtist.textContent = cleanArtist;
     
+    // Update lyrics for current song - FIX FOR LYRIC BUTTON ISSUE
+    loadLyrics(song.lyrics, displayTitle, cleanArtist);
+    
     if (swiper) {
-        const slideIndex = filteredSongs.findIndex(s => s.id === song.id);
+        // Find the slide index in the current view (could be filtered or search results)
+        let slideIndex = 0;
+        if (isSearchActive) {
+            slideIndex = searchResults.findIndex(s => s.id === song.id);
+        } else {
+            slideIndex = filteredSongs.findIndex(s => s.id === song.id);
+        }
+        
         if (slideIndex >= 0) {
             setTimeout(() => {
                 swiper.slideToLoop(slideIndex);
             }, 10);
         }
     }
-    
-    // Pass title and artist to loadLyrics
-    loadLyrics(song.lyrics, displayTitle, cleanArtist);
     
     if (isAudioType(currentType)) {
         const audioPath = getAudioForType(song, currentType);
@@ -2037,11 +2071,14 @@ function loadSong(index, autoPlay = true) {
     }
 }
 
-// Set active song
+// ==================== FIXED: Set active song ====================
 function setActiveSong(index) {
     if (index < 0 || index >= songs.length) {
+        console.error("Invalid index in setActiveSong:", index);
         return;
     }
+    
+    console.log("setActiveSong called with index:", index, "Song:", songs[index].title, "Search active:", isSearchActive);
     
     currentSongIndex = index;
     const song = songs[index];
@@ -2058,96 +2095,44 @@ function setActiveSong(index) {
         s.active = (i === index);
     });
     
-    // Update UI
-    updateSelectedSongUI(song.id, currentType);
+    // Update UI with correct active state - IMPORTANT: Do this BEFORE loadSong
+    setCorrectActiveState(song.id, currentType);
+    
+    // FIX: Ensure the song has the correct currentType
+    if (song.currentType !== currentType) {
+        song.currentType = currentType;
+    }
     
     // Load the song with auto-play
     loadSong(index, isAutoPlayEnabled);
-}
-
-// Update song UI
-function updateSongUI(song, type) {
-    const displayTitle = getTitleForType(song, type);
-    const cleanArtist = getArtistForType(song, type);
     
-    // Update all displays
-    songTitleDisplay.textContent = displayTitle;
-    songArtistDisplay.textContent = cleanArtist;
-    mobileSongTitle.textContent = displayTitle;
-    mobileSongArtist.textContent = cleanArtist;
-    lyricsPlayerTitle.textContent = `${displayTitle} - ${cleanArtist}`;
-    
-    // Update lyrics header
-    lyricsSongTitle.textContent = displayTitle;
-    lyricsSongArtist.textContent = cleanArtist;
-    
-    document.querySelectorAll('.song-item').forEach(item => {
-        const songId = parseInt(item.dataset.id);
-        if (songId === song.id) {
-            if (!item.classList.contains('active')) {
-                item.classList.add('active');
-            }
+    // FIX: Update search results UI if in search mode
+    if (isSearchActive && searchResults.length > 0) {
+        console.log("Search is active, updating UI for search results");
+        
+        // Update the search results immediately
+        setTimeout(() => {
+            renderSearchResults(searchResults);
+            updateSongArtRotation(); // Force update rotation
             
-            item.querySelectorAll('.version-btn').forEach(btn => {
-                const btnType = btn.dataset.type;
-                if (btnType === type) {
-                    if (!btn.classList.contains('active')) {
-                        btn.classList.add('active');
-                    }
-                } else {
-                    btn.classList.remove('active');
+            // Also update carousel if in search mode
+            if (swiper) {
+                const searchResultIndex = searchResults.findIndex(s => s.id === song.id);
+                if (searchResultIndex >= 0) {
+                    setTimeout(() => {
+                        swiper.slideToLoop(searchResultIndex);
+                    }, 100);
                 }
-            });
-            
-            const favoriteBtn = item.querySelector('.favorite-btn');
-            if (favoriteBtn) {
-                const isFavorite = favoriteSongs.includes(songId);
-                const icon = favoriteBtn.querySelector('i');
-                icon.className = isFavorite ? 'fas fa-heart' : 'far fa-heart';
-                favoriteBtn.classList.toggle('active', isFavorite);
             }
-        } else {
-            item.classList.remove('active');
-        }
-    });
-    
-    document.querySelectorAll('.swiper-slide').forEach(slide => {
-        const slideSongId = parseInt(slide.dataset.id);
-        if (slideSongId === song.id) {
-            if (!slide.classList.contains('active')) {
-                slide.classList.add('active');
-            }
-            
-            // Update carousel title and artist
-            const titleElement = slide.querySelector('.carousel-title');
-            const artistElement = slide.querySelector('.carousel-artist');
-            if (titleElement) {
-                titleElement.textContent = getTitleForType(song, type, "carousel");
-            }
-            if (artistElement) {
-                artistElement.textContent = cleanArtist;
-            }
-        } else {
-            slide.classList.remove('active');
-        }
-    });
-    
-    currentTimeEl.textContent = "0:00";
-    lyricsCurrentTime.textContent = "0:00";
-    mobileCurrentTime.textContent = "0:00";
-    totalTimeEl.textContent = "0:00";
-    lyricsTotalTime.textContent = "0:00";
-    mobileTotalTime.textContent = "0:00";
-    progress.style.width = "0%";
-    lyricsProgress.style.width = "0%";
-    mobileProgress.style.width = "0%";
+        }, 100);
+    }
 }
 
-// Load lyrics from file
+// Load lyrics from file - FIXED: Properly load lyrics for current song
 async function loadLyrics(lyricsFile, songTitle, songArtist) {
     try {
         // Set title and artist in lyrics header
-        lyricsSongTitle.textContent = songTitle;
+        lyricsSongTitle.innerHTML = songTitle;
         lyricsSongArtist.textContent = songArtist;
         
         // Set loading text for lyrics content
@@ -2184,9 +2169,6 @@ async function loadLyrics(lyricsFile, songTitle, songArtist) {
 
 // Apply filter
 function applyFilter(type) {
-    console.log("=== APPLY FILTER CALLED ===");
-    console.log("Filter type:", type);
-    
     // Clear music director filter when switching to other filters
     if (type !== "music" && currentMusicDirector) {
         currentMusicDirector = null;
@@ -2376,14 +2358,14 @@ function applyFilter(type) {
                     const cleanArtist = getArtistForType(song, songs[originalIndex].currentType);
                     
                     // Update all displays
-                    songTitleDisplay.textContent = displayTitle;
+                    songTitleDisplay.innerHTML = displayTitle;
                     songArtistDisplay.textContent = cleanArtist;
-                    mobileSongTitle.textContent = displayTitle;
+                    mobileSongTitle.innerHTML = displayTitle;
                     mobileSongArtist.textContent = cleanArtist;
-                    lyricsPlayerTitle.textContent = `${displayTitle} - ${cleanArtist}`;
+                    lyricsPlayerTitle.innerHTML = `${displayTitle} - ${cleanArtist}`;
                     
                     // Update lyrics header
-                    lyricsSongTitle.textContent = displayTitle;
+                    lyricsSongTitle.innerHTML = displayTitle;
                     lyricsSongArtist.textContent = cleanArtist;
                     
                     loadLyrics(song.lyrics, displayTitle, cleanArtist);
@@ -2852,6 +2834,8 @@ function handleSearch(e) {
     // Update search active state
     isSearchActive = searchTerm.length > 0;
     
+    console.log("Search term:", searchTerm, "Search active:", isSearchActive);
+    
     // Save original filtered songs before search
     if (isSearchActive && originalFilteredSongsBeforeSearch.length === 0) {
         originalFilteredSongsBeforeSearch = [...filteredSongs];
@@ -2866,6 +2850,8 @@ function handleSearch(e) {
             song.title.toLowerCase().includes(searchLower) ||
             (song.artist && song.artist.toLowerCase().includes(searchLower))
         );
+        
+        console.log("Search results found:", searchResults.length);
         
         // Show search results in song list
         renderSearchResults(searchResults);
@@ -2892,6 +2878,8 @@ function handleSearch(e) {
         searchResults = [];
         originalFilteredSongsBeforeSearch = [];
         
+        console.log("Search cleared, restoring original filter");
+        
         // Restore original filtered songs
         renderSongList();
         renderCarousel();
@@ -2903,9 +2891,20 @@ function handleSearch(e) {
     
     // Update clear button visibility
     updateSearchClearButtons();
+    
+    // Force update of active state after search
+    if (lastActiveSongId) {
+        const song = songs.find(s => s.id === lastActiveSongId);
+        if (song) {
+            setTimeout(() => {
+                setCorrectActiveState(song.id, song.currentType);
+                updateSongArtRotation();
+            }, 100);
+        }
+    }
 }
 
-// Render search results
+// ==================== FIXED: Render search results ====================
 function renderSearchResults(searchResults) {
     songListContainer.innerHTML = '';
     
@@ -2922,227 +2921,20 @@ function renderSearchResults(searchResults) {
     const fragment = document.createDocumentFragment();
     
     searchResults.forEach((song, index) => {
-        const songItem = document.createElement('div');
-        const isActive = songs.find(s => s.id === song.id)?.active || false;
-        songItem.className = `song-item ${isActive ? 'active' : ''}`;
-        songItem.dataset.id = song.id;
-        songItem.dataset.index = index;
-        
-        const currentType = song.currentType || song.availableTypes[0];
-        const isFavorite = favoriteSongs.includes(song.id);
-        
-        let versionSelector = '';
-        
-        // Check which buttons should actually be shown
-        const hasMale = song.availableTypes.includes("male") && getAudioForType(song, "male");
-        const hasFemale = song.availableTypes.includes("female") && getAudioForType(song, "female");
-        const hasDuet = song.availableTypes.includes("duet") && getAudioForType(song, "duet");
-        const hasSong = song.availableTypes.includes("song") && getAudioForType(song, "song");
-        const hasPodcast = song.availableTypes.includes("podcast") && song.lyrics && song.lyrics.trim() !== '';
-        const hasMusicDirector = song.music && song.music !== "Unknown";
-        
-        // Build buttons
-        if (hasMale) {
-            const isCurrent = (song.active && song.currentType === "male");
-            versionSelector += `
-                <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
-                        data-id="${song.id}" 
-                        data-type="male"
-                        title="Male Version">
-                    <i class="fas fa-mars"></i>
-                </button>
-            `;
-        }
-        if (hasFemale) {
-            const isCurrent = (song.active && song.currentType === "female");
-            versionSelector += `
-                <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
-                        data-id="${song.id}" 
-                        data-type="female"
-                        title="Female Version">
-                    <i class="fas fa-venus"></i>
-                </button>
-            `;
-        }
-        if (hasDuet) {
-            const isCurrent = (song.active && song.currentType === "duet");
-            versionSelector += `
-                <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
-                        data-id="${song.id}" 
-                        data-type="duet"
-                        title="Duet Version">
-                    <i class="fas fa-venus-mars"></i>
-                </button>
-            `;
-        }
-        if (hasSong) {
-            const isCurrent = (song.active && song.currentType === "song");
-            versionSelector += `
-                <button class="version-btn audio-btn ${isCurrent ? 'active' : ''}" 
-                        data-id="${song.id}" 
-                        data-type="song"
-                        title="Original Version">
-                    <i class="fas fa-music"></i>
-                </button>
-            `;
-        }
-        if (hasPodcast) {
-            versionSelector += `
-                <button class="version-btn lyrics-btn" 
-                        data-id="${song.id}" 
-                        data-type="podcast"
-                        title="Show Lyrics">
-                    <i class="fas fa-podcast"></i>
-                </button>
-            `;
-        }
-        if (hasMusicDirector) {
-            versionSelector += `
-                <span class="music-director-tag">${song.music}</span>
-            `;
-        }
-        
-        // Always show favorite button in search results
-        versionSelector += `
-            <button class="version-btn favorite-btn ${isFavorite ? 'active' : ''}" 
-                    data-id="${song.id}" 
-                    data-type="favourite"
-                    title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}">
-                <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
-            </button>
-        `;
-        
-        // In search results, always show plain title
-        const displayTitle = song.title;
-        const artistName = getArtistForType(song, currentType);
-        
-        let typeIconHtml = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart" 
-                               data-id="${song.id}"
-                               title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}"></i>`;
-        
-        songItem.innerHTML = `
-            <div class="song-item-art">
-                <img src="${song.image}" alt="${displayTitle}" onerror="this.src='images/defaultphoto.jpg'">
-            </div>
-            <div class="song-item-info">
-                <h4 class="song-item-title">${displayTitle}</h4>
-                <p class="song-item-artist">${artistName}</p>
-                <div class="version-selector">
-                    ${versionSelector}
-                </div>
-            </div>
-            <div class="song-item-type">
-                ${typeIconHtml}
-            </div>
-        `;
-        
-        // Handle favorite button
-        const favoriteBtn = songItem.querySelector('.favorite-btn');
-        if (favoriteBtn) {
-            favoriteBtn.addEventListener('click', (e) => {
-                markUserInteraction();
-                e.stopPropagation();
-                const songId = parseInt(e.currentTarget.dataset.id);
-                toggleFavorite(songId);
-            });
-        }
-        
-        // Handle heart icon in .song-item-type
-        const heartIcon = songItem.querySelector('.song-item-type i');
-        if (heartIcon) {
-            heartIcon.addEventListener('click', (e) => {
-                markUserInteraction();
-                e.stopPropagation();
-                const songId = parseInt(e.currentTarget.dataset.id);
-                const wasAdded = toggleFavorite(songId);
-                
-                if (wasAdded) {
-                    e.currentTarget.className = 'fas fa-heart';
-                    e.currentTarget.title = 'Remove from Favorites';
-                } else {
-                    e.currentTarget.className = 'far fa-heart';
-                    e.currentTarget.title = 'Add to Favorites';
-                }
-            });
-        }
-        
-        // Version button click handler for search results
-        songItem.querySelectorAll('.version-btn.audio-btn, .version-btn.lyrics-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                markUserInteraction();
-                e.stopPropagation();
-                
-                closeMobileSearchOnSongSelect();
-                
-                const songId = parseInt(btn.dataset.id);
-                const versionType = btn.dataset.type;
-                
-                const songIndex = songs.findIndex(s => s.id === songId);
-                if (songIndex < 0) return;
-                
-                lastClickedSongId = songId;
-                lastActiveSongId = songId;
-                lastActiveSongType = versionType;
-                
-                // If it's a lyrics button, open lyrics modal
-                if (versionType === "podcast") {
-                    const song = songs[songIndex];
-                    const displayTitle = getTitleForType(song, song.currentType);
-                    const cleanArtist = getArtistForType(song, song.currentType);
-                    loadLyrics(song.lyrics, displayTitle, cleanArtist);
-                    lyricsModal.classList.add('active');
-                    return;
-                }
-                
-                // For audio versions
-                songs.forEach(s => {
-                    s.active = false;
-                });
-                
-                songs[songIndex].active = true;
-                songs[songIndex].currentType = versionType;
-                
-                updateSelectedSongUI(songId, versionType);
-                loadSong(songIndex, isAutoPlayEnabled);
-                
-                // DO NOT change filter when in search mode
-                // Just refresh the search results display
-                setTimeout(() => {
-                    renderSearchResults(searchResults);
-                    renderCarouselForSearch(searchResults);
-                    
-                    if (swiper) {
-                        swiper.destroy(true, true);
-                        initSwiper();
-                    }
-                    
-                    updateSelectedSongUI(songId, versionType);
-                }, 50);
-            });
-        });
-        
-        songItem.addEventListener('click', (e) => {
-            if (e.target.closest('.version-btn') || e.target.closest('.song-item-type i')) {
-                return;
-            }
-            
-            markUserInteraction();
-            closeMobileSearchOnSongSelect();
-            
-            lastClickedSongId = song.id;
-            lastActiveSongId = song.id;
-            lastActiveSongType = song.currentType || song.availableTypes[0];
-            
-            const originalIndex = songs.findIndex(s => s.id === song.id);
-            if (originalIndex >= 0) {
-                setActiveSong(originalIndex);
-            }
-        });
-        
+        const songItem = createSongItem(song, index);
         fragment.appendChild(songItem);
     });
     
     songListContainer.appendChild(fragment);
+    
+    // Force update of active state
+    if (lastActiveSongId) {
+        const activeSong = songs.find(s => s.id === lastActiveSongId);
+        if (activeSong && activeSong.active) {
+            setCorrectActiveState(activeSong.id, activeSong.currentType);
+            updateSongArtRotation();
+        }
+    }
 }
 
 // Render carousel for search results
@@ -3162,7 +2954,7 @@ function renderCarouselForSearch(songsToShow) {
         
         slide.innerHTML = `
             <div class="carousel-slide">
-                <img src="${song.image}" alt="${displayTitle}" onerror="this.src='images/defaultphoto.jpg'">
+                <img src="${song.image}" alt="${song.title}" onerror="this.src='images/defaultphoto.jpg'">
                 <div class="carousel-info">
                     <h4 class="carousel-title">${displayTitle}</h4>
                     <p class="carousel-artist">${cleanArtist}</p>
@@ -3179,6 +2971,7 @@ function renderCarouselForSearch(songsToShow) {
             lastActiveSongId = song.id;
             lastActiveSongType = currentType;
             
+            // FIX: Find the correct index in the ORIGINAL songs array
             const originalIndex = songs.findIndex(s => s.id === song.id);
             if (originalIndex >= 0) {
                 setActiveSong(originalIndex);
@@ -3276,7 +3069,7 @@ function setupMusicDirectorEvents() {
     }
 }
 
-// Set up event listeners
+// Set up event listeners - FIXED: Lyrics button should show current song's lyrics
 function setupEventListeners() {
     themeToggle.addEventListener('click', () => {
         markUserInteraction();
@@ -3291,13 +3084,45 @@ function setupEventListeners() {
     // Use the toggle function for mobile search
     mobileSearchToggle.addEventListener('click', toggleMobileSearch);
 
+    // FIX: Lyrics button should show CURRENT song's lyrics
     lyricsBtn.addEventListener('click', async () => {
         markUserInteraction();
-        const currentSong = songs[currentSongIndex];
-        const displayTitle = getTitleForType(currentSong, currentSong.currentType);
-        const cleanArtist = getArtistForType(currentSong, currentSong.currentType);
-        await loadLyrics(currentSong.lyrics, displayTitle, cleanArtist);
-        lyricsModal.classList.add('active');
+        
+        console.log("Lyrics button clicked. CurrentSongIndex:", currentSongIndex, 
+                    "LastActiveSongId:", lastActiveSongId);
+        
+        // Determine which song to show lyrics for
+        let targetSongIndex = currentSongIndex;
+        
+        // If currentSongIndex is not valid, try to find last active
+        if (targetSongIndex < 0 || targetSongIndex >= songs.length) {
+            if (lastActiveSongId) {
+                targetSongIndex = songs.findIndex(s => s.id === lastActiveSongId);
+            }
+        }
+        
+        if (targetSongIndex >= 0 && targetSongIndex < songs.length) {
+            const currentSong = songs[targetSongIndex];
+            const displayTitle = getTitleForType(currentSong, currentSong.currentType);
+            const cleanArtist = getArtistForType(currentSong, currentSong.currentType);
+            
+            // CRITICAL FIX: Load lyrics for the correct song
+            await loadLyrics(currentSong.lyrics, displayTitle, cleanArtist);
+            
+            // Update lyrics modal header with current song info
+            lyricsSongTitle.innerHTML = displayTitle;
+            lyricsSongArtist.textContent = cleanArtist;
+            
+            // Update lyrics player title
+            lyricsPlayerTitle.innerHTML = `${displayTitle} - ${cleanArtist}`;
+            
+            // Show the modal
+            lyricsModal.classList.add('active');
+            
+            console.log("Showing lyrics for:", displayTitle, cleanArtist);
+        } else {
+            showNotification("Please select a song first", 2000);
+        }
     });
 
     closeLyrics.addEventListener('click', () => {
@@ -3505,43 +3330,31 @@ function setupEventListeners() {
     }, { passive: true });
 }
 
-// Update rotation animation for song art
+// Update rotation animation for song art - FIXED FOR SEARCH MODE
 function updateSongArtRotation() {
-    document.querySelectorAll('.song-item-art').forEach(art => {
-        // First remove all rotation classes
-        art.classList.remove('rotating', 'selected');
+    document.querySelectorAll('.song-item').forEach(songItem => {
+        const songId = parseInt(songItem.dataset.id);
+        const songArt = songItem.querySelector('.song-item-art');
         
-        const songItem = art.closest('.song-item');
-        if (songItem) {
-            const songId = parseInt(songItem.dataset.id);
-            const isActiveSong = songs.find(s => s.id === songId)?.active || false;
-            
-            // If this is the active song (selected in the list)
-            if (isActiveSong) {
-                if (isPlaying) {
-                    // If audio is playing, add rotating class
-                    art.classList.add('rotating');
-                } else {
-                    // If audio is paused/stopped, add selected class (non-animated rotation)
-                    art.classList.add('selected');
-                }
+        if (!songArt) return;
+        
+        // Find the song in the songs array
+        const song = songs.find(s => s.id === songId);
+        
+        if (song && song.active) {
+            // This song is active
+            if (isPlaying && song.currentType !== "podcast") {
+                songArt.classList.add('rotating');
+                songArt.classList.remove('selected');
+            } else {
+                songArt.classList.add('selected');
+                songArt.classList.remove('rotating');
             }
+        } else {
+            // This song is not active
+            songArt.classList.remove('rotating', 'selected');
         }
     });
-}
-
-// Update play button icons and rotation
-function updatePlayButtons() {
-    if (isPlaying) {
-        mobilePlayIcon.className = 'fas fa-pause';
-        lyricsPlayIcon.className = 'fas fa-pause';
-    } else {
-        mobilePlayIcon.className = 'fas fa-play';
-        lyricsPlayIcon.className = 'fas fa-play';
-    }
-    
-    // Also update rotation animation
-    updateSongArtRotation();
 }
 
 // Initialize the app
