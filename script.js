@@ -1,5 +1,3 @@
-// ==================== COMPLETE FIXED SCRIPT.JS ====================
-
 // DOM Elements
 const themeToggle = document.getElementById('themeToggle');
 const lyricsBtn = document.getElementById('lyricsBtn');
@@ -124,29 +122,33 @@ let searchResults = []; // Store search results separately
 // Store original filtered songs before search
 let originalFilteredSongsBeforeSearch = [];
 
+// Background audio keep-alive
+let backgroundKeepAliveInterval = null;
+let wakeLock = null;
+
 // Music directors list
 const musicDirectors = [
-"A R Rahman",
-"Anirudh Ravichander",
-"Bharani",
-"Deva",
-"D Imman",
-"G V Prakash Kumar",
-"Gangai Amaran",
-"Harris Jayaraj",
-"Hiphop Tamizha",
-"Ilaiyaraaja",
-"James Vasanthan",
-"Jassie Gift",
-"Krishna Kumar",
-"M S Viswanathan",
-"Nivas K Prasanna",
-"R P Patnaik",
-"S A Rajkumar",
-"Shyam",
-"T Rajendar",
-"Vijay Antony",
-"Yuvan Shankar Raja"
+    "A R Rahman",
+    "Anirudh Ravichander",
+    "Bharani",
+    "Deva",
+    "D Imman",
+    "G V Prakash Kumar",
+    "Gangai Amaran",
+    "Harris Jayaraj",
+    "Hiphop Tamizha",
+    "Ilaiyaraaja",
+    "James Vasanthan",
+    "Jassie Gift",
+    "Krishna Kumar",
+    "M S Viswanathan",
+    "Nivas K Prasanna",
+    "R P Patnaik",
+    "S A Rajkumar",
+    "Shyam",
+    "T Rajendar",
+    "Vijay Antony",
+    "Yuvan Shankar Raja"
 ];
 
 // ==================== NETWORK ERROR MODAL ====================
@@ -376,156 +378,160 @@ function clearMusicDirectorFilter() {
     applyFilter(currentFilterType);
 }
 
-// ==================== ANDROID BACKGROUND AUDIO FIXES ====================
+// ==================== BACKGROUND AUDIO FIXES ====================
 
-// Enhanced background audio features for Android to prevent 120-second stop
+// Enhanced background audio features to prevent stopping in sleep mode
 function initBackgroundAudio() {
-    console.log("Initializing enhanced background audio for Android...");
+    console.log("Initializing enhanced background audio...");
     
-    // Setup silent audio to keep audio context alive
-    setupSilentAudio();
+    // Setup wake lock
+    setupWakeLock();
+    
+    // Setup periodic keep-alive
+    setupPeriodicKeepAlive();
     
     // Handle page visibility changes
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            console.log("Page went to background - applying keep-alive");
-            
-            // Force audio to continue playing
-            if (isPlaying) {
-                // Create a silent audio element to keep audio context alive
-                const silentAudio = document.createElement('audio');
-                silentAudio.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
-                silentAudio.loop = true;
-                silentAudio.volume = 0.01;
-                
-                silentAudio.play().catch(e => console.log('Silent audio error:', e));
-                
-                // Store reference
-                window.silentAudio = silentAudio;
-                
-                // Also try to keep the main audio playing
-                if (audioPlayer.paused) {
-                    setTimeout(() => {
-                        audioPlayer.play().catch(e => {
-                            console.log("Failed to resume main audio:", e);
-                        });
-                    }, 100);
-                }
-            }
-        } else {
-            // Clean up silent audio
-            if (window.silentAudio) {
-                window.silentAudio.pause();
-                window.silentAudio = null;
-            }
-        }
-    });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     
-    // Periodic check to prevent audio stopping (check every 5 seconds instead of 30)
-    setInterval(() => {
+    // Handle beforeunload
+    window.addEventListener('beforeunload', savePlaybackState);
+    
+    // Try to restore playback state
+    restorePlaybackState();
+}
+
+// Setup wake lock to prevent device sleep
+async function setupWakeLock() {
+    if ('wakeLock' in navigator) {
+        try {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Wake Lock is active');
+            
+            wakeLock.addEventListener('release', () => {
+                console.log('Wake Lock was released');
+            });
+        } catch (err) {
+            console.error(`Failed to acquire wake lock: ${err.message}`);
+        }
+    }
+}
+
+// Setup periodic keep-alive checks
+function setupPeriodicKeepAlive() {
+    // Clear any existing interval
+    if (backgroundKeepAliveInterval) {
+        clearInterval(backgroundKeepAliveInterval);
+    }
+    
+    // Check every 10 seconds if audio should be playing but is paused
+    backgroundKeepAliveInterval = setInterval(() => {
         if (document.hidden && isPlaying && audioPlayer.paused) {
             console.log("Audio stopped in background, attempting to resume...");
+            resumeAudioInBackground();
+        }
+    }, 10000);
+}
+
+// Handle page visibility changes
+function handleVisibilityChange() {
+    if (document.hidden) {
+        console.log("Page went to background");
+        // Page is hidden - ensure audio continues
+        if (isPlaying && audioPlayer.paused) {
+            setTimeout(() => {
+                resumeAudioInBackground();
+            }, 500);
+        }
+    } else {
+        console.log("Page became visible");
+        // Page is visible - resume if needed
+        if (isPlaying && audioPlayer.paused) {
             audioPlayer.play().catch(e => {
-                console.log("Failed to resume:", e);
-                // Try loading the audio again
+                console.log("Failed to resume after visibility:", e);
+            });
+        }
+    }
+}
+
+// Resume audio when in background
+function resumeAudioInBackground() {
+    if (!isPlaying || !document.hidden) return;
+    
+    console.log("Attempting to resume audio in background...");
+    
+    // Strategy 1: Direct resume
+    audioPlayer.play().then(() => {
+        console.log("✅ Audio resumed successfully in background");
+    }).catch(error => {
+        console.log("❌ Direct resume failed:", error);
+        
+        // Strategy 2: Small seek and retry
+        const currentTime = audioPlayer.currentTime;
+        audioPlayer.currentTime = Math.max(0, currentTime - 0.1);
+        
+        setTimeout(() => {
+            audioPlayer.play().then(() => {
+                console.log("✅ Audio resumed after seek");
+            }).catch(error2 => {
+                console.log("❌ Second resume attempt failed:", error2);
+                
+                // Strategy 3: Reload the audio
                 if (songs[currentSongIndex]) {
+                    console.log("Reloading audio from source...");
                     loadSong(currentSongIndex, true);
                 }
             });
-        }
-    }, 5000); // Check every 5 seconds
-    
-    // Additional sleep mode prevention
-    setupSleepModePrevention();
-}
-
-// Setup silent audio to keep audio context alive
-function setupSilentAudio() {
-    try {
-        const silentAudio = document.createElement('audio');
-        silentAudio.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
-        silentAudio.loop = true;
-        silentAudio.volume = 0.001;
-        silentAudio.muted = true;
-        document.body.appendChild(silentAudio);
-        
-        window.silentAudio = silentAudio;
-        console.log("Silent audio setup complete");
-    } catch (error) {
-        console.error("Failed to setup silent audio:", error);
-    }
-}
-
-// Setup sleep mode prevention for Android
-function setupSleepModePrevention() {
-    console.log("Setting up sleep mode prevention...");
-    
-    // Use wake lock API if available
-    if ('wakeLock' in navigator) {
-        let wakeLock = null;
-        
-        const requestWakeLock = async () => {
-            try {
-                wakeLock = await navigator.wakeLock.request('screen');
-                console.log('Wake Lock is active');
-                
-                wakeLock.addEventListener('release', () => {
-                    console.log('Wake Lock was released');
-                });
-            } catch (err) {
-                console.error(`Failed to acquire wake lock: ${err.message}`);
-            }
-        };
-        
-        // Request wake lock when playing
-        const originalPlayAudio = playAudio;
-        playAudio = function() {
-            if (isPlaying) {
-                requestWakeLock();
-            }
-            return originalPlayAudio.apply(this, arguments);
-        };
-        
-        // Release wake lock when paused
-        const originalPauseAudio = pauseAudio;
-        pauseAudio = function() {
-            if (wakeLock !== null) {
-                wakeLock.release();
-                wakeLock = null;
-                console.log('Wake Lock released');
-            }
-            return originalPauseAudio.apply(this, arguments);
-        };
-    }
-    
-    // Additional audio context keep-alive
-    let audioContext = null;
-    let oscillator = null;
-    
-    const startAudioContext = () => {
-        if (!audioContext) {
-            try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                console.log("AudioContext created for sleep prevention");
-            } catch (e) {
-                console.log("Could not create AudioContext:", e);
-            }
-        }
-    };
-    
-    // Start audio context on user interaction
-    document.addEventListener('click', () => {
-        if (isPlaying && !audioContext) {
-            startAudioContext();
-        }
-    }, { once: true });
-    
-    // Resume audio context when page becomes visible
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && audioContext && audioContext.state === 'suspended') {
-            audioContext.resume();
-        }
+        }, 100);
     });
+}
+
+// Save playback state
+function savePlaybackState() {
+    if (isPlaying) {
+        localStorage.setItem('backgroundPlayback', JSON.stringify({
+            songIndex: currentSongIndex,
+            currentTime: audioPlayer.currentTime,
+            timestamp: Date.now(),
+            isPlaying: true
+        }));
+        console.log("💾 Saved playback state");
+    } else {
+        localStorage.removeItem('backgroundPlayback');
+    }
+}
+
+// Restore playback state
+function restorePlaybackState() {
+    try {
+        const savedState = localStorage.getItem('backgroundPlayback');
+        if (savedState) {
+            const state = JSON.parse(savedState);
+            const timeDiff = Date.now() - state.timestamp;
+            
+            // Only restore if within 5 minutes
+            if (timeDiff < 5 * 60 * 1000) {
+                console.log("🔄 Restoring playback state from", timeDiff / 1000, "seconds ago");
+                
+                setTimeout(() => {
+                    if (state.songIndex >= 0 && state.songIndex < songs.length) {
+                        setActiveSong(state.songIndex);
+                        audioPlayer.currentTime = state.currentTime;
+                        
+                        if (state.isPlaying && isAutoPlayEnabled) {
+                            setTimeout(() => {
+                                playAudio();
+                            }, 500);
+                        }
+                    }
+                }, 1000);
+            } else {
+                localStorage.removeItem('backgroundPlayback');
+            }
+        }
+    } catch (e) {
+        console.log("Error restoring playback state:", e);
+        localStorage.removeItem('backgroundPlayback');
+    }
 }
 
 // ==================== HELPER FUNCTIONS ====================
@@ -742,6 +748,7 @@ function isAudioType(type) {
 function markUserInteraction() {
     if (!hasUserInteracted) {
         hasUserInteracted = true;
+        console.log("User interaction marked");
     }
 }
 
@@ -1008,7 +1015,7 @@ function updateSelectedSongUI(songId, versionType) {
                 mobileSongArtist.textContent = cleanArtist;
                 lyricsPlayerTitle.innerHTML = `${displayTitle} - ${cleanArtist}`;
                 
-                // Update lyrics header
+                // Update lyrics header - CRITICAL FIX
                 lyricsSongTitle.innerHTML = displayTitle;
                 lyricsSongArtist.textContent = cleanArtist;
             }
@@ -1429,7 +1436,11 @@ function renderCarousel() {
     
     // Apply search filter if active
     let songsToRender = filteredSongs;
-    if (isSearchActive && currentSearchTerm) {
+    if (isSearchActive && currentSearchTerm && searchResults.length > 0) {
+        // If we have search results, use them
+        songsToRender = searchResults;
+    } else if (isSearchActive && currentSearchTerm) {
+        // Otherwise filter the current filteredSongs
         const searchLower = currentSearchTerm.toLowerCase();
         songsToRender = songsToRender.filter(song => 
             song.title.toLowerCase().includes(searchLower) ||
@@ -1693,16 +1704,9 @@ function createSongItem(song, index) {
             // FIX: Use the original songIndex
             loadSong(songIndex, isAutoPlayEnabled);
             
-            // If in search mode, re-render to show updated active state
-            if (isSearchActive) {
-                setTimeout(() => {
-                    // Re-render search results to reflect active state
-                    renderSearchResults(searchResults);
-                    updateSongArtRotation();
-                }, 50);
-            }
-            
-            // Don't change filter type if in search mode
+            // ==================== FIXED: DON'T change filter type when in search mode ====================
+            // This is the key fix - when in search mode, we should NOT change the filter type
+            // This prevents showing all 145 songs when clicking version button
             if (!isSearchActive && currentFilterType !== "list" && currentFilterType !== "favourite" && versionType !== currentFilterType) {
                 currentFilterType = versionType;
                 filteredSongs = filterSongsByType(versionType);
@@ -1720,6 +1724,13 @@ function createSongItem(song, index) {
                     }
                     
                     setCorrectActiveState(songId, versionType);
+                }, 50);
+            } else if (isSearchActive) {
+                // When in search mode, just re-render the search results to show updated active state
+                setTimeout(() => {
+                    // FIX: Force update of active state in search results
+                    setCorrectActiveState(songId, versionType);
+                    updateSongArtRotation();
                 }, 50);
             }
         });
@@ -1754,7 +1765,8 @@ function createSongItem(song, index) {
             // If in search mode, update the search results
             if (isSearchActive) {
                 setTimeout(() => {
-                    renderSearchResults(searchResults);
+                    // FIX: Force update of active state in search results
+                    setCorrectActiveState(song.id, song.currentType || song.availableTypes[0]);
                     updateSongArtRotation();
                 }, 50);
             }
@@ -1768,9 +1780,13 @@ function createSongItem(song, index) {
 function renderSongList() {
     songListContainer.innerHTML = '';
     
-    // Apply search filter if active
+    // Apply search filter if active - use searchResults if available
     let songsToRender = filteredSongs;
-    if (isSearchActive && currentSearchTerm) {
+    if (isSearchActive && currentSearchTerm && searchResults.length > 0) {
+        // If we have search results, use them
+        songsToRender = searchResults;
+    } else if (isSearchActive && currentSearchTerm) {
+        // Otherwise filter the current filteredSongs
         const searchLower = currentSearchTerm.toLowerCase();
         songsToRender = songsToRender.filter(song => 
             song.title.toLowerCase().includes(searchLower) ||
@@ -1820,11 +1836,14 @@ function renderSongList() {
     
     songListContainer.appendChild(fragment);
     
-    // Ensure active state is visible
+    // FIX: Force update of active state after rendering
     if (lastActiveSongId) {
         const song = songs.find(s => s.id === lastActiveSongId);
         if (song && song.active) {
-            setCorrectActiveState(song.id, song.currentType);
+            setTimeout(() => {
+                setCorrectActiveState(song.id, song.currentType);
+                updateSongArtRotation();
+            }, 100);
         }
     }
 }
@@ -2112,6 +2131,7 @@ function setActiveSong(index) {
         
         // Update the search results immediately
         setTimeout(() => {
+            // FIX: Re-render search results with correct active state
             renderSearchResults(searchResults);
             updateSongArtRotation(); // Force update rotation
             
@@ -2128,25 +2148,35 @@ function setActiveSong(index) {
     }
 }
 
-// Load lyrics from file - FIXED: Properly load lyrics for current song
+// ==================== FIXED: Load lyrics from file ====================
 async function loadLyrics(lyricsFile, songTitle, songArtist) {
     try {
-        // Set title and artist in lyrics header
-        lyricsSongTitle.innerHTML = songTitle;
-        lyricsSongArtist.textContent = songArtist;
+        // Set title and artist in lyrics header - THIS IS THE CRITICAL FIX
+        if (lyricsSongTitle) {
+            lyricsSongTitle.innerHTML = songTitle;
+        }
+        if (lyricsSongArtist) {
+            lyricsSongArtist.textContent = songArtist;
+        }
         
         // Set loading text for lyrics content
-        lyricsText.textContent = "Loading lyrics...";
+        if (lyricsText) {
+            lyricsText.textContent = "Loading lyrics...";
+        }
         
         if (!lyricsFile || lyricsFile.trim() === '') {
-            lyricsText.textContent = "No lyrics available for this song.";
+            if (lyricsText) {
+                lyricsText.textContent = "No lyrics available for this song.";
+            }
             return;
         }
     
         // Check network before loading lyrics
         if (!isOnline) {
             showNetworkErrorModal();
-            lyricsText.textContent = "No internet connection. Cannot load lyrics.";
+            if (lyricsText) {
+                lyricsText.textContent = "No internet connection. Cannot load lyrics.";
+            }
             return;
         }
         
@@ -2154,16 +2184,23 @@ async function loadLyrics(lyricsFile, songTitle, songArtist) {
         if (response.ok) {
             const lyricsContent = await response.text();
             // Only show the lyrics text, NOT the title and artist (they're in the header)
-            lyricsText.textContent = lyricsContent.trim();
+            if (lyricsText) {
+                lyricsText.textContent = lyricsContent.trim();
+            }
         } else {
-            lyricsText.textContent = "Lyrics file not found.";
+            if (lyricsText) {
+                lyricsText.textContent = "Lyrics file not found.";
+            }
         }
     } catch (error) {
+        console.error("Error loading lyrics:", error);
         // Check if it's a network error
         if (error.message.includes("network") || error.message.includes("Network")) {
             showNetworkErrorModal();
         }
-        lyricsText.textContent = "Error loading lyrics.";
+        if (lyricsText) {
+            lyricsText.textContent = "Error loading lyrics.";
+        }
     }
 }
 
@@ -2175,8 +2212,8 @@ function applyFilter(type) {
         musicDirectorSongs = [];
     }
     
-    // Clear search when changing filter type (unless it's the same type)
-    if (type !== currentFilterType) {
+    // Only clear search when changing filter type if NOT in search mode
+    if (type !== currentFilterType && (!isSearchActive || currentSearchTerm.trim() === "")) {
         isSearchActive = false;
         currentSearchTerm = "";
         searchResults = [];
@@ -2228,6 +2265,13 @@ function applyFilter(type) {
     } else {
         currentFilterType = type;
         filteredSongs = filterSongsByType(type);
+    }
+    
+    // If in search mode, update search results for the new filter
+    if (isSearchActive && currentSearchTerm) {
+        setTimeout(() => {
+            updateSearchResultsAfterFilter();
+        }, 50);
     }
     
     updateActiveFilterButton(type);
@@ -2393,7 +2437,7 @@ function applyFilter(type) {
     updateSidebarWithCounts();
 }
 
-// Enhanced play audio function for Android background
+// ==================== FIXED: Enhanced play audio function ====================
 function playAudio() {
     if (!audioPlayer.src || audioPlayer.src === "") {
         console.log("No audio source, loading song...");
@@ -2414,7 +2458,6 @@ function playAudio() {
         audioLoading.classList.add('active');
         audioLoading.textContent = "Loading audio...";
         
-        // Use a simpler approach
         const checkAndPlay = () => {
             if (audioPlayer.readyState >= 2) {
                 console.log("Audio ready, attempting to play...");
@@ -2429,7 +2472,6 @@ function playAudio() {
         
         checkAndPlay();
         
-        // Timeout after 10 seconds
         setTimeout(() => {
             if (!isPlaying && audioPlayer.readyState < 2) {
                 audioLoading.textContent = "Audio taking too long to load";
@@ -2447,57 +2489,77 @@ function playAudio() {
     attemptPlay();
     
     function attemptPlay() {
-        hasUserInteracted = true;
+        markUserInteraction();
         
         console.log("Attempting to play audio...");
         
-        // IMPORTANT: Use a simpler promise handling
-        audioPlayer.play()
-            .then(() => {
-                console.log("✅ Audio playback started successfully");
-                isPlaying = true;
-                updatePlayButtons();
-                startProgressUpdate();
-                showNotification("Now playing", 1500);
-                
-                checkScrollForProgress();
-                
-                // Start wake lock if available
-                if ('wakeLock' in navigator && isPlaying) {
-                    navigator.wakeLock.request('screen').then(wakeLock => {
-                        console.log("Wake lock acquired for background playback");
-                    }).catch(err => {
-                        console.log("Wake lock error:", err);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error("❌ Playback error:", error);
-                
-                if (error.name === 'NotAllowedError') {
-                    showNotification("Click play button again to start", 3000);
-                    isPlaying = false;
-                    updatePlayButtons();
-                    
-                    // Add a click handler to retry
-                    const retryHandler = () => {
-                        document.removeEventListener('click', retryHandler);
-                        if (!isPlaying) {
-                            playAudio();
-                        }
-                    };
-                    document.addEventListener('click', retryHandler, { once: true });
-                    
-                } else if (error.name === 'AbortError') {
-                    // Ignore abort errors
-                    console.log("Audio playback was aborted");
-                } else {
-                    console.error("Other playback error:", error);
-                    showNotification(`Playback error: ${error.message}`, 3000);
-                    isPlaying = false;
-                    updatePlayButtons();
-                }
+        // IMPORTANT: For iOS and some Android devices, ensure user interaction
+        if (!hasUserInteracted) {
+            // Create a fake user interaction
+            const clickEvent = new MouseEvent('click', {
+                view: window,
+                bubbles: true,
+                cancelable: true
             });
+            document.dispatchEvent(clickEvent);
+            hasUserInteracted = true;
+        }
+        
+        // Set volume to ensure audio plays
+        audioPlayer.volume = 1.0;
+        
+        // Use a Promise to handle playback
+        const playPromise = audioPlayer.play();
+        
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    console.log("✅ Audio playback started successfully");
+                    isPlaying = true;
+                    updatePlayButtons();
+                    startProgressUpdate();
+                    showNotification("Now playing", 1500);
+                    
+                    checkScrollForProgress();
+                    
+                    // Request wake lock for background playback
+                    if ('wakeLock' in navigator && isPlaying) {
+                        navigator.wakeLock.request('screen').then(wl => {
+                            wakeLock = wl;
+                            console.log("Wake lock acquired for background playback");
+                        }).catch(err => {
+                            console.log("Wake lock error:", err);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ Playback error:", error);
+                    
+                    if (error.name === 'NotAllowedError') {
+                        showNotification("Click play button again to start", 3000);
+                        isPlaying = false;
+                        updatePlayButtons();
+                        
+                        // Add a click handler to retry
+                        const retryHandler = () => {
+                            document.removeEventListener('click', retryHandler);
+                            if (!isPlaying) {
+                                playAudio();
+                            }
+                        };
+                        document.addEventListener('click', retryHandler, { once: true });
+                        
+                    } else if (error.name === 'AbortError') {
+                        // Ignore abort errors
+                        console.log("Audio playback was aborted");
+                    } else {
+                        console.error("Other playback error:", error);
+                        showNotification(`Playback error: ${error.message}`, 3000);
+                        isPlaying = false;
+                        updatePlayButtons();
+                    }
+                });
+        }
     }
 }
 
@@ -2507,6 +2569,13 @@ function pauseAudio() {
     isPlaying = false;
     updatePlayButtons();
     stopProgressUpdate();
+    
+    // Release wake lock when paused
+    if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+        console.log('Wake Lock released');
+    }
 }
 
 // Toggle play/pause
@@ -2757,31 +2826,14 @@ function setupAudioEvents() {
         showNotification(errorMsg, 3000);
     });
     
-    // Enhanced page visibility handling for Android sleep mode
+    // Enhanced page visibility handling for sleep mode
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-            console.log("📱 Page hidden - applying enhanced sleep mode protection");
+            console.log("📱 Page hidden - applying sleep mode protection");
             
-            // Try to keep audio playing if it paused
-            if (isPlaying && audioPlayer.paused) {
-                console.log("🔊 Audio paused when page hidden, attempting enhanced resume...");
-                
-                // Multiple attempts to resume
-                const tryResume = (attempt = 1) => {
-                    if (attempt > 3) return;
-                    
-                    audioPlayer.play().then(() => {
-                        console.log(`✅ Audio resumed on attempt ${attempt}`);
-                    }).catch(e => {
-                        console.log(`❌ Resume attempt ${attempt} failed:`, e);
-                        setTimeout(() => {
-                            tryResume(attempt + 1);
-                        }, 500);
-                    });
-                };
-                
-                tryResume();
-            }
+            // Save playback state
+            savePlaybackState();
+            
         } else {
             // When page becomes visible again, ensure audio is playing if it should be
             if (isPlaying && audioPlayer.paused) {
@@ -2794,34 +2846,19 @@ function setupAudioEvents() {
         }
     });
     
-    // Save playback state before page unload
-    window.addEventListener('beforeunload', () => {
-        if (isPlaying) {
-            localStorage.setItem('wasPlaying', 'true');
-            localStorage.setItem('currentSongIndex', currentSongIndex.toString());
-            localStorage.setItem('currentTime', audioPlayer.currentTime.toString());
-            console.log("💾 Saved playback state before unload");
-        } else {
-            localStorage.removeItem('wasPlaying');
-        }
+    // Handle audio suspend events (Android sleep mode)
+    audioPlayer.addEventListener('suspend', () => {
+        console.log("Audio suspended by system");
     });
     
-    // Restore playback state on load
-    const wasPlaying = localStorage.getItem('wasPlaying');
-    if (wasPlaying === 'true') {
-        const savedIndex = parseInt(localStorage.getItem('currentSongIndex') || '0');
-        const savedTime = parseFloat(localStorage.getItem('currentTime') || '0');
-        
-        if (savedIndex >= 0 && savedIndex < songs.length) {
-            setTimeout(() => {
-                setActiveSong(savedIndex);
-                audioPlayer.currentTime = savedTime;
-                if (isAutoPlayEnabled) {
-                    playAudio();
-                }
-                console.log("🔄 Restored playback from sleep mode");
-            }, 1000);
-        }
+    // iOS specific handling
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    if (isIOS) {
+        // iOS requires user gesture for audio to play in background
+        document.addEventListener('touchstart', () => {
+            // This helps iOS recognize user interaction
+            markUserInteraction();
+        }, { once: true });
     }
 }
 
@@ -2927,12 +2964,14 @@ function renderSearchResults(searchResults) {
     
     songListContainer.appendChild(fragment);
     
-    // Force update of active state
+    // FIX: Force update of active state after rendering search results
     if (lastActiveSongId) {
         const activeSong = songs.find(s => s.id === lastActiveSongId);
         if (activeSong && activeSong.active) {
-            setCorrectActiveState(activeSong.id, activeSong.currentType);
-            updateSongArtRotation();
+            setTimeout(() => {
+                setCorrectActiveState(activeSong.id, activeSong.currentType);
+                updateSongArtRotation();
+            }, 100);
         }
     }
 }
@@ -2985,6 +3024,25 @@ function renderCarouselForSearch(songsToShow) {
     if (swiper) {
         swiper.destroy(true, true);
         initSwiper();
+    }
+}
+
+// Update search results after filter change
+function updateSearchResultsAfterFilter() {
+    if (isSearchActive && currentSearchTerm) {
+        const searchLower = currentSearchTerm.toLowerCase();
+        // Re-filter the current filteredSongs
+        searchResults = filteredSongs.filter(song => 
+            song.title.toLowerCase().includes(searchLower) ||
+            song.artist.toLowerCase().includes(searchLower)
+        );
+        
+        // Re-render with updated search results
+        renderSearchResults(searchResults);
+        
+        if (searchResults.length > 0) {
+            renderCarouselForSearch(searchResults);
+        }
     }
 }
 
@@ -3069,7 +3127,7 @@ function setupMusicDirectorEvents() {
     }
 }
 
-// Set up event listeners - FIXED: Lyrics button should show current song's lyrics
+// ==================== FIXED: Set up event listeners ====================
 function setupEventListeners() {
     themeToggle.addEventListener('click', () => {
         markUserInteraction();
@@ -3084,42 +3142,51 @@ function setupEventListeners() {
     // Use the toggle function for mobile search
     mobileSearchToggle.addEventListener('click', toggleMobileSearch);
 
-    // FIX: Lyrics button should show CURRENT song's lyrics
+    // ==================== FIXED: Lyrics button handler ====================
     lyricsBtn.addEventListener('click', async () => {
         markUserInteraction();
         
         console.log("Lyrics button clicked. CurrentSongIndex:", currentSongIndex, 
-                    "LastActiveSongId:", lastActiveSongId);
+                    "LastActiveSongId:", lastActiveSongId, "isSearchActive:", isSearchActive);
         
-        // Determine which song to show lyrics for
-        let targetSongIndex = currentSongIndex;
+        // ALWAYS use lastActiveSongId if available (this is the key fix)
+        let targetSongId = lastActiveSongId;
         
-        // If currentSongIndex is not valid, try to find last active
-        if (targetSongIndex < 0 || targetSongIndex >= songs.length) {
-            if (lastActiveSongId) {
-                targetSongIndex = songs.findIndex(s => s.id === lastActiveSongId);
-            }
+        // If no last active, fall back to current song index
+        if (!targetSongId && currentSongIndex >= 0 && currentSongIndex < songs.length) {
+            targetSongId = songs[currentSongIndex].id;
         }
         
-        if (targetSongIndex >= 0 && targetSongIndex < songs.length) {
-            const currentSong = songs[targetSongIndex];
-            const displayTitle = getTitleForType(currentSong, currentSong.currentType);
-            const cleanArtist = getArtistForType(currentSong, currentSong.currentType);
-            
-            // CRITICAL FIX: Load lyrics for the correct song
-            await loadLyrics(currentSong.lyrics, displayTitle, cleanArtist);
-            
-            // Update lyrics modal header with current song info
-            lyricsSongTitle.innerHTML = displayTitle;
-            lyricsSongArtist.textContent = cleanArtist;
-            
-            // Update lyrics player title
-            lyricsPlayerTitle.innerHTML = `${displayTitle} - ${cleanArtist}`;
-            
-            // Show the modal
-            lyricsModal.classList.add('active');
-            
-            console.log("Showing lyrics for:", displayTitle, cleanArtist);
+        if (targetSongId) {
+            const songIndex = songs.findIndex(s => s.id === targetSongId);
+            if (songIndex >= 0) {
+                const currentSong = songs[songIndex];
+                const displayTitle = getTitleForType(currentSong, currentSong.currentType);
+                const cleanArtist = getArtistForType(currentSong, currentSong.currentType);
+                
+                // Load lyrics for the correct song
+                await loadLyrics(currentSong.lyrics, displayTitle, cleanArtist);
+                
+                // Update lyrics modal header with current song info
+                if (lyricsSongTitle) {
+                    lyricsSongTitle.innerHTML = displayTitle;
+                }
+                if (lyricsSongArtist) {
+                    lyricsSongArtist.textContent = cleanArtist;
+                }
+                
+                // Update lyrics player title
+                if (lyricsPlayerTitle) {
+                    lyricsPlayerTitle.innerHTML = `${displayTitle} - ${cleanArtist}`;
+                }
+                
+                // Show the modal
+                lyricsModal.classList.add('active');
+                
+                console.log("Showing lyrics for:", displayTitle, cleanArtist);
+            } else {
+                showNotification("Song not found", 2000);
+            }
         } else {
             showNotification("Please select a song first", 2000);
         }
@@ -3170,36 +3237,23 @@ function setupEventListeners() {
     lyricsNextBtn.addEventListener('click', playNextSong);
 
 
-    // Filter buttons - FIXED: Clear search when changing filter via carousel/header buttons
-    document.querySelectorAll('.control-btn[data-type]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            markUserInteraction();
-            const type = e.currentTarget.dataset.type;
-            // Clear search when changing filter via carousel/header buttons
-            isSearchActive = false;
-            currentSearchTerm = "";
-            searchResults = [];
-            originalFilteredSongsBeforeSearch = [];
-            if (searchInput) searchInput.value = "";
-            if (mobileSearchInput) mobileSearchInput.value = "";
-            updateSearchClearButtons();
-            
-            applyFilter(type);
-        });
-    });
-
+    // Filter buttons - MODIFIED: Only clear search if NOT currently in search
     document.querySelectorAll('.type-filter-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             markUserInteraction();
             const type = e.currentTarget.dataset.type;
-            // Clear search when changing filter via carousel/header buttons
-            isSearchActive = false;
-            currentSearchTerm = "";
-            searchResults = [];
-            originalFilteredSongsBeforeSearch = [];
-            if (searchInput) searchInput.value = "";
-            if (mobileSearchInput) mobileSearchInput.value = "";
-            updateSearchClearButtons();
+            
+            // DON'T clear search if we're currently in search mode
+            // Only clear if NOT in search mode
+            if (!isSearchActive || currentSearchTerm.trim() === "") {
+                isSearchActive = false;
+                currentSearchTerm = "";
+                searchResults = [];
+                originalFilteredSongsBeforeSearch = [];
+                if (searchInput) searchInput.value = "";
+                if (mobileSearchInput) mobileSearchInput.value = "";
+                updateSearchClearButtons();
+            }
             
             applyFilter(type);
         });
