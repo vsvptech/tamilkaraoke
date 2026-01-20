@@ -125,6 +125,8 @@ let originalFilteredSongsBeforeSearch = [];
 // Background audio keep-alive
 let backgroundKeepAliveInterval = null;
 let wakeLock = null;
+let audioResumeAttempts = 0;
+const MAX_RESUME_ATTEMPTS = 10;
 
 // Music directors list
 const musicDirectors = [
@@ -378,16 +380,19 @@ function clearMusicDirectorFilter() {
     applyFilter(currentFilterType);
 }
 
-// ==================== BACKGROUND AUDIO FIXES ====================
+// ==================== ENHANCED BACKGROUND AUDIO FOR SLEEP MODE ====================
 
 // Enhanced background audio features to prevent stopping in sleep mode
 function initBackgroundAudio() {
-    console.log("Initializing enhanced background audio...");
+    console.log("=== INITIALIZING ENHANCED BACKGROUND AUDIO FOR 180-SECOND FIX ===");
     
     // Setup wake lock
     setupWakeLock();
     
-    // Setup periodic keep-alive
+    // Setup audio context keep-alive
+    setupAudioContextKeepAlive();
+    
+    // Setup periodic keep-alive (every 30 seconds to prevent 180-second timeout)
     setupPeriodicKeepAlive();
     
     // Handle page visibility changes
@@ -398,6 +403,9 @@ function initBackgroundAudio() {
     
     // Try to restore playback state
     restorePlaybackState();
+    
+    // Setup silent audio for Android
+    setupSilentAudio();
 }
 
 // Setup wake lock to prevent device sleep
@@ -405,80 +413,222 @@ async function setupWakeLock() {
     if ('wakeLock' in navigator) {
         try {
             wakeLock = await navigator.wakeLock.request('screen');
-            console.log('Wake Lock is active');
+            console.log('✅ Wake Lock is active');
             
             wakeLock.addEventListener('release', () => {
-                console.log('Wake Lock was released');
+                console.log('⚠️ Wake Lock was released');
+                // Try to re-acquire if we're still playing
+                if (isPlaying) {
+                    setTimeout(setupWakeLock, 1000);
+                }
             });
         } catch (err) {
-            console.error(`Failed to acquire wake lock: ${err.message}`);
+            console.error(`❌ Failed to acquire wake lock: ${err.message}`);
         }
     }
 }
 
-// Setup periodic keep-alive checks
+// Setup audio context keep-alive
+function setupAudioContextKeepAlive() {
+    // Create and keep an AudioContext alive
+    if (!window.audioContext) {
+        try {
+            window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            console.log('✅ AudioContext created for background audio');
+            
+            // Create a silent oscillator to keep context alive
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Set gain to 0 (silent)
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            
+            // Start oscillator (silent but keeps context alive)
+            oscillator.start();
+            
+            window.silentOscillator = oscillator;
+            window.silentGainNode = gainNode;
+            
+        } catch (e) {
+            console.log("⚠️ Could not create AudioContext:", e);
+        }
+    }
+}
+
+// Setup periodic keep-alive checks (every 30 seconds)
 function setupPeriodicKeepAlive() {
     // Clear any existing interval
     if (backgroundKeepAliveInterval) {
         clearInterval(backgroundKeepAliveInterval);
     }
     
-    // Check every 10 seconds if audio should be playing but is paused
+    // Check every 30 seconds (less than 180 seconds)
     backgroundKeepAliveInterval = setInterval(() => {
-        if (document.hidden && isPlaying && audioPlayer.paused) {
-            console.log("Audio stopped in background, attempting to resume...");
-            resumeAudioInBackground();
+        if (document.hidden && isPlaying) {
+            console.log("🔄 30-second background check - Audio should be playing");
+            
+            // Strategy 1: Check if audio is paused but should be playing
+            if (audioPlayer.paused) {
+                console.log("⚠️ Audio paused in background, attempting resume...");
+                resumeAudioInBackground();
+            }
+            
+            // Strategy 2: Small time adjustment to keep audio alive
+            if (!audioPlayer.paused && audioPlayer.currentTime > 0) {
+                // Slight time adjustment to prevent Android from stopping audio
+                const currentTime = audioPlayer.currentTime;
+                audioPlayer.currentTime = currentTime - 0.001;
+                setTimeout(() => {
+                    audioPlayer.currentTime = currentTime;
+                }, 10);
+            }
+            
+            // Strategy 3: Ensure wake lock is active
+            if (isPlaying && !wakeLock && 'wakeLock' in navigator) {
+                setupWakeLock();
+            }
         }
-    }, 10000);
+    }, 30000); // Check every 30 seconds (well under 180 seconds)
+}
+
+// Setup silent audio for Android background
+function setupSilentAudio() {
+    // Create a silent audio element for Android background
+    if (!window.silentAudio) {
+        const silentAudio = document.createElement('audio');
+        silentAudio.id = 'silent-background-audio';
+        silentAudio.loop = true;
+        silentAudio.volume = 0.0001; // Almost silent
+        silentAudio.muted = true;
+        
+        // Create a silent audio source (1 second of silence)
+        const silentSource = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
+        silentAudio.src = silentSource;
+        
+        document.body.appendChild(silentAudio);
+        window.silentAudio = silentAudio;
+        
+        console.log('✅ Silent background audio setup complete');
+    }
 }
 
 // Handle page visibility changes
 function handleVisibilityChange() {
     if (document.hidden) {
-        console.log("Page went to background");
-        // Page is hidden - ensure audio continues
-        if (isPlaying && audioPlayer.paused) {
+        console.log("📱 Page went to background");
+        
+        // Page is hidden - apply enhanced keep-alive
+        if (isPlaying) {
+            // Start silent audio playback for Android
+            if (window.silentAudio) {
+                window.silentAudio.play().catch(e => {
+                    console.log("Silent audio play error:", e);
+                });
+            }
+            
+            // Ensure audio context is running
+            if (window.audioContext && window.audioContext.state === 'suspended') {
+                window.audioContext.resume();
+            }
+            
+            // Double-check audio is playing
             setTimeout(() => {
-                resumeAudioInBackground();
+                if (audioPlayer.paused) {
+                    console.log("Audio paused when entering background, resuming...");
+                    resumeAudioInBackground();
+                }
             }, 500);
         }
+        
     } else {
-        console.log("Page became visible");
+        console.log("📱 Page became visible");
+        
+        // Stop silent audio when page is visible
+        if (window.silentAudio) {
+            window.silentAudio.pause();
+        }
+        
         // Page is visible - resume if needed
         if (isPlaying && audioPlayer.paused) {
-            audioPlayer.play().catch(e => {
-                console.log("Failed to resume after visibility:", e);
-            });
+            setTimeout(() => {
+                audioPlayer.play().catch(e => {
+                    console.log("Failed to resume after visibility:", e);
+                });
+            }, 100);
         }
     }
 }
 
-// Resume audio when in background
+// Enhanced resume audio in background with multiple strategies
 function resumeAudioInBackground() {
     if (!isPlaying || !document.hidden) return;
     
-    console.log("Attempting to resume audio in background...");
+    audioResumeAttempts++;
+    
+    if (audioResumeAttempts > MAX_RESUME_ATTEMPTS) {
+        console.log("❌ Max resume attempts reached, stopping");
+        audioResumeAttempts = 0;
+        return;
+    }
+    
+    console.log(`🔄 Attempting to resume audio (attempt ${audioResumeAttempts})`);
     
     // Strategy 1: Direct resume
     audioPlayer.play().then(() => {
-        console.log("✅ Audio resumed successfully in background");
+        console.log("✅ Audio resumed successfully");
+        audioResumeAttempts = 0;
+        
+        // Restart progress update
+        if (isPlaying) {
+            startProgressUpdate();
+        }
     }).catch(error => {
-        console.log("❌ Direct resume failed:", error);
+        console.log(`❌ Direct resume failed (${error.name}):`, error.message);
         
         // Strategy 2: Small seek and retry
         const currentTime = audioPlayer.currentTime;
-        audioPlayer.currentTime = Math.max(0, currentTime - 0.1);
+        audioPlayer.currentTime = Math.max(0, currentTime - 0.01);
         
         setTimeout(() => {
             audioPlayer.play().then(() => {
                 console.log("✅ Audio resumed after seek");
+                audioResumeAttempts = 0;
             }).catch(error2 => {
-                console.log("❌ Second resume attempt failed:", error2);
+                console.log(`❌ Second resume attempt failed (${error2.name})`);
                 
-                // Strategy 3: Reload the audio
+                // Strategy 3: Reload the audio source
                 if (songs[currentSongIndex]) {
-                    console.log("Reloading audio from source...");
-                    loadSong(currentSongIndex, true);
+                    console.log("🔄 Reloading audio from source...");
+                    
+                    // Store current time
+                    const savedTime = audioPlayer.currentTime;
+                    const savedSrc = audioPlayer.src;
+                    
+                    // Reset and reload
+                    audioPlayer.src = '';
+                    setTimeout(() => {
+                        audioPlayer.src = savedSrc;
+                        audioPlayer.currentTime = savedTime;
+                        
+                        setTimeout(() => {
+                            audioPlayer.play().then(() => {
+                                console.log("✅ Audio resumed after reload");
+                                audioResumeAttempts = 0;
+                            }).catch(error3 => {
+                                console.log(`❌ Third resume attempt failed:`, error3);
+                                
+                                // Try one more time after delay
+                                setTimeout(() => {
+                                    if (isPlaying && document.hidden) {
+                                        resumeAudioInBackground();
+                                    }
+                                }, 2000);
+                            });
+                        }, 500);
+                    }, 100);
                 }
             });
         }, 100);
@@ -492,7 +642,8 @@ function savePlaybackState() {
             songIndex: currentSongIndex,
             currentTime: audioPlayer.currentTime,
             timestamp: Date.now(),
-            isPlaying: true
+            isPlaying: true,
+            songId: songs[currentSongIndex]?.id
         }));
         console.log("💾 Saved playback state");
     } else {
@@ -508,19 +659,23 @@ function restorePlaybackState() {
             const state = JSON.parse(savedState);
             const timeDiff = Date.now() - state.timestamp;
             
-            // Only restore if within 5 minutes
-            if (timeDiff < 5 * 60 * 1000) {
-                console.log("🔄 Restoring playback state from", timeDiff / 1000, "seconds ago");
+            // Only restore if within 10 minutes
+            if (timeDiff < 10 * 60 * 1000) {
+                console.log("🔄 Restoring playback state from", Math.round(timeDiff / 1000), "seconds ago");
                 
                 setTimeout(() => {
                     if (state.songIndex >= 0 && state.songIndex < songs.length) {
-                        setActiveSong(state.songIndex);
-                        audioPlayer.currentTime = state.currentTime;
-                        
-                        if (state.isPlaying && isAutoPlayEnabled) {
-                            setTimeout(() => {
-                                playAudio();
-                            }, 500);
+                        // Only restore if it's the same song
+                        const song = songs[state.songIndex];
+                        if (song && song.id === state.songId) {
+                            setActiveSong(state.songIndex);
+                            audioPlayer.currentTime = state.currentTime;
+                            
+                            if (state.isPlaying && isAutoPlayEnabled) {
+                                setTimeout(() => {
+                                    playAudio();
+                                }, 1000);
+                            }
                         }
                     }
                 }, 1000);
@@ -531,6 +686,15 @@ function restorePlaybackState() {
     } catch (e) {
         console.log("Error restoring playback state:", e);
         localStorage.removeItem('backgroundPlayback');
+    }
+}
+
+// Release wake lock when pausing
+function releaseWakeLock() {
+    if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+        console.log('✅ Wake Lock released');
     }
 }
 
@@ -609,11 +773,9 @@ function filterSongsByType(type) {
         return songs.filter(song => favoriteSongs.includes(song.id));
     }
     if (type === "list") {
-        // For "list" type, show all songs
         return songs;
     }
     if (type === "music") {
-        // For "music" type, show all songs (handled separately by music director)
         return songs;
     }
     return songs.filter(song => song.availableTypes.includes(type));
@@ -1166,7 +1328,7 @@ function createAboutModal() {
 
 // ==================== SEARCH BOX HANDLING ====================
 
-// Close mobile search when clicking outside
+// Close mobile search when clicking outside - FIXED FOR MOBILE SEARCH
 function closeMobileSearchOnOutsideClick(e) {
     // Don't close on scroll events (touchmove, wheel, etc.)
     if (e.type === 'touchmove' || e.type === 'wheel' || e.type === 'scroll') {
@@ -1182,9 +1344,14 @@ function closeMobileSearchOnOutsideClick(e) {
         const clickedSongItem = e.target.closest('.song-item');
         const clickedVersionBtn = e.target.closest('.version-btn');
         
-        // If clicking on a song or version button, close search
+        // If clicking on a song or version button, DON'T close search in mobile
+        // This is the FIX: Keep search open when clicking song items in mobile
         if (clickedSongItem || clickedVersionBtn) {
-            closeMobileSearch();
+            // In mobile, we want to keep search open after selecting a song
+            // Only close if clicking outside both search AND song list
+            if (!songListContainer.contains(e.target)) {
+                closeMobileSearch();
+            }
         }
         // If clicking elsewhere (not on song list), close search
         else if (!songListContainer.contains(e.target)) {
@@ -1193,9 +1360,11 @@ function closeMobileSearchOnOutsideClick(e) {
     }
 }
 
-// Close mobile search when a song is selected
+// Close mobile search when a song is selected - MODIFIED
 function closeMobileSearchOnSongSelect() {
-    if (isMobileSearchOpen) {
+    // Only close mobile search if we're NOT in search mode
+    // This is important: When we're searching, we want to keep search open
+    if (isMobileSearchOpen && !isSearchActive) {
         closeMobileSearch();
     }
 }
@@ -1663,8 +1832,11 @@ function createSongItem(song, index) {
             markUserInteraction();
             e.stopPropagation();
             
-            // Close mobile search when a version is selected
-            closeMobileSearchOnSongSelect();
+            // Close mobile search when a version is selected (but keep search results)
+            // FIX: Don't close search if we're in search mode
+            if (isMobileSearchOpen && !isSearchActive) {
+                closeMobileSearch();
+            }
             
             const songId = parseInt(btn.dataset.id);
             const versionType = btn.dataset.type;
@@ -1731,6 +1903,10 @@ function createSongItem(song, index) {
                     // FIX: Force update of active state in search results
                     setCorrectActiveState(songId, versionType);
                     updateSongArtRotation();
+                    
+                    // CRITICAL FIX: In mobile, keep showing search results after clicking version button
+                    // Re-render search results to maintain the search view
+                    renderSearchResults(searchResults);
                 }, 50);
             }
         });
@@ -1750,8 +1926,11 @@ function createSongItem(song, index) {
         
         markUserInteraction();
         
-        // Close mobile search when a song is selected
-        closeMobileSearchOnSongSelect();
+        // Close mobile search when a song is selected (but keep search results)
+        // FIX: Don't close search if we're in search mode
+        if (isMobileSearchOpen && !isSearchActive) {
+            closeMobileSearchOnSongSelect();
+        }
         
         lastClickedSongId = song.id;
         lastActiveSongId = song.id;
@@ -1768,6 +1947,10 @@ function createSongItem(song, index) {
                     // FIX: Force update of active state in search results
                     setCorrectActiveState(song.id, song.currentType || song.availableTypes[0]);
                     updateSongArtRotation();
+                    
+                    // CRITICAL FIX: In mobile, keep showing search results after clicking song
+                    // Re-render search results to maintain the search view
+                    renderSearchResults(searchResults);
                 }, 50);
             }
         }
@@ -2437,7 +2620,7 @@ function applyFilter(type) {
     updateSidebarWithCounts();
 }
 
-// ==================== FIXED: Enhanced play audio function ====================
+// ==================== ENHANCED PLAY AUDIO FOR BACKGROUND ====================
 function playAudio() {
     if (!audioPlayer.src || audioPlayer.src === "") {
         console.log("No audio source, loading song...");
@@ -2526,9 +2709,24 @@ function playAudio() {
                     if ('wakeLock' in navigator && isPlaying) {
                         navigator.wakeLock.request('screen').then(wl => {
                             wakeLock = wl;
-                            console.log("Wake lock acquired for background playback");
+                            console.log("✅ Wake lock acquired for background playback");
+                            
+                            // Re-acquire if released
+                            wl.addEventListener('release', () => {
+                                console.log("⚠️ Wake lock released, re-acquiring...");
+                                if (isPlaying) {
+                                    setTimeout(setupWakeLock, 1000);
+                                }
+                            });
                         }).catch(err => {
-                            console.log("Wake lock error:", err);
+                            console.log("⚠️ Wake lock error:", err);
+                        });
+                    }
+                    
+                    // Start silent audio for Android background
+                    if (window.silentAudio) {
+                        window.silentAudio.play().catch(e => {
+                            console.log("Silent audio play error:", e);
                         });
                     }
                 })
@@ -2571,10 +2769,11 @@ function pauseAudio() {
     stopProgressUpdate();
     
     // Release wake lock when paused
-    if (wakeLock !== null) {
-        wakeLock.release();
-        wakeLock = null;
-        console.log('Wake Lock released');
+    releaseWakeLock();
+    
+    // Stop silent audio
+    if (window.silentAudio) {
+        window.silentAudio.pause();
     }
 }
 
@@ -2862,7 +3061,7 @@ function setupAudioEvents() {
     }
 }
 
-// Handle search function - FIXED FOR YOUR REQUIREMENT
+// ==================== FIXED: Handle search function ====================
 function handleSearch(e) {
     markUserInteraction();
     const searchTerm = e.target.value.toLowerCase();
@@ -3003,7 +3202,11 @@ function renderCarouselForSearch(songsToShow) {
         
         slide.addEventListener('click', () => {
             markUserInteraction();
-            closeMobileSearchOnSongSelect();
+            
+            // Don't close mobile search if we're in search mode
+            if (isMobileSearchOpen && !isSearchActive) {
+                closeMobileSearchOnSongSelect();
+            }
             
             lastClickedSongId = song.id;
             lastClickedTrackId = song.trackId;
