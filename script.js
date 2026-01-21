@@ -756,14 +756,19 @@ function saveFavorites() {
     localStorage.setItem('favoriteSongs', JSON.stringify(favoriteSongs));
 }
 
-// Setup Auto Play Toggle Button
+// Setup Auto Play Toggle Button - FIXED FOR DEFAULT ACTIVE STATE
 function setupAutoPlayToggle() {
-    // Load saved preference
+    // Load saved preference or default to true (active)
     const savedAutoPlay = localStorage.getItem('autoPlayEnabled');
     if (savedAutoPlay !== null) {
         isAutoPlayEnabled = savedAutoPlay === 'true';
-        updateAutoPlayToggleUI();
+    } else {
+        // Default to true when no preference is saved
+        isAutoPlayEnabled = true;
+        localStorage.setItem('autoPlayEnabled', 'true');
     }
+    
+    updateAutoPlayToggleUI();
     
     // Add click event to toggle button
     if (autoPlayToggleBtn) {
@@ -3666,4 +3671,3 @@ function updateSongArtRotation() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
-
