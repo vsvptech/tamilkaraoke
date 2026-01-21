@@ -384,7 +384,7 @@ function clearMusicDirectorFilter() {
 
 // Enhanced background audio features to prevent stopping in sleep mode
 function initBackgroundAudio() {
-    console.log("=== INITIALIZING ENHANCED BACKGROUND AUDIO FOR SLEEP MODE FIX ===");
+    console.log("=== INITIALIZING ENHANCED BACKGROUND AUDIO ===");
     
     // Setup wake lock
     setupWakeLock();
@@ -392,11 +392,11 @@ function initBackgroundAudio() {
     // Setup audio context keep-alive
     setupAudioContextKeepAlive();
     
-    // Setup periodic keep-alive (every 15 seconds to prevent 60-second timeout)
+    // Setup periodic keep-alive (every 20 seconds to prevent 60-second timeout)
     setupPeriodicKeepAlive();
     
     // Handle page visibility changes
-    document.addEventListener('visibilitychange', handlePageVisibility);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     
     // Handle beforeunload
     window.addEventListener('beforeunload', savePlaybackState);
@@ -406,6 +406,16 @@ function initBackgroundAudio() {
     
     // Setup silent audio for Android
     setupSilentAudio();
+    
+    // Add pagehide/pagefreeze events for mobile
+    window.addEventListener('pagehide', () => {
+        console.log("Page hiding - ensuring audio continues");
+        if (isPlaying && !audioPlayer.paused) {
+            audioPlayer.play().catch(e => {
+                console.log("Pagehide play attempt failed:", e);
+            });
+        }
+    });
 }
 
 // Setup wake lock to prevent device sleep
@@ -458,17 +468,17 @@ function setupAudioContextKeepAlive() {
     }
 }
 
-// Setup periodic keep-alive checks (every 15 seconds)
+// Setup periodic keep-alive checks (every 20 seconds)
 function setupPeriodicKeepAlive() {
     // Clear any existing interval
     if (backgroundKeepAliveInterval) {
         clearInterval(backgroundKeepAliveInterval);
     }
     
-    // FIX FOR ISSUE 3: Check every 15 seconds (less than 60 seconds)
+    // Check every 20 seconds (less than 60 seconds)
     backgroundKeepAliveInterval = setInterval(() => {
         if (document.hidden && isPlaying) {
-            console.log("🔄 15-second background check - Ensuring audio stays alive");
+            console.log("🔄 20-second background check - Audio should be playing");
             
             // Strategy 1: Check if audio is paused but should be playing
             if (audioPlayer.paused) {
@@ -476,19 +486,10 @@ function setupPeriodicKeepAlive() {
                 resumeAudioInBackground();
             }
             
-            // Keep audio context alive by creating a short sound
-            if (window.audioContext && window.audioContext.state === 'suspended') {
-                window.audioContext.resume().then(() => {
-                    console.log("✅ AudioContext resumed in background");
-                }).catch(e => {
-                    console.log("❌ Failed to resume AudioContext:", e);
-                });
-            }
-            
-            // Small time adjustment trick for Android
+            // Strategy 2: Small time adjustment to keep audio alive
             if (!audioPlayer.paused && audioPlayer.currentTime > 0) {
+                // Slight time adjustment to prevent Android from stopping audio
                 const currentTime = audioPlayer.currentTime;
-                // Tiny adjustment to keep audio alive
                 audioPlayer.currentTime = currentTime - 0.001;
                 setTimeout(() => {
                     audioPlayer.currentTime = currentTime;
@@ -499,8 +500,22 @@ function setupPeriodicKeepAlive() {
             if (isPlaying && !wakeLock && 'wakeLock' in navigator) {
                 setupWakeLock();
             }
+            
+            // Strategy 4: Play silent audio if available
+            if (window.silentAudio && window.silentAudio.paused) {
+                window.silentAudio.play().catch(e => {
+                    console.log("Silent audio play in background failed:", e);
+                });
+            }
+            
+            // Strategy 5: Ensure audio context is running
+            if (window.audioContext && window.audioContext.state === 'suspended') {
+                window.audioContext.resume().catch(e => {
+                    console.log("Failed to resume audio context:", e);
+                });
+            }
         }
-    }, 15000); // Check every 15 seconds (well under 60 seconds)
+    }, 20000); // Check every 20 seconds (well under 60 seconds)
 }
 
 // Setup silent audio for Android background
@@ -525,37 +540,39 @@ function setupSilentAudio() {
 }
 
 // Handle page visibility changes
-function handlePageVisibility() {
+function handleVisibilityChange() {
     if (document.hidden) {
-        console.log("📱 Page went to background - applying sleep mode protection");
+        console.log("📱 Page went to background - APPLYING SLEEP MODE PROTECTION");
         
-        // When page goes to background, ensure audio continues
+        // Page is hidden - apply enhanced keep-alive
         if (isPlaying) {
-            // Strategy 1: Ensure audio is playing
-            if (audioPlayer.paused) {
-                setTimeout(() => {
-                    audioPlayer.play().catch(e => {
-                        console.log("Failed to play in background:", e);
-                    });
-                }, 100);
-            }
-            
-            // Strategy 2: Start silent audio for Android
+            // Start silent audio playback for Android IMMEDIATELY
             if (window.silentAudio) {
                 window.silentAudio.play().catch(e => {
                     console.log("Silent audio play error:", e);
                 });
             }
             
-            // Strategy 3: Resume audio context
+            // Ensure audio context is running
             if (window.audioContext && window.audioContext.state === 'suspended') {
                 window.audioContext.resume();
             }
             
-            // Strategy 4: Request wake lock
-            if ('wakeLock' in navigator && !wakeLock) {
-                setupWakeLock();
-            }
+            // Double-check audio is playing after 100ms
+            setTimeout(() => {
+                if (audioPlayer.paused) {
+                    console.log("Audio paused when entering background, resuming...");
+                    resumeAudioInBackground();
+                }
+            }, 100);
+            
+            // Additional safety check after 500ms
+            setTimeout(() => {
+                if (isPlaying && audioPlayer.paused) {
+                    console.log("Second check - audio still paused, forcing...");
+                    forceAudioPlayback();
+                }
+            }, 500);
         }
         
     } else {
@@ -566,7 +583,7 @@ function handlePageVisibility() {
             window.silentAudio.pause();
         }
         
-        // Resume audio if it was playing but got paused
+        // Page is visible - resume if needed
         if (isPlaying && audioPlayer.paused) {
             setTimeout(() => {
                 audioPlayer.play().catch(e => {
@@ -614,38 +631,42 @@ function resumeAudioInBackground() {
             }).catch(error2 => {
                 console.log(`❌ Second resume attempt failed (${error2.name})`);
                 
-                // Strategy 3: Reload the audio source
-                if (songs[currentSongIndex]) {
-                    console.log("🔄 Reloading audio from source...");
-                    
-                    // Store current time
-                    const savedTime = audioPlayer.currentTime;
-                    const savedSrc = audioPlayer.src;
-                    
-                    // Reset and reload
-                    audioPlayer.src = '';
-                    setTimeout(() => {
-                        audioPlayer.src = savedSrc;
-                        audioPlayer.currentTime = savedTime;
-                        
-                        setTimeout(() => {
-                            audioPlayer.play().then(() => {
-                                console.log("✅ Audio resumed after reload");
-                                audioResumeAttempts = 0;
-                            }).catch(error3 => {
-                                console.log(`❌ Third resume attempt failed:`, error3);
-                                
-                                // Try one more time after delay
-                                setTimeout(() => {
-                                    if (isPlaying && document.hidden) {
-                                        resumeAudioInBackground();
-                                    }
-                                }, 2000);
-                            });
-                        }, 500);
-                    }, 100);
-                }
+                // Strategy 3: Force audio playback
+                forceAudioPlayback();
             });
+        }, 100);
+    });
+}
+
+// Force audio playback with reload
+function forceAudioPlayback() {
+    if (!isPlaying || !audioPlayer.src) return;
+    
+    console.log("🔄 Force audio playback attempt");
+    
+    // Strategy 1: Direct play
+    audioPlayer.play().then(() => {
+        console.log("✅ Force playback succeeded");
+    }).catch(error => {
+        console.log("❌ Direct force failed:", error);
+        
+        // Strategy 2: Reload audio
+        const currentSrc = audioPlayer.src;
+        const currentTime = audioPlayer.currentTime;
+        
+        audioPlayer.src = '';
+        setTimeout(() => {
+            audioPlayer.src = currentSrc;
+            audioPlayer.currentTime = currentTime;
+            audioPlayer.load();
+            
+            setTimeout(() => {
+                audioPlayer.play().then(() => {
+                    console.log("✅ Force playback after reload succeeded");
+                }).catch(error2 => {
+                    console.log("❌ Force playback after reload failed:", error2);
+                });
+            }, 500);
         }, 100);
     });
 }
@@ -710,44 +731,6 @@ function releaseWakeLock() {
         wakeLock.release();
         wakeLock = null;
         console.log('✅ Wake Lock released');
-    }
-}
-
-// Setup iOS background audio
-function setupIOSBackgroundAudio() {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    
-    if (isIOS) {
-        // iOS requires these settings for background audio
-        audioPlayer.setAttribute('playsinline', 'true');
-        audioPlayer.setAttribute('webkit-playsinline', 'true');
-        audioPlayer.setAttribute('x-webkit-airplay', 'allow');
-        
-        // iOS background audio category
-        try {
-            audioPlayer.crossOrigin = 'anonymous';
-        } catch (e) {
-            console.log("iOS audio setup:", e);
-        }
-        
-        // iOS specific: pause/resume handlers
-        document.addEventListener('pause', () => {
-            console.log("iOS app paused");
-            // Save playback state immediately
-            savePlaybackState();
-        }, false);
-        
-        document.addEventListener('resume', () => {
-            console.log("iOS app resumed");
-            // Restore playback if needed
-            if (isPlaying && audioPlayer.paused) {
-                setTimeout(() => {
-                    audioPlayer.play().catch(e => {
-                        console.log("iOS resume failed:", e);
-                    });
-                }, 100);
-            }
-        }, false);
     }
 }
 
@@ -1107,7 +1090,7 @@ function resetAllActiveStates() {
     });
 }
 
-// ==================== FIXED: Set correct active state ====================
+// Set correct active state
 function setCorrectActiveState(songId, versionType) {
     console.log("Setting active state for:", songId, "type:", versionType, "Search mode:", isSearchActive);
     
@@ -1381,43 +1364,36 @@ function createAboutModal() {
 
 // ==================== SEARCH BOX HANDLING ====================
 
-// Close mobile search when clicking outside - FIXED FOR MOBILE SEARCH
+// FIX 1: Close mobile search when selecting a song
 function closeMobileSearchOnOutsideClick(e) {
     // Don't close on scroll events (touchmove, wheel, etc.)
     if (e.type === 'touchmove' || e.type === 'wheel' || e.type === 'scroll') {
         return;
     }
     
-    // If search is open and user clicks outside the search container
-    if (isMobileSearchOpen && 
-        !mobileSearchContainer.contains(e.target) && 
-        !mobileSearchToggle.contains(e.target)) {
+    // If search is open
+    if (isMobileSearchOpen) {
+        // Check if click is on search toggle button (don't close)
+        if (mobileSearchToggle.contains(e.target)) {
+            return;
+        }
         
-        // Check if the click is on a song item or version button
+        // Check if click is inside search container (don't close)
+        if (mobileSearchContainer.contains(e.target)) {
+            return;
+        }
+        
+        // Check if click is on a song item or version button (CLOSE SEARCH - FIX 1)
         const clickedSongItem = e.target.closest('.song-item');
         const clickedVersionBtn = e.target.closest('.version-btn');
         
-        // If clicking on a song or version button, DON'T close search in mobile
-        // This is the FIX: Keep search open when clicking song items in mobile
+        // If clicking on a song or version button, CLOSE the search
         if (clickedSongItem || clickedVersionBtn) {
-            // In mobile, we want to keep search open after selecting a song
-            // Only close if clicking outside both search AND song list
-            if (!songListContainer.contains(e.target)) {
-                closeMobileSearch();
-            }
-        }
-        // If clicking elsewhere (not on song list), close search
-        else if (!songListContainer.contains(e.target)) {
             closeMobileSearch();
+            return;
         }
-    }
-}
-
-// Close mobile search when a song is selected - MODIFIED
-function closeMobileSearchOnSongSelect() {
-    // Only close mobile search if we're NOT in search mode
-    // This is important: When we're searching, we want to keep search open
-    if (isMobileSearchOpen && !isSearchActive) {
+        
+        // If clicking elsewhere (not on song list), close search
         closeMobileSearch();
     }
 }
@@ -1438,7 +1414,7 @@ function openMobileSearch() {
     document.addEventListener('touchstart', closeMobileSearchOnOutsideClick);
 }
 
-// Close mobile search - FIXED FOR ISSUE 1
+// Close mobile search
 function closeMobileSearch() {
     isMobileSearchOpen = false;
     mobileSearchContainer.classList.remove('active');
@@ -1489,9 +1465,6 @@ function init() {
     
     // Initialize enhanced background audio features
     initBackgroundAudio();
-    
-    // Setup iOS background audio
-    setupIOSBackgroundAudio();
     
     // Create About modal
     createAboutModal();
@@ -1699,7 +1672,7 @@ function renderCarousel() {
         slide.addEventListener('click', () => {
             markUserInteraction();
             
-            // FIX FOR ISSUE 1: Close mobile search when a song is selected
+            // FIX 1: Close mobile search when a song is selected
             if (isMobileSearchOpen) {
                 closeMobileSearch();
             }
@@ -1720,7 +1693,7 @@ function renderCarousel() {
     });
 }
 
-// ==================== FIXED: Create Song Item ====================
+// Create Song Item
 function createSongItem(song, index) {
     const isActive = songs.find(s => s.id === song.id)?.active || false;
     const currentType = song.currentType || song.availableTypes[0];
@@ -1884,13 +1857,13 @@ function createSongItem(song, index) {
         });
     }
     
-    // ==================== FIXED: Version button click handler ====================
+    // FIX 1: Version button click handler
     songItem.querySelectorAll('.version-btn.audio-btn, .version-btn.lyrics-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             markUserInteraction();
             e.stopPropagation();
             
-            // FIX FOR ISSUE 1: Close mobile search when a version is selected
+            // FIX 1: ALWAYS close mobile search when a version is selected
             if (isMobileSearchOpen) {
                 closeMobileSearch();
             }
@@ -1933,9 +1906,7 @@ function createSongItem(song, index) {
             // FIX: Use the original songIndex
             loadSong(songIndex, isAutoPlayEnabled);
             
-            // ==================== FIXED: DON'T change filter type when in search mode ====================
-            // This is the key fix - when in search mode, we should NOT change the filter type
-            // This prevents showing all 145 songs when clicking version button
+            // FIX: DON'T change filter type when in search mode
             if (!isSearchActive && currentFilterType !== "list" && currentFilterType !== "favourite" && versionType !== currentFilterType) {
                 currentFilterType = versionType;
                 filteredSongs = filterSongsByType(versionType);
@@ -1961,7 +1932,7 @@ function createSongItem(song, index) {
                     setCorrectActiveState(songId, versionType);
                     updateSongArtRotation();
                     
-                    // CRITICAL FIX: In mobile, keep showing search results after clicking version button
+                    // FIX 1: In mobile, keep showing search results after clicking version button
                     // Re-render search results to maintain the search view
                     renderSearchResults(searchResults);
                 }, 50);
@@ -1969,7 +1940,7 @@ function createSongItem(song, index) {
         });
     });
     
-    // ==================== FIXED: Song item click handler ====================
+    // FIX 1: Song item click handler
     songItem.addEventListener('click', (e) => {
         // Don't trigger if clicking on version buttons
         if (e.target.closest('.version-btn')) {
@@ -1983,7 +1954,7 @@ function createSongItem(song, index) {
         
         markUserInteraction();
         
-        // FIX FOR ISSUE 1: Close mobile search when a song is selected
+        // FIX 1: ALWAYS close mobile search when a song is selected
         if (isMobileSearchOpen) {
             closeMobileSearch();
         }
@@ -2004,7 +1975,7 @@ function createSongItem(song, index) {
                     setCorrectActiveState(song.id, song.currentType || song.availableTypes[0]);
                     updateSongArtRotation();
                     
-                    // CRITICAL FIX: In mobile, keep showing search results after clicking song
+                    // FIX 1: In mobile, keep showing search results after clicking song
                     // Re-render search results to maintain the search view
                     renderSearchResults(searchResults);
                 }, 50);
@@ -2087,7 +2058,7 @@ function renderSongList() {
     }
 }
 
-// ==================== FIXED: Load a song ====================
+// Load a song
 function loadSong(index, autoPlay = true) {
     if (isAudioLoading) {
         return;
@@ -2329,7 +2300,7 @@ function loadSong(index, autoPlay = true) {
     }
 }
 
-// ==================== FIXED: Set active song ====================
+// Set active song
 function setActiveSong(index) {
     if (index < 0 || index >= songs.length) {
         console.error("Invalid index in setActiveSong:", index);
@@ -2387,10 +2358,10 @@ function setActiveSong(index) {
     }
 }
 
-// ==================== FIXED: Load lyrics from file ====================
+// Load lyrics from file
 async function loadLyrics(lyricsFile, songTitle, songArtist) {
     try {
-        // Set title and artist in lyrics header - THIS IS THE CRITICAL FIX
+        // Set title and artist in lyrics header
         if (lyricsSongTitle) {
             lyricsSongTitle.innerHTML = songTitle;
         }
@@ -2676,7 +2647,7 @@ function applyFilter(type) {
     updateSidebarWithCounts();
 }
 
-// ==================== ENHANCED PLAY AUDIO FOR BACKGROUND ====================
+// Play audio
 function playAudio() {
     if (!audioPlayer.src || audioPlayer.src === "") {
         console.log("No audio source, loading song...");
@@ -3083,23 +3054,27 @@ function setupAudioEvents() {
     
     // Enhanced page visibility handling for sleep mode
     document.addEventListener('visibilitychange', () => {
-        handlePageVisibility(); // Use the new function for sleep mode
-        
-        // Also save playback state
-        if (document.hidden && isPlaying) {
+        if (document.hidden) {
+            console.log("📱 Page hidden - applying sleep mode protection");
+            
+            // Save playback state
             savePlaybackState();
+            
+        } else {
+            // When page becomes visible again, ensure audio is playing if it should be
+            if (isPlaying && audioPlayer.paused) {
+                setTimeout(() => {
+                    audioPlayer.play().catch(e => {
+                        console.log("Failed to resume after visibility change:", e);
+                    });
+                }, 100);
+            }
         }
     });
     
     // Handle audio suspend events (Android sleep mode)
     audioPlayer.addEventListener('suspend', () => {
         console.log("Audio suspended by system");
-        // Try to resume if it was playing
-        if (isPlaying && document.hidden) {
-            setTimeout(() => {
-                resumeAudioInBackground();
-            }, 500);
-        }
     });
     
     // iOS specific handling
@@ -3113,7 +3088,7 @@ function setupAudioEvents() {
     }
 }
 
-// ==================== FIXED: Handle search function ====================
+// Handle search function
 function handleSearch(e) {
     markUserInteraction();
     const searchTerm = e.target.value.toLowerCase();
@@ -3192,7 +3167,7 @@ function handleSearch(e) {
     }
 }
 
-// ==================== FIXED: Render search results ====================
+// Render search results
 function renderSearchResults(searchResults) {
     songListContainer.innerHTML = '';
     
@@ -3255,7 +3230,7 @@ function renderCarouselForSearch(songsToShow) {
         slide.addEventListener('click', () => {
             markUserInteraction();
             
-            // FIX FOR ISSUE 1: Close mobile search when a song is selected
+            // FIX 1: Close mobile search when a song is selected
             if (isMobileSearchOpen) {
                 closeMobileSearch();
             }
@@ -3382,7 +3357,7 @@ function setupMusicDirectorEvents() {
     }
 }
 
-// ==================== FIXED: Set up event listeners ====================
+// Set up event listeners
 function setupEventListeners() {
     themeToggle.addEventListener('click', () => {
         markUserInteraction();
@@ -3397,7 +3372,7 @@ function setupEventListeners() {
     // Use the toggle function for mobile search
     mobileSearchToggle.addEventListener('click', toggleMobileSearch);
 
-    // ==================== FIXED: Lyrics button handler ====================
+    // FIX 2: Lyrics button handler - DON'T stop audio when closing
     lyricsBtn.addEventListener('click', async () => {
         markUserInteraction();
         
@@ -3447,20 +3422,10 @@ function setupEventListeners() {
         }
     });
 
-    // FIX FOR ISSUE 2: Close lyrics without stopping audio
+    // FIX 2: Close lyrics button - DON'T stop audio
     closeLyrics.addEventListener('click', () => {
-        // FIX FOR ISSUE 2: Just hide the modal, don't affect playback
+        // Simply close the modal without pausing audio
         lyricsModal.classList.remove('active');
-        
-        // Make sure audio continues playing if it was playing
-        if (isPlaying && audioPlayer.paused) {
-            // Resume playback if it was paused by modal
-            setTimeout(() => {
-                audioPlayer.play().catch(e => {
-                    console.log("Error resuming after closing lyrics:", e);
-                });
-            }, 100);
-        }
     });
 
     // Progress bar click events
@@ -3503,7 +3468,7 @@ function setupEventListeners() {
     lyricsPrevBtn.addEventListener('click', playPrevSong);
     lyricsNextBtn.addEventListener('click', playNextSong);
 
-    // Filter buttons - MODIFIED: Only clear search if NOT currently in search
+    // Filter buttons
     document.querySelectorAll('.type-filter-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             markUserInteraction();
@@ -3525,7 +3490,7 @@ function setupEventListeners() {
         });
     });
 
-    // Search functionality - FIXED
+    // Search functionality
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             handleSearch(e);
@@ -3614,9 +3579,8 @@ function setupEventListeners() {
                 const diff = currentY - touchStartY;
                 
                 if (diff > 50) {
-                    // FIX FOR ISSUE 2: Don't pause when closing via swipe
+                    // FIX 2: Don't pause audio when closing via swipe
                     lyricsModal.classList.remove('active');
-                    // Audio continues playing
                 }
             });
         }
@@ -3635,9 +3599,8 @@ function setupEventListeners() {
             const diff = currentY - touchStartY;
             
             if (diff > 50) {
-                // FIX FOR ISSUE 2: Don't pause when closing via swipe
+                // FIX 2: Don't pause audio when closing via swipe
                 lyricsModal.classList.remove('active');
-                // Audio continues playing
             }
         }
     });
@@ -3654,7 +3617,7 @@ function setupEventListeners() {
     }, { passive: true });
 }
 
-// Update rotation animation for song art - FIXED FOR SEARCH MODE
+// Update rotation animation for song art
 function updateSongArtRotation() {
     document.querySelectorAll('.song-item').forEach(songItem => {
         const songId = parseInt(songItem.dataset.id);
