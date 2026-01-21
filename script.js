@@ -982,7 +982,7 @@ function setCorrectActiveState(songId, versionType) {
     });
 }
 
-// Update UI for selected song
+// Update UI for selected song - ENHANCED
 function updateSelectedSongUI(songId, versionType) {
     if (isUIBusy) return;
     
@@ -1002,11 +1002,13 @@ function updateSelectedSongUI(songId, versionType) {
             // Update UI with correct active state
             setCorrectActiveState(songId, versionType);
             
-            // Update swiper to show correct slide
+            // Update swiper to show correct slide - FIX for search mode
             if (swiper) {
                 let slideIndex = -1;
+                
                 if (isSearchActive && searchResults.length > 0) {
                     slideIndex = searchResults.findIndex(s => s.id === songId);
+                    console.log("Search mode - slide index:", slideIndex);
                 } else {
                     slideIndex = filteredSongs.findIndex(s => s.id === songId);
                 }
@@ -1024,7 +1026,7 @@ function updateSelectedSongUI(songId, versionType) {
                 const displayTitle = getTitleForType(song, versionType);
                 const cleanArtist = getArtistForType(song, versionType);
                 
-                // Update all displays with innerHTML for version suffixes
+                // FIX: Ensure ALL displays are updated consistently
                 songTitleDisplay.innerHTML = displayTitle;
                 songArtistDisplay.textContent = cleanArtist;
                 mobileSongTitle.innerHTML = displayTitle;
@@ -1034,6 +1036,8 @@ function updateSelectedSongUI(songId, versionType) {
                 // Update lyrics header
                 lyricsSongTitle.innerHTML = displayTitle;
                 lyricsSongArtist.textContent = cleanArtist;
+                
+                console.log("UI updated for song:", displayTitle, "in search mode:", isSearchActive);
             }
             
         } catch (error) {
@@ -2832,35 +2836,81 @@ function formatTime(seconds) {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-// Play next song
+// Play next song - FIXED for search context
 function playNextSong() {
-    if (filteredSongs.length > 0) {
-        const currentFilteredIndex = filteredSongs.findIndex(s => s.id === songs[currentSongIndex].id);
-        if (currentFilteredIndex >= 0) {
-            const nextFilteredIndex = (currentFilteredIndex + 1) % filteredSongs.length;
-            const nextSong = filteredSongs[nextFilteredIndex];
+    // FIX: Get the correct song list based on search context
+    let songsToUse = filteredSongs;
+    
+    if (isSearchActive && searchResults.length > 0) {
+        songsToUse = searchResults;
+        console.log("Search mode: Using search results for next song");
+    }
+    
+    if (songsToUse.length > 0) {
+        const currentSong = songs[currentSongIndex];
+        const currentSongIndexInList = songsToUse.findIndex(s => s.id === currentSong.id);
+        
+        if (currentSongIndexInList >= 0) {
+            const nextIndexInList = (currentSongIndexInList + 1) % songsToUse.length;
+            const nextSong = songsToUse[nextIndexInList];
             const originalIndex = songs.findIndex(s => s.id === nextSong.id);
-            setActiveSong(originalIndex);
             
-            if (swiper) {
-                swiper.slideToLoop(nextFilteredIndex);
+            if (originalIndex >= 0) {
+                setActiveSong(originalIndex);
+                
+                // Update swiper position
+                if (swiper) {
+                    setTimeout(() => {
+                        if (isSearchActive && searchResults.length > 0) {
+                            swiper.slideToLoop(nextIndexInList);
+                        } else {
+                            const filteredIndex = filteredSongs.findIndex(s => s.id === nextSong.id);
+                            if (filteredIndex >= 0) {
+                                swiper.slideToLoop(filteredIndex);
+                            }
+                        }
+                    }, 100);
+                }
             }
         }
     }
 }
 
-// Play previous song
+// Play previous song - FIXED for search context
 function playPrevSong() {
-    if (filteredSongs.length > 0) {
-        const currentFilteredIndex = filteredSongs.findIndex(s => s.id === songs[currentSongIndex].id);
-        if (currentFilteredIndex >= 0) {
-            const prevFilteredIndex = (currentFilteredIndex - 1 + filteredSongs.length) % filteredSongs.length;
-            const prevSong = filteredSongs[prevFilteredIndex];
+    // FIX: Get the correct song list based on search context
+    let songsToUse = filteredSongs;
+    
+    if (isSearchActive && searchResults.length > 0) {
+        songsToUse = searchResults;
+        console.log("Search mode: Using search results for previous song");
+    }
+    
+    if (songsToUse.length > 0) {
+        const currentSong = songs[currentSongIndex];
+        const currentSongIndexInList = songsToUse.findIndex(s => s.id === currentSong.id);
+        
+        if (currentSongIndexInList >= 0) {
+            const prevIndexInList = (currentSongIndexInList - 1 + songsToUse.length) % songsToUse.length;
+            const prevSong = songsToUse[prevIndexInList];
             const originalIndex = songs.findIndex(s => s.id === prevSong.id);
-            setActiveSong(originalIndex);
             
-            if (swiper) {
-                swiper.slideToLoop(prevFilteredIndex);
+            if (originalIndex >= 0) {
+                setActiveSong(originalIndex);
+                
+                // Update swiper position
+                if (swiper) {
+                    setTimeout(() => {
+                        if (isSearchActive && searchResults.length > 0) {
+                            swiper.slideToLoop(prevIndexInList);
+                        } else {
+                            const filteredIndex = filteredSongs.findIndex(s => s.id === prevSong.id);
+                            if (filteredIndex >= 0) {
+                                swiper.slideToLoop(filteredIndex);
+                            }
+                        }
+                    }, 100);
+                }
             }
         }
     }
@@ -2938,21 +2988,51 @@ audioPlayer.addEventListener('ended', () => {
     
     if (isAutoPlayEnabled) {
         setTimeout(() => {
-            // Play next song
-            playNextSong();
+            // FIX: Get the correct song list based on search context
+            let songsToUse = filteredSongs;
             
-            // FIX: Force update carousel after playing next song
-            setTimeout(() => {
-                if (swiper && filteredSongs.length > 0) {
-                    const currentFilteredIndex = filteredSongs.findIndex(s => s.id === songs[currentSongIndex].id);
-                    if (currentFilteredIndex >= 0) {
-                        swiper.slideToLoop(currentFilteredIndex);
+            if (isSearchActive && searchResults.length > 0) {
+                songsToUse = searchResults;
+                console.log("Using search results for next song");
+            }
+            
+            if (songsToUse.length > 0) {
+                const currentSong = songs[currentSongIndex];
+                
+                // Find current song index in the correct list
+                let currentSongIndexInList = songsToUse.findIndex(s => s.id === currentSong.id);
+                
+                if (currentSongIndexInList >= 0) {
+                    // Calculate next song index
+                    const nextIndexInList = (currentSongIndexInList + 1) % songsToUse.length;
+                    const nextSong = songsToUse[nextIndexInList];
+                    
+                    // Find original index
+                    const originalIndex = songs.findIndex(s => s.id === nextSong.id);
+                    
+                    if (originalIndex >= 0) {
+                        setActiveSong(originalIndex);
                         
-                        // Also update carousel slide classes
-                        updateCarouselActiveState();
+                        // FIX: Update swiper for search results if needed
+                        if (swiper) {
+                            setTimeout(() => {
+                                if (isSearchActive && searchResults.length > 0) {
+                                    swiper.slideToLoop(nextIndexInList);
+                                } else {
+                                    // Use the filtered list index
+                                    const filteredIndex = filteredSongs.findIndex(s => s.id === nextSong.id);
+                                    if (filteredIndex >= 0) {
+                                        swiper.slideToLoop(filteredIndex);
+                                    }
+                                }
+                                
+                                // Update carousel
+                                updateCarouselActiveState();
+                            }, 300);
+                        }
                     }
                 }
-            }, 300);
+            }
         }, 1000);
     }
 });
