@@ -177,12 +177,12 @@ header {
     border: none;
     color: var(--text-secondary);
     font-size: 20px;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .mobile-search-container {
@@ -2121,6 +2121,7 @@ main {
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
 
 
