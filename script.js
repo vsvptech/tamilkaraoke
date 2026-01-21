@@ -1493,6 +1493,7 @@ function renderCarousel() {
 }
 
 // ==================== FIXED: Create Song Item ====================
+// ==================== FIXED: Create Song Item ====================
 function createSongItem(song, index) {
     const isActive = songs.find(s => s.id === song.id)?.active || false;
     const currentType = song.currentType || song.availableTypes[0];
@@ -1604,10 +1605,45 @@ function createSongItem(song, index) {
         artistName = getArtistForType(song, currentType);
     }
     
-    // ALWAYS show heart icon in song-item-type
-    let typeIconHtml = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart" 
+    // FIX FOR ISSUE 2: Show different icon based on current filter type
+    let typeIconHtml = '';
+    
+    // When in list mode, show heart icon
+    if (currentFilterType === "list" || currentFilterType === "favourite") {
+        typeIconHtml = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart" 
                            data-id="${song.id}"
                            title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}"></i>`;
+    } 
+    // When in male mode, show male icon
+    else if (currentFilterType === "male") {
+        typeIconHtml = `<i class="fas fa-mars" 
+                           data-id="${song.id}"
+                           title="Male Version"></i>`;
+    }
+    // When in female mode, show female icon
+    else if (currentFilterType === "female") {
+        typeIconHtml = `<i class="fas fa-venus" 
+                           data-id="${song.id}"
+                           title="Female Version"></i>`;
+    }
+    // When in duet mode, show venus-mars icon
+    else if (currentFilterType === "duet") {
+        typeIconHtml = `<i class="fas fa-venus-mars" 
+                           data-id="${song.id}"
+                           title="Duet Version"></i>`;
+    }
+    // When in song (original) mode, show music icon
+    else if (currentFilterType === "song") {
+        typeIconHtml = `<i class="fas fa-music" 
+                           data-id="${song.id}"
+                           title="Original Version"></i>`;
+    }
+    // Default to heart icon for other modes
+    else {
+        typeIconHtml = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart" 
+                           data-id="${song.id}"
+                           title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}"></i>`;
+    }
     
     songItem.innerHTML = `
         <div class="song-item-art">
@@ -1637,21 +1673,25 @@ function createSongItem(song, index) {
     }
     
     // Handle heart icon in .song-item-type
-    const heartIcon = songItem.querySelector('.song-item-type i');
-    if (heartIcon) {
-        heartIcon.addEventListener('click', (e) => {
+    const typeIcon = songItem.querySelector('.song-item-type i');
+    if (typeIcon) {
+        typeIcon.addEventListener('click', (e) => {
             markUserInteraction();
             e.stopPropagation();
             const songId = parseInt(e.currentTarget.dataset.id);
-            const wasAdded = toggleFavorite(songId);
             
-            // Update the icon immediately
-            if (wasAdded) {
-                e.currentTarget.className = 'fas fa-heart';
-                e.currentTarget.title = 'Remove from Favorites';
-            } else {
-                e.currentTarget.className = 'far fa-heart';
-                e.currentTarget.title = 'Add to Favorites';
+            // If the icon is a heart (favorite), toggle favorite status
+            if (e.currentTarget.classList.contains('fa-heart')) {
+                const wasAdded = toggleFavorite(songId);
+                
+                // Update the icon immediately
+                if (wasAdded) {
+                    e.currentTarget.className = 'fas fa-heart';
+                    e.currentTarget.title = 'Remove from Favorites';
+                } else {
+                    e.currentTarget.className = 'far fa-heart';
+                    e.currentTarget.title = 'Add to Favorites';
+                }
             }
         });
     }
