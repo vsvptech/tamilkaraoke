@@ -879,6 +879,35 @@ function resetAllActiveStates() {
     });
 }
 
+// Update carousel active state
+function updateCarouselActiveState() {
+    // Update swiper slides
+    document.querySelectorAll('.swiper-slide').forEach(slide => {
+        const slideSongId = parseInt(slide.dataset.id);
+        const currentSongId = songs[currentSongIndex]?.id;
+        
+        if (slideSongId === currentSongId) {
+            slide.classList.add('active');
+            
+            // Update carousel info if needed
+            const carouselTitle = slide.querySelector('.carousel-title');
+            const carouselArtist = slide.querySelector('.carousel-artist');
+            
+            if (carouselTitle && carouselArtist && songs[currentSongIndex]) {
+                const song = songs[currentSongIndex];
+                const currentType = song.currentType || currentFilterType;
+                const displayTitle = getTitleForType(song, currentType, "carousel");
+                const cleanArtist = getArtistForType(song, currentType);
+                
+                carouselTitle.textContent = displayTitle;
+                carouselArtist.textContent = cleanArtist;
+            }
+        } else {
+            slide.classList.remove('active');
+        }
+    });
+}
+
 // ==================== FIXED: Set correct active state ====================
 function setCorrectActiveState(songId, versionType) {
     console.log("Setting active state for:", songId, "type:", versionType, "Search mode:", isSearchActive);
@@ -2900,19 +2929,33 @@ function setupAudioEvents() {
         console.log("⏸️ Audio paused");
     });
     
-    audioPlayer.addEventListener('ended', () => {
-        isPlaying = false;
-        updatePlayButtons();
-        stopProgressUpdate();
-        
-        console.log("⏹️ Audio ended");
-        
-        if (isAutoPlayEnabled) {
+audioPlayer.addEventListener('ended', () => {
+    isPlaying = false;
+    updatePlayButtons();
+    stopProgressUpdate();
+    
+    console.log("⏹️ Audio ended");
+    
+    if (isAutoPlayEnabled) {
+        setTimeout(() => {
+            // Play next song
+            playNextSong();
+            
+            // FIX: Force update carousel after playing next song
             setTimeout(() => {
-                playNextSong();
-            }, 1000);
-        }
-    });
+                if (swiper && filteredSongs.length > 0) {
+                    const currentFilteredIndex = filteredSongs.findIndex(s => s.id === songs[currentSongIndex].id);
+                    if (currentFilteredIndex >= 0) {
+                        swiper.slideToLoop(currentFilteredIndex);
+                        
+                        // Also update carousel slide classes
+                        updateCarouselActiveState();
+                    }
+                }
+            }, 300);
+        }, 1000);
+    }
+});
     
     audioPlayer.addEventListener('timeupdate', () => {
         if (isPlaying) {
