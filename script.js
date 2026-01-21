@@ -2344,6 +2344,36 @@ async function loadLyrics(lyricsFile, songTitle, songArtist) {
     }
 }
 
+// Helper function to get the correct active song
+function getActiveSong() {
+    // First, check if any song is marked as active in the songs array
+    let activeSong = null;
+    let activeIndex = -1;
+    
+    songs.forEach((song, index) => {
+        if (song.active) {
+            activeSong = song;
+            activeIndex = index;
+        }
+    });
+    
+    // If no song is active, try to use currentSongIndex
+    if (!activeSong && currentSongIndex >= 0 && currentSongIndex < songs.length) {
+        activeSong = songs[currentSongIndex];
+        activeIndex = currentSongIndex;
+    }
+    
+    // If still no song, try lastActiveSongId
+    if (!activeSong && lastActiveSongId) {
+        const index = songs.findIndex(s => s.id === lastActiveSongId);
+        if (index >= 0) {
+            activeSong = songs[index];
+            activeIndex = index;
+        }
+    }
+    
+    return { song: activeSong, index: activeIndex };
+}
 // Apply filter
 function applyFilter(type) {
     console.log("applyFilter called - type:", type, "Search active:", isSearchActive);
@@ -3272,46 +3302,36 @@ function setupEventListeners() {
     // Use the toggle function for mobile search
     mobileSearchToggle.addEventListener('click', toggleMobileSearch);
 
-    // FIX: Lyrics button should show CURRENT song's lyrics
-    lyricsBtn.addEventListener('click', async () => {
-        markUserInteraction();
+// FIX: Lyrics button should show CURRENT song's lyrics
+lyricsBtn.addEventListener('click', async () => {
+    markUserInteraction();
+    
+    console.log("Lyrics button clicked. Getting active song...");
+    
+    // Use helper function to get the correct active song
+    const { song, index } = getActiveSong();
+    
+    if (song) {
+        const currentType = song.currentType || "male";
+        const displayTitle = getTitleForType(song, currentType);
+        const cleanArtist = getArtistForType(song, currentType);
         
-        console.log("Lyrics button clicked. CurrentSongIndex:", currentSongIndex, 
-                    "LastActiveSongId:", lastActiveSongId);
+        console.log("Found active song:", displayTitle, "Index:", index);
         
-        // Determine which song to show lyrics for
-        let targetSongIndex = currentSongIndex;
+        // CRITICAL FIX: Load lyrics for the correct song
+        await loadLyrics(song.lyrics, displayTitle, cleanArtist);
         
-        // If currentSongIndex is not valid, try to find last active
-        if (targetSongIndex < 0 || targetSongIndex >= songs.length) {
-            if (lastActiveSongId) {
-                targetSongIndex = songs.findIndex(s => s.id === lastActiveSongId);
-            }
-        }
+        // Update currentSongIndex
+        currentSongIndex = index;
         
-        if (targetSongIndex >= 0 && targetSongIndex < songs.length) {
-            const currentSong = songs[targetSongIndex];
-            const displayTitle = getTitleForType(currentSong, currentSong.currentType);
-            const cleanArtist = getArtistForType(currentSong, currentSong.currentType);
-            
-            // CRITICAL FIX: Load lyrics for the correct song
-            await loadLyrics(currentSong.lyrics, displayTitle, cleanArtist);
-            
-            // Update lyrics modal header with current song info
-            lyricsSongTitle.innerHTML = displayTitle;
-            lyricsSongArtist.textContent = cleanArtist;
-            
-            // Update lyrics player title
-            lyricsPlayerTitle.innerHTML = `${displayTitle} - ${cleanArtist}`;
-            
-            // Show the modal
-            lyricsModal.classList.add('active');
-            
-            console.log("Showing lyrics for:", displayTitle, cleanArtist);
-        } else {
-            showNotification("Please select a song first", 2000);
-        }
-    });
+        // Show the modal
+        lyricsModal.classList.add('active');
+        
+        showNotification(`Loading lyrics for ${displayTitle}`, 1500);
+    } else {
+        showNotification("Please select a song first", 2000);
+    }
+});
 
     closeLyrics.addEventListener('click', () => {
         lyricsModal.classList.remove('active');
