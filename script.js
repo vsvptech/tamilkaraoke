@@ -1177,7 +1177,7 @@ function createAboutModal() {
                     <p>• Use Dark mode in low-light conditions</p>
                     
                     <div class="app-version">
-                        <p>Version 1.0.1</p>
+                        <p>Version 3.0.0</p>
                         <p>© 2026 Chillax Technologies. All rights reserved.</p>
                     </div>
                 </div>
@@ -3671,3 +3671,4 @@ function updateSongArtRotation() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
