@@ -8,6 +8,21 @@ const songs = [
 
 
 { 
+        id: 146,
+        title: "Mel Isaiye En Idhayathin",
+        artist: "Nr Romeo",
+        music: "A R Rahman", 
+        image: "images/Romio.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Mel-Isaiye-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Mel-Isaiye-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Mel-Isaiye-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Mel-Isaiye-Song.mp3")
+        },  
+        lyrics: "lyrics/Mel-Isaiye.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
+{ 
         id: 145,
         title: "Anbe Anbe Ellam Anbe",
         artist: "Idhu Kathirvelan Kadhal",
