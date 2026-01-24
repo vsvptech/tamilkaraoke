@@ -10,7 +10,7 @@ const songs = [
 { 
         id: 146,
         title: "Mel Isaiye En Idhayathin",
-        artist: "Nr Romeo",
+        artist: "Mr Romeo",
         music: "A R Rahman", 
         image: "images/Romio.jpg",
         audio: {
