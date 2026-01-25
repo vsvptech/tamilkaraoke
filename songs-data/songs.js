@@ -7,7 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 148,
+        title: "Aagaya Suriyanai",
+        artist: "Samurai",
+        music: "Harris Jayaraj", 
+        image: "images/Samurai.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Aagaya-Suriyanai-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Aagaya-Suriyanai-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Aagaya-Suriyanai-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Aagaya-Suriyanai-Song.mp3")
+        },  
+        lyrics: "lyrics/Aagaya-Suriyanai.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 147,
         title: "Ramanin Mohanam",
