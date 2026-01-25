@@ -1110,7 +1110,7 @@ main {
 /* Mobile Player Controls */
 .mobile-player-controls {
     position: fixed;
-    bottom: 30px;
+   bottom: 0px;
     left: 0;
     width: 100%;
     background-color: var(--card-bg);
@@ -2121,6 +2121,7 @@ main {
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
 
 
