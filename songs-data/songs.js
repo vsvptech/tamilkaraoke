@@ -12,7 +12,7 @@ const songs = [
         id: 147,
         title: "Ramanin Mohanam",
         artist: "Netrikan",
-        music: "Ilayarajaa", 
+        music: "Ilaiyarajaa", 
         image: "images/Netrikan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ramanin-Male.mp3"),
