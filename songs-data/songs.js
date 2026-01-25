@@ -7,6 +7,22 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
+
+{ 
+        id: 147,
+        title: "Ramanin Mohanam",
+        artist: "Netrikan",
+        music: "Ilayarajaa", 
+        image: "images/Netrikan.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Ramanin-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Ramanin-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Ramanin-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Ramanin-Song.mp3")
+        },  
+        lyrics: "lyrics/Ramanin.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 146,
         title: "Mel Isaiye En Idhayathin",
