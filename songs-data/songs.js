@@ -6,6 +6,25 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
+
+
+
+
+{ 
+        id: 150,
+        title: "Ennai Thalatum Sangeetham",
+        artist: "Unnai Ninaithu",
+        music: " S A Rajkumar", 
+        image: "images/Unnai-Ninaithu.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Ennai-Thalatum-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Ennai-Thalatum-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Ennai-Thalatum-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Ennai-Thalatum-Song.mp3")
+        },  
+        lyrics: "lyrics/Ennai-Thalatum.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+    },		
 { 
         id: 149,
         title: "Irupathu Kodi",
