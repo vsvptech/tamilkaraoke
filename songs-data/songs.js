@@ -9,6 +9,21 @@ const songs = [
 
 
 { 
+        id: 153,
+        title: "Girlfriend Venum ",
+        artist: "Boys",
+        music: "A R Rahman", 
+        image: "images/Boys.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Girlfriend-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Girlfriend-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Girlfriend-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Girlfriend-Song.mp3")
+        },  
+        lyrics: "lyrics/Girlfriend.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
+{ 
         id: 152,
         title: "Kaalamellam Kadhal Vazhga",
         artist: "Kadhal Kottai",
