@@ -8,12 +8,26 @@ const songs = [
 
 
 
-
+{ 
+        id: 152,
+        title: "Kaalamellam Kadhal Vazhga",
+        artist: "Kadhal Kottai",
+        music: "Deva", 
+        image: "images/KadhalKottai.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Kaalamellam-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Kaalamellam-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Kaalamellam-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kaalamellam-Song.mp3")
+        },  
+        lyrics: "lyrics/Kaalamellam.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 151,
         title: "Megamai Vanthu Pogiren",
         artist: "Thullatha Manamum Thullum",
-        music: " S A Rajkumar", 
+        music: "S A Rajkumar", 
         image: "images/ThullathaManamumThullum.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Megamai-Male.mp3"),
@@ -28,7 +42,7 @@ const songs = [
         id: 150,
         title: "Ennai Thalatum Sangeetham",
         artist: "Unnai Ninaithu",
-        music: " S A Rajkumar", 
+        music: "S A Rajkumar", 
         image: "images/UnnaiNinaithu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ennai-Thalatum-Male.mp3"),
@@ -43,7 +57,7 @@ const songs = [
         id: 149,
         title: "Irupathu Kodi",
         artist: "Thullatha Manamum Thullum",
-        music: " S A Rajkumar", 
+        music: "S A Rajkumar", 
         image: "images/ThullathaManamumThullum.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Irupathu-Kodi-Male.mp3"),
