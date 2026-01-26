@@ -15,7 +15,7 @@ const songs = [
         title: "Ennai Thalatum Sangeetham",
         artist: "Unnai Ninaithu",
         music: " S A Rajkumar", 
-        image: "images/Unnai-Ninaithu.jpg",
+        image: "images/UnnaiNinaithu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ennai-Thalatum-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Ennai-Thalatum-Female.mp3"),
