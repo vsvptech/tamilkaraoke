@@ -6,7 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 149,
+        title: "Irupathu Kodi",
+        artist: "Thullatha Manamum Thullum",
+        music: " S A Rajkumar", 
+        image: "images/ThullathaManamumThullum.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Irupathu-Kodi-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Irupathu-Kodi-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Irupathu-Kodi-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Irupathu-Kodi-Song.mp3")
+        },  
+        lyrics: "lyrics/Irupathu-Kodi.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
 { 
         id: 148,
         title: "Aagaya Suriyanai",
