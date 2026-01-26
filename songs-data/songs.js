@@ -9,7 +9,21 @@ const songs = [
 
 
 
-
+{ 
+        id: 151,
+        title: "Megamai Vanthu Pogiren",
+        artist: "Thullatha Manamum Thullum",
+        music: " S A Rajkumar", 
+        image: "images/UnnaiNinaithu.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Megamai-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Megamai-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Megamai-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Megamai-Song.mp3")
+        },  
+        lyrics: "lyrics/Megamai.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },		
 { 
         id: 150,
         title: "Ennai Thalatum Sangeetham",
