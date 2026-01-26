@@ -14,7 +14,7 @@ const songs = [
         title: "Megamai Vanthu Pogiren",
         artist: "Thullatha Manamum Thullum",
         music: " S A Rajkumar", 
-        image: "images/UnnaiNinaithu.jpg",
+        image: "images/ThullathaManamumThullum.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Megamai-Male.mp3"),
             //female: getFirebaseUrl("songs/female/Megamai-Female.mp3"),
