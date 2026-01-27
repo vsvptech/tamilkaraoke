@@ -130,6 +130,7 @@ const musicDirectors = [
 "Anirudh Ravichander",
 "Bharani",
 "Deva",
+"Devi Sri Prasad",
 "D Imman",
 "G V Prakash Kumar",
 "Gangai Amaran",
@@ -3671,4 +3672,5 @@ function updateSongArtRotation() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
 
