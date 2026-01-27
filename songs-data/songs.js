@@ -9,6 +9,21 @@ const songs = [
 
 
 { 
+        id: 154,
+        title: "Ninnukori Varanum",
+        artist: "Agni Natchathiram",
+        music: "Ilaiyarajaa", 
+        image: "images/Agni.jpg",
+        audio: {
+            //male: getFirebaseUrl("songs/male/Ninnukori-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Ninnukori-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Ninnukori-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Ninnukori-Song.mp3")
+        },  
+        lyrics: "lyrics/Ninnukori.txt",
+        availableTypes: ["female", "song", "podcast"],
+    },	
+{ 
         id: 153,
         title: "Girlfriend Venum ",
         artist: "Boys",
