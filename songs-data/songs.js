@@ -9,6 +9,21 @@ const songs = [
 
 
 { 
+        id: 156,
+        title: "Naan Un Azhaginile",
+        artist: "24",
+        music: " A R Rahman", 
+        image: "images/24.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Naan-Un-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Naan-Un-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Naan-Un-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Naan-Un-Song.mp3")
+        },  
+        lyrics: "lyrics/Naan-Un.txt",
+        availableTypes: ["male", "female", 'duet", "song", "podcast"],
+    },	
+{ 
         id: 155,
         title: "Keladi Kanmani",
         artist: "Puthu Puthu Arthangal",
