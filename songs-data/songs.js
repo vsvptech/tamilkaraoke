@@ -9,6 +9,21 @@ const songs = [
 
 
 { 
+        id: 157,
+        title: "Kanmoodi Thirakkumpothu",
+        artist: "Sachin",
+        music: "Devi Sri Prasad", 
+        image: "images/Sachin.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Kanmoodi-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Kanmoodi-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Kanmoodi-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kanmoodi-Song.mp3")
+        },  
+        lyrics: "lyrics/Kanmoodi.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
+{ 
         id: 156,
         title: "Naan Un Azhaginile",
         artist: "24",
