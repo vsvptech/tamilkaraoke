@@ -9,6 +9,21 @@ const songs = [
 
 
 { 
+        id: 155,
+        title: "Keladi Kanmani",
+        artist: "Puthu Puthu Arthangal",
+        music: "Ilaiyarajaa", 
+        image: "images/PuthuPuthuArthangal.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Keladi-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Keladi-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Keladi-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Keladi-Song.mp3")
+        },  
+        lyrics: "lyrics/Keladi.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
+{ 
         id: 154,
         title: "Ninnukori Varanum",
         artist: "Agni Natchathiram",
