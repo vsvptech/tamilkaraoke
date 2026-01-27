@@ -21,7 +21,7 @@ const songs = [
             song: getFirebaseUrl("songs/song/Naan-Un-Song.mp3")
         },  
         lyrics: "lyrics/Naan-Un.txt",
-        availableTypes: ["male", "female", 'duet", "song", "podcast"],
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
     },	
 { 
         id: 155,
