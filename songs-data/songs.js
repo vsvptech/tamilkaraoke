@@ -12,7 +12,7 @@ const songs = [
         id: 156,
         title: "Naan Un Azhaginile",
         artist: "24",
-        music: " A R Rahman", 
+        music: "A R Rahman", 
         image: "images/24.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Naan-Un-Male.mp3"),
@@ -55,7 +55,7 @@ const songs = [
     },	
 { 
         id: 153,
-        title: "Girlfriend Venum ",
+        title: "Girlfriend Venum",
         artist: "Boys",
         music: "A R Rahman", 
         image: "images/Boys.jpg",
