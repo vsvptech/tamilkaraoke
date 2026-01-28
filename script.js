@@ -3418,7 +3418,32 @@ function setupMusicDirectorEvents() {
 }
 
 // Set up event listeners - FIXED: Lyrics button should show current song's lyrics
+// Set up event listeners - FIXED: Lyrics button should show current song's lyrics
 function setupEventListeners() {
+    // Logo text click handler to activate "list" filter
+    const logoText = document.querySelector('.logo-text');
+    if (logoText) {
+        logoText.addEventListener('click', () => {
+            markUserInteraction();
+            
+            console.log("Logo clicked - activating list filter");
+            
+            // Clear search when clicking logo
+            clearSearch();
+            
+            // Close mobile search if open
+            if (isMobileSearchOpen) {
+                closeMobileSearch();
+            }
+            
+            // Apply "list" filter
+            applyFilter("list");
+            
+            // Show notification
+            showNotification("Song List Loaded", 2000);
+        });
+    }
+
     themeToggle.addEventListener('click', () => {
         markUserInteraction();
         isDarkMode = !isDarkMode;
@@ -3432,36 +3457,36 @@ function setupEventListeners() {
     // Use the toggle function for mobile search
     mobileSearchToggle.addEventListener('click', toggleMobileSearch);
 
-// FIX: Lyrics button should show CURRENT song's lyrics
-lyricsBtn.addEventListener('click', async () => {
-    markUserInteraction();
-    
-    console.log("Lyrics button clicked. Getting active song...");
-    
-    // Use helper function to get the correct active song
-    const { song, index } = getActiveSong();
-    
-    if (song) {
-        const currentType = song.currentType || "male";
-        const displayTitle = getTitleForType(song, currentType);
-        const cleanArtist = getArtistForType(song, currentType);
+    // FIX: Lyrics button should show CURRENT song's lyrics
+    lyricsBtn.addEventListener('click', async () => {
+        markUserInteraction();
         
-        console.log("Found active song:", displayTitle, "Index:", index);
+        console.log("Lyrics button clicked. Getting active song...");
         
-        // CRITICAL FIX: Load lyrics for the correct song
-        await loadLyrics(song.lyrics, displayTitle, cleanArtist);
+        // Use helper function to get the correct active song
+        const { song, index } = getActiveSong();
         
-        // Update currentSongIndex
-        currentSongIndex = index;
-        
-        // Show the modal
-        lyricsModal.classList.add('active');
-        
-        showNotification(`Loading lyrics for ${displayTitle}`, 1500);
-    } else {
-        showNotification("Please select a song first", 2000);
-    }
-});
+        if (song) {
+            const currentType = song.currentType || "male";
+            const displayTitle = getTitleForType(song, currentType);
+            const cleanArtist = getArtistForType(song, currentType);
+            
+            console.log("Found active song:", displayTitle, "Index:", index);
+            
+            // CRITICAL FIX: Load lyrics for the correct song
+            await loadLyrics(song.lyrics, displayTitle, cleanArtist);
+            
+            // Update currentSongIndex
+            currentSongIndex = index;
+            
+            // Show the modal
+            lyricsModal.classList.add('active');
+            
+            showNotification(`Loading lyrics for ${displayTitle}`, 1500);
+        } else {
+            showNotification("Please select a song first", 2000);
+        }
+    });
 
     closeLyrics.addEventListener('click', () => {
         lyricsModal.classList.remove('active');
@@ -3508,24 +3533,24 @@ lyricsBtn.addEventListener('click', async () => {
     lyricsNextBtn.addEventListener('click', playNextSong);
 
     // Filter buttons in header - Clear search when changing filter
-document.querySelectorAll('.type-filter-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        markUserInteraction();
-        const type = e.currentTarget.dataset.type;
-        
-        console.log("Filter button clicked - Type:", type, "Clearing search...");
-        
-        // Clear search when changing filter
-        clearSearch();
-        
-        // Close mobile search if open
-        if (isMobileSearchOpen) {
-            closeMobileSearch();
-        }
-        
-        applyFilter(type);
+    document.querySelectorAll('.type-filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            markUserInteraction();
+            const type = e.currentTarget.dataset.type;
+            
+            console.log("Filter button clicked - Type:", type, "Clearing search...");
+            
+            // Clear search when changing filter
+            clearSearch();
+            
+            // Close mobile search if open
+            if (isMobileSearchOpen) {
+                closeMobileSearch();
+            }
+            
+            applyFilter(type);
+        });
     });
-});
 
     // Search functionality - FIXED
     if (searchInput) {
@@ -3673,6 +3698,7 @@ function updateSongArtRotation() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
 
 
 
