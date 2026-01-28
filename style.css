@@ -587,7 +587,7 @@ body.dark-mode .network-notification.warning {
 /* Responsive adjustments for player header */
 @media (max-width: 768px) {
     .player-header {
-        top: 40px;
+        top: 50px;
         padding: 10px 15px;
         width: 100%;
         gap: 10px;
@@ -2037,7 +2037,7 @@ main {
     .player-header {
         padding: 8px 10px;
         gap: 6px;
-        min-height: 50px;
+        min-height: 45px;
     }
     
     .player-title {
@@ -2121,6 +2121,7 @@ main {
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
 
 
