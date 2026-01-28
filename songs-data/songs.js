@@ -6,7 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 159,
+        title: "Aalappol Velappol",
+        artist: "Ejaman",
+        music: "Ilaiyarajaa", 
+        image: "images/Ejaman.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Aalappol-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Aalappol-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Aalappol-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Aalappol-Song.mp3")
+        },  
+        lyrics: "lyrics/Aalappol.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 158,
         title: "Velvetta Velvetta",
