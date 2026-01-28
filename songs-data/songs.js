@@ -10,7 +10,7 @@ const songs = [
         id: 159,
         title: "Aalappol Velappol",
         artist: "Ejaman",
-        music: "Ilaiyarajaa", 
+        music: "Ilaiyaraaja", 
         image: "images/Ejaman.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Aalappol-Male.mp3"),
@@ -70,7 +70,7 @@ const songs = [
         id: 155,
         title: "Keladi Kanmani",
         artist: "Puthu Puthu Arthangal",
-        music: "Ilaiyarajaa", 
+        music: "Ilaiyaraaja", 
         image: "images/PuthuPuthuArthangal.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Keladi-Male.mp3"),
@@ -85,7 +85,7 @@ const songs = [
         id: 154,
         title: "Ninnukori Varanum",
         artist: "Agni Natchathiram",
-        music: "Ilaiyarajaa", 
+        music: "Ilaiyaraaja", 
         image: "images/Agni.jpg",
         audio: {
             //male: getFirebaseUrl("songs/male/Ninnukori-Male.mp3"),
@@ -190,7 +190,7 @@ const songs = [
         id: 147,
         title: "Ramanin Mohanam",
         artist: "Netrikan",
-        music: "Ilaiyarajaa", 
+        music: "Ilaiyaraaja", 
         image: "images/Netrikan.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ramanin-Male.mp3"),
