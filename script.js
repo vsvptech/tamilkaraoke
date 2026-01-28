@@ -3418,7 +3418,6 @@ function setupMusicDirectorEvents() {
 }
 
 // Set up event listeners - FIXED: Lyrics button should show current song's lyrics
-// Set up event listeners - FIXED: Lyrics button should show current song's lyrics
 function setupEventListeners() {
     // Logo text click handler to activate "list" filter
     const logoText = document.querySelector('.logo-text');
@@ -3698,8 +3697,3 @@ function updateSongArtRotation() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
-
-
-
-
-
