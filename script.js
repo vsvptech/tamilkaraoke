@@ -145,6 +145,7 @@ const musicDirectors = [
 "R P Patnaik",
 "S A Rajkumar",
 "Shyam",
+"Sirpy",
 "T Rajendar",
 "Vijay Antony",
 "Yuvan Shankar Raja"
@@ -3672,5 +3673,6 @@ function updateSongArtRotation() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
 
 
