@@ -7,7 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 158,
+        title: "Velvetta Velvetta",
+        artist: "Mettukudi",
+        music: "Sirpy", 
+        image: "images/Mettukudi.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Velvetta-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Velvetta-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Velvetta-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Velvetta-Song.mp3")
+        },  
+        lyrics: "lyrics/Velvetta.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 157,
         title: "Kanmoodi Thirakkumpothu",
