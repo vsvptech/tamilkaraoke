@@ -8,7 +8,21 @@ const songs = [
 
 
 
-
+{ 
+        id: 163,
+        title: "Mukkala Mukkabala",
+        artist: "Kadhalan",
+        music: "A R Rahman", 
+        image: "images/Kadhalan.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Mukkala-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Mukkala-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Mukkala-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Mukkala-Song.mp3")
+        },  
+        lyrics: "lyrics/Mukkala.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 162,
         title: "Rosapoo Chinna Rosapoo",
