@@ -5,7 +5,26 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
+
+
+
+
 	
+{ 
+        id: 161,
+        title: "Panivizhum Malar Vanam",
+        artist: "Ninaivellam Nithya",
+        music: "Ilaiyaraaja", 
+        image: "images/Ninaivellam.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Panivizhum-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Panivizhum-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Panivizhum-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Panivizhum-Song.mp3")
+        },  
+        lyrics: "lyrics/Panivizhum.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
 { 
         id: 160,
         title: "Unakkul Naane",
