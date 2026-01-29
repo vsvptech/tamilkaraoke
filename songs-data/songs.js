@@ -11,15 +11,15 @@ const songs = [
 
 { 
         id: 162,
-        title: "Rosappu Chinna Rosappu",
+        title: "Rosapoo Chinna Rosapoo",
         artist: "Suryavamsam",
         music: "S A Rajkumar", 
         image: "images/Suryavamsam.jpg",
         audio: {
-            male: getFirebaseUrl("songs/male/Rosappu-Male.mp3"),
-            //female: getFirebaseUrl("songs/female/Rosappu-Female.mp3"),
-            //duet: getFirebaseUrl("songs/duet/Rosappu-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Rosappu-Song.mp3")
+            male: getFirebaseUrl("songs/male/Rosapoo-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Rosapoo-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Rosapoo-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Rosapoo-Song.mp3")
         },  
         lyrics: "lyrics/Rosappu.txt",
         availableTypes: ["male", "song", "podcast"],
