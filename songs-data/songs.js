@@ -7,7 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 164,
+        title: "Katti Vachiko Enthan",
+        artist: "En Jeevan Paduthu",
+        music: "Ilaiyaraaja", 
+        image: "images/Enjeevanpaduthu.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Katti-Vachiko-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Katti-Vachiko-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Katti-Vachiko-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Katti-Vachiko-Song.mp3")
+        },  
+        lyrics: "lyrics/Katti-Vachiko.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 163,
         title: "Mukkala Mukkabala",
