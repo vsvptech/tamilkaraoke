@@ -9,7 +9,21 @@ const songs = [
 
 
 
-	
+{ 
+        id: 162,
+        title: "Rosappu Chinna Rosappu",
+        artist: "Suryavamsam",
+        music: "S A Rajkumar", 
+        image: "images/Suryavamsam.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Rosappu-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Rosappu-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Rosappu-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Rosappu-Song.mp3")
+        },  
+        lyrics: "lyrics/Rosappu.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },		
 { 
         id: 161,
         title: "Panivizhum Malar Vanam",
