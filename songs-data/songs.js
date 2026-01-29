@@ -5,7 +5,22 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
-
+	
+{ 
+        id: 160,
+        title: "Unakkul Naane",
+        artist: "Pachaikili Muthucharam",
+        music: "Harris Jayaraj", 
+        image: "images/Pachchaikili.jpg",
+        audio: {
+            //male: getFirebaseUrl("songs/male/Unakkul-Naane-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Unakkul-Naane-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Unakkul-Naane-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Unakkul-Naane-Song.mp3")
+        },  
+        lyrics: "lyrics/Unakkul-Naane.txt",
+        availableTypes: ["female", "song", "podcast"],
+    },
 { 
         id: 159,
         title: "Aalappol Velappol",
