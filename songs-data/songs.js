@@ -8,6 +8,21 @@ const songs = [
 
 
 { 
+        id: 167,
+        title: "Athipazham Sivappa",
+        artist: "Raja Pandi",
+        music: "Deva", 
+        image: "images/Rajapandi.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Athipazham-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Athipazham-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Athipazham-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Athipazham-Song.mp3")
+        },  
+        lyrics: "lyrics/Athipazham.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
+{ 
         id: 166,
         title: "Oruvan Oruvan Muthalali",
         artist: "Muthu",
