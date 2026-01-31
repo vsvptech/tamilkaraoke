@@ -11,7 +11,7 @@ const songs = [
         id: 165,
         title: "Yaaro Manathile",
         artist: "Dhaam Dhoom",
-        music: "Harrish Jayaraj", 
+        music: "Harris Jayaraj", 
         image: "images/Dhamdhoom.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Yaaro-Male.mp3"),
