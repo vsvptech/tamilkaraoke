@@ -8,6 +8,21 @@ const songs = [
 
 
 { 
+        id: 166,
+        title: "Oruvan Oruvan Muthalali",
+        artist: "Muthu",
+        music: "A R Rahman", 
+        image: "images/Muthu.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Oruvan-Male.mp3"),
+           // female: getFirebaseUrl("songs/female/Oruvan-Female.mp3"),
+           // duet: getFirebaseUrl("songs/duet/Oruvan-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Oruvan-Song.mp3")
+        },  
+        lyrics: "lyrics/Oruvan.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },
+{ 
         id: 165,
         title: "Yaaro Manathile",
         artist: "Dhaam Dhoom",
