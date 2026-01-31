@@ -3481,7 +3481,7 @@ function setupEventListeners() {
             // Show the modal
             lyricsModal.classList.add('active');
             
-            showNotification(`Loading lyrics for ${displayTitle}`, 1500);
+            // showNotification(`Loading lyrics for ${displayTitle}`, 1500);
         } else {
             showNotification("Please select a song first", 2000);
         }
@@ -3697,3 +3697,4 @@ function updateSongArtRotation() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
