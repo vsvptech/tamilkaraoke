@@ -8,6 +8,21 @@ const songs = [
 
 
 { 
+        id: 165,
+        title: "Yaaro Manathile",
+        artist: "Dhaam Dhoom",
+        music: "Harrish Jayaraj", 
+        image: "images/Dhamdhoom.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Yaaro-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Yaaro-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Yaaro-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Yaaro-Song.mp3")
+        },  
+        lyrics: "lyrics/Yaaro.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
+{ 
         id: 164,
         title: "Katti Vachiko Enthan",
         artist: "En Jeevan Paduthu",
