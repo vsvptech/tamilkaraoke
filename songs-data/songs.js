@@ -7,6 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 { 
+        id: 171,
+        title: "Poove Sempoove",
+        artist: "Solla Thudikkuthu Manasu",
+        music: "Ilaiyaraaja", 
+        image: "images/Solla.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Poovesempoove-Male.mp3"),
+           //female: getFirebaseUrl("songs/female/Poovesempoove-Female.mp3"),
+           //duet: getFirebaseUrl("songs/duet/Poovesempoove-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Poovesempoove-Song.mp3")
+        },  
+        lyrics: "lyrics/Poovesempoove.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },
+{ 
         id: 170,
         title: "Raja Raja Chozhan",
         artist: "Rettaival Kuruvi",
