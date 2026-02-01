@@ -15,7 +15,7 @@ const songs = [
         audio: {
             male: getFirebaseUrl("songs/male/Kaalaiyil-Male.mp3"),
            female: getFirebaseUrl("songs/female/Kaalaiyil-Female.mp3"),
-           duet: getFirebaseUrl("songs/duet/Kaalaiyil-Duet.mp3"),
+           duet: getFirebaseUrl("songs/duet/Kaalayil-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Kaalaiyil-Song.mp3")
         },  
         lyrics: "lyrics/Kaalayil.txt",
