@@ -7,6 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 { 
+        id: 169,
+        title: "Nooru Varusam",
+        artist: "Panakkaran",
+        music: "Ilaiyaraaja", 
+        image: "images/Panakkaran.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Nooru-Male.mp3"),
+           //female: getFirebaseUrl("songs/female/Nooru-Female.mp3"),
+           //duet: getFirebaseUrl("songs/duet/Nooru-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Nooru-Song.mp3")
+        },  
+        lyrics: "lyrics/Nooru.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },
+{ 
         id: 168,
         title: "Kaalaiyil Thinamum",
         artist: "New",
