@@ -8,15 +8,15 @@ const songs = [
 
 { 
         id: 168,
-        title: "Kaalayil Thinamum",
+        title: "Kaalaiyil Thinamum",
         artist: "New",
         music: "A R Rahman", 
         image: "images/New.jpg",
         audio: {
-            male: getFirebaseUrl("songs/male/Kaalayil-Male.mp3"),
-           female: getFirebaseUrl("songs/female/Kaalayil-Female.mp3"),
-           duet: getFirebaseUrl("songs/duet/Kaalayil-Duet.mp3"),
-            song: getFirebaseUrl("songs/song/Kaalayil-Song.mp3")
+            male: getFirebaseUrl("songs/male/Kaalaiyil-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Kaalaiyil-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Kaalaiyil-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kaalaiyil-Song.mp3")
         },  
         lyrics: "lyrics/Kaalayil.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
