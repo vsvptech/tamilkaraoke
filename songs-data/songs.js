@@ -6,7 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 168,
+        title: "Kaalayil Thinamum",
+        artist: "New",
+        music: "A R Rahman", 
+        image: "images/New.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Kaalayil-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Kaalayil-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Kaalayil-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Kaalayil-Song.mp3")
+        },  
+        lyrics: "lyrics/Kaalayil.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 167,
         title: "Athipazham Sivappa",
