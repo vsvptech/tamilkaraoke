@@ -7,6 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 { 
+        id: 170,
+        title: "Raja Raja Chozhan",
+        artist: "Rettaival Kuruvi",
+        music: "Ilaiyaraaja", 
+        image: "images/Rettai.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Rajaraja-Male.mp3"),
+           //female: getFirebaseUrl("songs/female/Rajaraja-Female.mp3"),
+           //duet: getFirebaseUrl("songs/duet/Rajaraja-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Rajaraja-Song.mp3")
+        },  
+        lyrics: "lyrics/Rajaraja.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },
+{ 
         id: 169,
         title: "Nooru Varusam",
         artist: "Panakkaran",
