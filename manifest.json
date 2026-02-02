@@ -1,0 +1,25 @@
+{
+  "name": "Chillax Tamil Karaoke",
+  "short_name": "Chillax Karaoke",
+  "description": "Tamil Karaoke Player with Background Audio Support",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#4a148c",
+  "orientation": "portrait",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "./images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
