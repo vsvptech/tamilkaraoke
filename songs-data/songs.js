@@ -5,7 +5,21 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
-
+{ 
+        id: 172,
+        title: "Ada Maacham Ulla",
+        artist: "Chinna Veedu",
+        music: "Ilaiyaraaja", 
+        image: "images/Chinnaveedu.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Adamaacham-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Adamaacham-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Adamaacham-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Adamaacham-Song.mp3")
+        },  
+        lyrics: "lyrics/Adamaacham.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 171,
         title: "Poove Sempoove",
