@@ -21,7 +21,7 @@ const songs = [
             //duet: getFirebaseUrl("songs/duet/Azhagiyalaila-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Azhagiyalaila-Song.mp3")
         },  
-        lyrics: "lyrics/Muthumani.txt",
+        lyrics: "lyrics/Azhagiyalaila.txt",
         availableTypes: ["male", "song", "podcast"],
     },	
 { 
