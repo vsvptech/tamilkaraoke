@@ -9,7 +9,21 @@ const songs = [
 
 
 
-
+{ 
+        id: 174,
+        title: "Azhagiya Laila",
+        artist: "Ullaththai Allithaa",
+        music: "Sirpy", 
+        image: "images/Ullaththai.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Azhagiyalaila-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Azhagiyalaila-Female.mp3"),
+            //duet: getFirebaseUrl("songs/duet/Azhagiyalaila-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Azhagiyalaila-Song.mp3")
+        },  
+        lyrics: "lyrics/Muthumani.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
 { 
         id: 173,
         title: "Muthu Mani Mala",
