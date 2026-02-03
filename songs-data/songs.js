@@ -8,7 +8,21 @@ const songs = [
 
 
 
-
+{ 
+        id: 175,
+        title: "Panju Mittai Selai Katti",
+        artist: "Ettupatti Rasa",
+        music: "Deva", 
+        image: "images/Ettupatti.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Panjumittai-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Panjumittai-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Panjumittai-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Panjumittai-Song.mp3")
+        },  
+        lyrics: "lyrics/Panjumittai.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 174,
         title: "Azhagiya Laila",
