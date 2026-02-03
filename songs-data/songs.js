@@ -9,6 +9,21 @@ const songs = [
 
 
 { 
+        id: 176,
+        title: "Nathiyoram Nanal",
+        artist: "Annai Oru Alayam",
+        music: "Ilaiyaraaja", 
+        image: "images/Annaiorualayam.jpg",
+        audio: {
+           // male: getFirebaseUrl("songs/male/Nathiyoram-Male.mp3"),
+           // female: getFirebaseUrl("songs/female/Nathiyoram-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Nathiyoram-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Nathiyoram-Song.mp3")
+        },  
+        lyrics: "lyrics/Nathiyoram.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },
+{ 
         id: 175,
         title: "Panju Mittai Selai Katti",
         artist: "Ettupatti Rasa",
