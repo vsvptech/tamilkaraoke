@@ -5,6 +5,26 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
+
+
+
+
+
+{ 
+        id: 173,
+        title: "Muthu Mani Mala",
+        artist: "Chinna Goundar",
+        music: "Ilaiyaraaja", 
+        image: "images/Chinnagoundar.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Muthumani-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Muthumani-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Muthumani-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Muthumani-Song.mp3")
+        },  
+        lyrics: "lyrics/Muthumani.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 172,
         title: "Ada Maacham Ulla",
