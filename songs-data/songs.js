@@ -7,7 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 177,
+        title: "Thendral Vanthu Theendum Pothu",
+        artist: "Avatharam",
+        music: "Ilaiyaraaja", 
+        image: "images/Avatharam.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Thendralvanthu-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Thendralvanthu-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Thendralvanthu-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Thendralvanthu-Song.mp3")
+        },  
+        lyrics: "lyrics/Thendralvanthu.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 176,
         title: "Nathiyoram Nanal",
