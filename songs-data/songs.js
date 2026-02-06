@@ -6,7 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 178,
+        title: "Thaaliye Thevaillai",
+        artist: "Thamirabarani",
+        music: "Yuvan Shankar Raja", 
+        image: "images/Thamirabarani.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Thaaliye-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Thaaliye-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Thaaliye-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Thaaliye-Song.mp3")
+        },  
+        lyrics: "lyrics/Thaaliye.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 177,
         title: "Thendral Vanthu Theendum",
