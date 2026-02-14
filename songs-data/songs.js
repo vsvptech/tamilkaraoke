@@ -5,6 +5,23 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
+
+
+{ 
+        id: 180,
+        title: "Manjal Nilavuku",
+        artist: "Muthal Iravu",
+        music: "Ilaiyaraaja", 
+        image: "images/Muthal-Iravu.jpg",
+        audio: {
+           //male: getFirebaseUrl("songs/male/Manjal-Nilavuku-Male.mp3"),
+           //female: getFirebaseUrl("songs/female/Manjal-Nilavuku-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Manjal-Nilavuku-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Manjal-Nilavuku-Song.mp3")
+        },  
+        lyrics: "lyrics/Manjal-Nilavuku.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },	
 { 
         id: 179,
         title: "Athikalai Suba Velai",
