@@ -8,6 +8,21 @@ const songs = [
 
 
 { 
+        id: 181,
+        title: "Ilamai Enum Poongatru",
+        artist: "Pagalil Oru Iravu",
+        music: "Ilaiyaraaja", 
+        image: "images/PagalilOruIravu.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Ilamai-Enum-Male.mp3"),
+           // female: getFirebaseUrl("songs/female/Ilamai-Enum-Female.mp3"),
+            // duet: getFirebaseUrl("songs/duet/Ilamai-Enum-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Ilamai-Enum-Song.mp3")
+        },  
+        lyrics: "lyrics/Ilamai-Enum.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
+{ 
         id: 180,
         title: "Manjal Nilavuku",
         artist: "Muthal Iravu",
