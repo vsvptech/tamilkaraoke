@@ -6,7 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 182,
+        title: "Poo Maalaye Thol Serava",
+        artist: "Pagal Nilavu",
+        music: "Ilaiyaraaja", 
+        image: "images/PagalNilavu.jpg",
+        audio: {
+           // male: getFirebaseUrl("songs/male/Poo-Maalaye-Male.mp3"),
+           // female: getFirebaseUrl("songs/female/Poo-Maalaye-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Poo-Maalaye-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Poo-Maalaye-Song.mp3")
+        },  
+        lyrics: "lyrics/Ilamai-Enum.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },	
 { 
         id: 181,
         title: "Ilamai Enum Poongatru",
