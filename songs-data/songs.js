@@ -35,7 +35,7 @@ const songs = [
             duet: getFirebaseUrl("songs/duet/Poo-Maalaye-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Poo-Maalaye-Song.mp3")
         },  
-        lyrics: "lyrics/Ilamai-Enum.txt",
+        lyrics: "lyrics/Poo-Maalaye.txt",
         availableTypes: ["duet", "song", "podcast"],
     },	
 { 
