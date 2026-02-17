@@ -8,7 +8,20 @@ const songs = [
 
 
 
-	
+{ 
+        id: 184,
+        title: "Poo Maalayil Or Malligai",
+        artist: "Ooty Varai Uravu",
+        music: "M S Viswanathan", 
+        image: "images/OotyVaraiUravu.jpg",
+        audio: {
+            // male: getFirebaseUrl("songs/male/Poo-Maalayil-Male.mp3"),
+            // female: getFirebaseUrl("songs/female/Poo-Maalayil-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Poo-Maalayil-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Poo-Maalayil-Song.mp3") },  
+	        lyrics: "lyrics/Poo-Maalayil.txt",
+        	availableTypes: ["duet", "song", "podcast"],
+    },	
 { 
         id: 183,
         title: "Malligai Poovazhagil",
