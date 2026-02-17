@@ -6,6 +6,23 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
+
+
+	
+{ 
+        id: 183,
+        title: "Malligai Poovazhagil",
+        artist: "Annai Vayal",
+        music: "Sirpy", 
+        image: "images/AnnaiVayal.jpg",
+        audio: {
+            // male: getFirebaseUrl("songs/male/Malligai-Poovazhagil-Male.mp3"),
+            // female: getFirebaseUrl("songs/female/Malligai-Poovazhagil-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Malligai-Poovazhagil-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Malligai-Poovazhagil-Song.mp3") },  
+	        lyrics: "lyrics/Malligai-Poovazhagil.txt",
+        	availableTypes: ["duet", "song", "podcast"],
+    },
 { 
         id: 182,
         title: "Poo Maalaye Thol Serava",
