@@ -9,6 +9,21 @@ const songs = [
 
 
 { 
+        id: 185,
+        title: "Aanenna Pennenna Ellam",
+        artist: "Dharmadurai",
+        music: "Ilaiyaraaja", 
+        image: "images/Dharmadurai.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male//Aanenna-Male.mp3"),
+           // female: getFirebaseUrl("songs/female/Aanenna-Female.mp3"),
+            // duet: getFirebaseUrl("songs/duet/Aanenna-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Aanenna-Song.mp3")
+        },  
+        lyrics: "lyrics/Aanenna.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
+{ 
         id: 184,
         title: "Poo Maalayil Or Malligai",
         artist: "Ooty Varai Uravu",
