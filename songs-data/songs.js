@@ -15,7 +15,7 @@ const songs = [
         music: "Ilaiyaraaja", 
         image: "images/Dharmadurai.jpg",
         audio: {
-           male: getFirebaseUrl("songs/male//Aanenna-Male.mp3"),
+           male: getFirebaseUrl("songs/male/Aanenna-Male.mp3"),
            // female: getFirebaseUrl("songs/female/Aanenna-Female.mp3"),
             // duet: getFirebaseUrl("songs/duet/Aanenna-Duet.mp3"),
             song: getFirebaseUrl("songs/song/Aanenna-Song.mp3")
