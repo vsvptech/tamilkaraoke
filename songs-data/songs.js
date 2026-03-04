@@ -7,7 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 186,
+        title: "Kadhal Maharani",
+        artist: "Kadhal Parisu",
+        music: "Ilaiyaraaja", 
+        image: "images/KadhalParisu.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Kadhal-Maharani-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Kadhal-Maharani-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Kadhal-Maharani-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Kadhal-Maharani-Song.mp3")
+        },  
+        lyrics: "lyrics/Kadhal-Maharani.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 185,
         title: "Aanenna Pennenna Ellam",
