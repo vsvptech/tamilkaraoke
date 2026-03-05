@@ -6,7 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 187,
+        title: "Sorgathin Vaasapadi",
+        artist: "Unnai Solli Kuttramillai",
+        music: "Ilaiyaraaja", 
+        image: "images/UnnaiSolliKutramillai.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Sorgathin-Vaasapadi-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Sorgathin-Vaasapadi-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Sorgathin-Vaasapadi-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Sorgathin-Vaasapadi-Song.mp3")
+        },  
+        lyrics: "lyrics/Sorgathin-Vaasapadi.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 186,
         title: "Kadhal Maharani",
