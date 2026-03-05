@@ -5,7 +5,21 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
-
+{ 
+        id: 188,
+        title: "Monica Monica",
+        artist: "Coolie",
+        music: "Anirudh Ravichander", 
+        image: "images/Coolie.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Monica-Monica-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Monica-Monica-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Monica-Monica-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Monica-Monica-Song.mp3")
+        },  
+        lyrics: "lyrics/Monica-Monica.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 187,
         title: "Sorgathin Vaasapadi",
