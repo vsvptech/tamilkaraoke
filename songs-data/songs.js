@@ -6,6 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 { 
+        id: 189,
+        title: "Unnai Paartha Pinbu",
+        artist: "Kadhal Mannan",
+        music: "Bharathwaj", 
+        image: "images/KadhalMannan.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Unnai-Paartha-Male.mp3"),
+           // female: getFirebaseUrl("songs/female/Unnai-Paartha-Female.mp3"),
+           // duet: getFirebaseUrl("songs/duet/Unnai-Paartha-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Unnai-Paartha-Song.mp3")
+        },  
+        lyrics: "lyrics/Unnai-Paartha.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
+{ 
         id: 188,
         title: "Monica Monica",
         artist: "Coolie",
