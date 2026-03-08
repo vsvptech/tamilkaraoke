@@ -135,6 +135,7 @@ const musicDirectors = [
     "A R Rahman",
     "Anirudh Ravichander",
     "Bharani",
+    "Bharathwaj",
     "Deva",
     "Devi Sri Prasad",
     "D Imman",
@@ -3701,3 +3702,4 @@ function updateSongArtRotation() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', init);
+
