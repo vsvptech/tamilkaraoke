@@ -5,6 +5,22 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
+
+{ 
+        id: 190,
+        title: "Roja Poonthottam",
+        artist: "Kannukkul Nilavu",
+        music: "Ilaiyaraaja", 
+        image: "images/KannukulNilavu.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Roja-Poonthottam-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Roja-Poonthottam-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Roja-Poonthottam-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Roja-Poonthottam-Song.mp3")
+        },  
+        lyrics: "lyrics/Roja-Poonthottam.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },		
 { 
         id: 189,
         title: "Unnai Paartha Pinbu",
