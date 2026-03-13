@@ -12,12 +12,12 @@ const songs = [
         music: "A R Rahman", 
         image: "images/Moonwalk.jpg",
         audio: {
-           male: getFirebaseUrl("songs/male/Yethu-Male.mp3"),
-           //female: getFirebaseUrl("songs/female/Yethu-Female.mp3"),
-           //duet: getFirebaseUrl("songs/duet/Yethu-Duet.mp3"),
-           song: getFirebaseUrl("songs/song/Yethu-Song.mp3")
+           male: getFirebaseUrl("songs/male/Moonwalk-Male.mp3"),
+           //female: getFirebaseUrl("songs/female/Moonwalk-Female.mp3"),
+           //duet: getFirebaseUrl("songs/duet/Moonwalk-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Moonwalk-Song.mp3")
         },  
-        lyrics: "lyrics/Roja-Poonthottam.txt",
+        lyrics: "lyrics/Moonwalk.txt",
         availableTypes: ["male", "song", "podcast"],
     },	
 { 
