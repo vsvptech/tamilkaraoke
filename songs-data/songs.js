@@ -5,7 +5,21 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
-
+{ 
+        id: 191,
+        title: "Yethu",
+        artist: "Moonwalk",
+        music: "A R Rahman", 
+        image: "images/Moonwalk.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Yethu-Male.mp3"),
+           //female: getFirebaseUrl("songs/female/Yethu-Female.mp3"),
+           //duet: getFirebaseUrl("songs/duet/Yethu-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Yethu-Song.mp3")
+        },  
+        lyrics: "lyrics/Roja-Poonthottam.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
 { 
         id: 190,
         title: "Roja Poonthottam",
