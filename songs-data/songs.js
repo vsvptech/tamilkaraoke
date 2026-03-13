@@ -17,7 +17,7 @@ const songs = [
            //duet: getFirebaseUrl("songs/duet/Moonwalk-Duet.mp3"),
            song: getFirebaseUrl("songs/song/Moonwalk-Song.mp3")
         },  
-        lyrics: "lyrics/Moonwalk.txt",
+        lyrics: "lyrics/Yethu.txt",
         availableTypes: ["male", "song", "podcast"],
     },	
 { 
