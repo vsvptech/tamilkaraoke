@@ -5,6 +5,23 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
+
+
+{ 
+        id: 192,
+        title: "Oh Butterfly Butterfly",
+        artist: "Meera",
+        music: "Ilaiyaraaja", 
+        image: "images/Meera.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Oh-Butterfly-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Oh-Butterfly-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Oh-Butterfly-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Oh-Butterfly-Song.mp3")
+        },  
+        lyrics: "lyrics/Oh-Butterfly.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 191,
         title: "Yethu",
