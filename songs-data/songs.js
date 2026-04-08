@@ -10,7 +10,7 @@ const songs = [
 { 
         id: 194,
         title: "Thendral Vandhu Ennai",
-        artist: "Thendral Vandhura Ennai Thodum",
+        artist: "Thendrale Ennai Thodu",
         music: "Ilaiyaraaja", 
         image: "images/ThendralVanthu.jpg",
         audio: {
