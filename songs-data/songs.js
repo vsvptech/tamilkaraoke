@@ -6,7 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 193,
+        title: "Aura 10/10",
+        artist: "Meesaya Murukku 2",
+        music: "Hiphop Tamizha", 
+        image: "images/Meesai2.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Aura-Male.mp3"),
+           // female: getFirebaseUrl("songs/female/Aura-Female.mp3"),
+           // duet: getFirebaseUrl("songs/duet/Aura-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Aura-Song.mp3")
+        },  
+        lyrics: "lyrics/Aura.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },
 { 
         id: 192,
         title: "Oh Butterfly Butterfly",
