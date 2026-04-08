@@ -6,6 +6,22 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
+	
+{ 
+        id: 194,
+        title: "Thendral Vandhu Ennai",
+        artist: "Thendral Vandhura Ennai Thodum",
+        music: "Ilaiyaraaja", 
+        image: "images/ThendralVanthu.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Thendral-Vandhu-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Thendral-Vandhu-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Thendral-Vandhu-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Thendral-Vandhu-Song.mp3")
+        },  
+        lyrics: "lyrics/Thendral-Vandhu.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 193,
         title: "Aura 10/10",
