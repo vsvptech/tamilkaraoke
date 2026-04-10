@@ -6,7 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-	
+{ 
+        id: 195,
+        title: "Vaa Vaa Anbe Anbe",
+        artist: "Agni Natchathiram",
+        music: "Ilaiyaraaja", 
+        image: "images/Agni.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Vaa-Vaa-Anbe-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Vaa-Vaa-Anbe-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Vaa-Vaa-Anbe-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Vaa-Vaa-Anbe-Song.mp3")
+        },  
+        lyrics: "lyrics/Vaa-Vaa-Anbe.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },		
 { 
         id: 194,
         title: "Thendral Vandhu Ennai",
