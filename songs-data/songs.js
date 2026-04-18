@@ -7,6 +7,22 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
+
+{ 
+        id: 198,
+        title: "Kadhalikum Pennin Kaigal",
+        artist: "Kadhalan",
+        music: "A R Rahman", 
+        image: "images/Kadhalan.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Kadhalikum-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Kadhalikum-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Kadhalikum-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Kadhalikum-Song.mp3")
+        },  
+        lyrics: "lyrics/Muthamizh.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 197,
         title: "Muthamizh Kaviye Varuga",
