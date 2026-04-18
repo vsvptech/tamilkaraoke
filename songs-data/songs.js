@@ -6,6 +6,23 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
+
+
+{ 
+        id: 196,
+        title: "Kodiyile Malligai Poo",
+        artist: "Kadalora Kavithaigal",
+        music: "Ilaiyaraaja", 
+        image: "images/Kadalora-Kavithaigal.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Kodiyile-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Kodiyile-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Kodiyile-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Kodiyile-Song.mp3")
+        },  
+        lyrics: "lyrics/Kodiyile.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },		
 { 
         id: 195,
         title: "Vaa Vaa Anbe Anbe",
