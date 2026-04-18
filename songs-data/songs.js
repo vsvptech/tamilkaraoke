@@ -7,7 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 197,
+        title: "Muthamizh Kaviye Varuga",
+        artist: "Dharmathin Thalaivan",
+        music: "Ilaiyaraaja", 
+        image: "images/Dharmathin.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Muthamizh-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Muthamizh-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Muthamizh-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Muthamizh-Song.mp3")
+        },  
+        lyrics: "lyrics/Muthamizh.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 196,
         title: "Kodiyile Malligai Poo",
