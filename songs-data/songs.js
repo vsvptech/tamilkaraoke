@@ -9,6 +9,21 @@ const songs = [
 
 
 { 
+        id: 199,
+        title: "Asku Laska",
+        artist: "Nanban",
+        music: "Harris Jayaraj", 
+        image: "images/Nanban.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Asku-Laska-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Asku-Laska-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Asku-Laska-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Asku-Laska-Song.mp3")
+        },  
+        lyrics: "lyrics/Asku-Laska.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
+{ 
         id: 198,
         title: "Kadhalikum Pennin Kaigal",
         artist: "Kadhalan",
