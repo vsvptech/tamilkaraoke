@@ -139,6 +139,7 @@ const musicDirectors = [
     "Deva",
     "Devi Sri Prasad",
     "D Imman",
+    "Dhibu Ninan Thomas",
     "G V Prakash Kumar",
     "Gangai Amaran",
     "Harris Jayaraj",
