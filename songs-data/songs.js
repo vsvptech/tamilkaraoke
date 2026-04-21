@@ -5,7 +5,21 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
-
+{ 
+        id: 202,
+        title: "Enadhuyire Enadhuyire",
+        artist: "Bheema",
+        music: "Harris Jayaraj", 
+        image: "images/Bheema.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Enadhuyire-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Enadhuyire-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Enadhuyire-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Enadhuyire-Song.mp3")
+        },  
+        lyrics: "lyrics/Enadhuyire.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 201,
         title: "Nenje Nenje",
