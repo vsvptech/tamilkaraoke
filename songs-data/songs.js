@@ -5,6 +5,32 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
+
+
+
+
+
+
+
+
+
+
+
+{ 
+        id: 203,
+        title: "Unnale Ennalum",
+        artist: "Theri",
+        music: "G V Prakash Kumar", 
+        image: "images/Theri.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Unnale-Ennalum-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Unnale-Ennalum-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Unnale-Ennalum-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Unnale-Ennalum-Song.mp3")
+        },  
+        lyrics: "lyrics/Unnale-Ennalum.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 202,
         title: "Enadhuyire Enadhuyire",
