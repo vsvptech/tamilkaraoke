@@ -6,7 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 201,
+        title: "Nenje Nenje",
+        artist: "Ayan",
+        music: "Harris Jayaraj", 
+        image: "images/Ayan.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Nenje-Nenje-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Nenje-Nenje-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Nenje-Nenje-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Nenje-Nenje-Song.mp3")
+        },  
+        lyrics: "lyrics/Nenje-Nenje.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 200,
         title: "Nee Kavithaigala",
@@ -19,7 +33,7 @@ const songs = [
            //duet: getFirebaseUrl("songs/duet/Nee-Kavithaigala-Duet.mp3"),
            song: getFirebaseUrl("songs/song/Nee-Kavithaigala-Song.mp3")
         },  
-        lyrics: "lyrics/Asku-Laska.txt",
+        lyrics: "lyrics/Nee-Kavithaigala.txt",
         availableTypes: ["male", "song", "podcast"],
     },	
 { 
