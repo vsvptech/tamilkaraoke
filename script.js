@@ -155,6 +155,7 @@ const musicDirectors = [
     "Shyam",
     "Sirpy",
     "T Rajendar",
+    "Vidyasagar",
     "Vijay Antony",
     "Yuvan Shankar Raja"
 ];
