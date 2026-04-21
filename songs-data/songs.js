@@ -7,7 +7,21 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 200,
+        title: "Nee Kavithaigala",
+        artist: "Maragadha Naanayam",
+        music: "Dhibu Ninan Thomas", 
+        image: "images/MaragadhaNaanayam.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Nee-Kavithaigala-Male.mp3"),
+           //female: getFirebaseUrl("songs/female/Nee-Kavithaigala-Female.mp3"),
+           //duet: getFirebaseUrl("songs/duet/Nee-Kavithaigala-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Nee-Kavithaigala-Song.mp3")
+        },  
+        lyrics: "lyrics/Asku-Laska.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },	
 { 
         id: 199,
         title: "Asku Laska",
