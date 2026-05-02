@@ -15,7 +15,20 @@ const songs = [
 
 
 
-
+        id: 204,
+        title: "Yaar Indha Devathai",
+        artist: "Unnai Ninaithu",
+        music: "Sirpy", 
+        image: "images/UnnaiNinaithu.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Yaar-Indha-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Yaar-Indha-Female.mp3"),
+           // duet: getFirebaseUrl("songs/duet/Yaar-Indha-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Yaar-Indha-Song.mp3")
+        },  
+        lyrics: "lyrics/Yaar-Indha.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },		
 { 
         id: 203,
         title: "Unnale Ennalum",
@@ -813,7 +826,7 @@ const songs = [
         id: 150,
         title: "Ennai Thalatum Sangeetham",
         artist: "Unnai Ninaithu",
-        music: "S A Rajkumar", 
+        music: "Sirpy", 
         image: "images/UnnaiNinaithu.jpg",
         audio: {
             male: getFirebaseUrl("songs/male/Ennai-Thalatum-Male.mp3"),
