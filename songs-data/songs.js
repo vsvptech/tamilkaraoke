@@ -13,7 +13,21 @@ const songs = [
 
 
 
-
+{
+        id: 205,
+        title: "Poongatre Poongatte",
+        artist: "Paiyaa",
+        music: "Yuvan Shankar Raja", 
+        image: "images/Paiyaa.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Poongatre-Poongatre-Male.mp3"),
+            //female: getFirebaseUrl("songs/female/Poongatre-Poongatre-Female.mp3"),
+           // duet: getFirebaseUrl("songs/duet/Poongatre-Poongatre-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Poongatre-Poongatre-Song.mp3")
+        },  
+        lyrics: "lyrics/Poongatre-Poongatre.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },		
 	{
         id: 204,
         title: "Yaar Indha Devathai",
