@@ -12,7 +12,21 @@ const songs = [
 
 
 
-
+{
+        id: 206,
+        title: "Para Para",
+        artist: "Neerparavai",
+        music: "N R Raghunanthan", 
+        image: "images/Neerparavai.jpg",
+        audio: {
+            male: getFirebaseUrl("songs/male/Para-Para-Male.mp3"),
+            female: getFirebaseUrl("songs/female/Para-Para-Female.mp3"),
+            duet: getFirebaseUrl("songs/duet/Para-Para-Duet.mp3"),
+            song: getFirebaseUrl("songs/song/Para-Para-Song.mp3")
+        },  
+        lyrics: "lyrics/Para-Para.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 {
         id: 205,
         title: "Poongatre Poongatte",
