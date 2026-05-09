@@ -150,6 +150,7 @@ const musicDirectors = [
     "Krishna Kumar",
     "M S Viswanathan",
     "Nivas K Prasanna",
+    "N R Raghunanthan",
     "R P Patnaik",
     "S A Rajkumar",
     "Shyam",
