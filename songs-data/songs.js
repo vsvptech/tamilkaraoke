@@ -10,7 +10,21 @@ const songs = [
 
 
 
-
+{ 
+        id: 208,
+        title: "Sami Kitta Solli",
+        artist: "Aavaram Poo",
+        music: "Ilaiyaraaja", 
+        image: "images/Aavaram-Poo.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Sami-Kitta-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Sami-Kitta-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Sami-Kitta-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Sami-Kitta-Song.mp3")
+        },  
+        lyrics: "lyrics/Sami-Kitta.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 207,
         title: "Oru Naalum Unnai",
