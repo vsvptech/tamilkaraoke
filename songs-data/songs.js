@@ -8,7 +8,21 @@ const songs = [
 
 
 
-
+{ 
+        id: 210,
+        title: "Hey Unnaithaane",
+        artist: "Kadhal Parisu",
+        music: "Ilaiyaraaja", 
+        image: "images/KadhalParisu.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Hey-Unnaithaane-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Hey-Unnaithaane-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Hey-Unnaithaane-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Hey-Unnaithaane-Song.mp3")
+        },  
+        lyrics: "lyrics/Hey-Unnaithaane.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 209,
         title: "Nenjukulle Innarunnu",
