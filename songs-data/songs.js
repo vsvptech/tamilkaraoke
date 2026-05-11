@@ -11,7 +11,7 @@ const songs = [
 
 { 
         id: 214,
-        title: "Chinna Chinna Sethi Solla",
+        title: "Chinna Chinna Sethi Solli",
         artist: "Senthoorapandi",
         music: "Deva", 
         image: "images/Senthoorapandi.jpg",
