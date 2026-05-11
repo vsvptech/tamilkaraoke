@@ -31,12 +31,12 @@ const songs = [
         image: "images/Ponnumani.jpg",
         audio: {
            male: getFirebaseUrl("songs/male/Nenjukulle-Innarunnu-Male.mp3"),
-           female: getFirebaseUrl("songs/female/Nenjukulle-Innarunnu-Female.mp3"),
-           duet: getFirebaseUrl("songs/duet/Nenjukulle-Innarunnu-Duet.mp3"),
+          // female: getFirebaseUrl("songs/female/Nenjukulle-Innarunnu-Female.mp3"),
+           //duet: getFirebaseUrl("songs/duet/Nenjukulle-Innarunnu-Duet.mp3"),
            song: getFirebaseUrl("songs/song/Nenjukulle-Innarunnu-Song.mp3")
         },  
         lyrics: "lyrics/Nenjukulle-Innarunnu.txt",
-        availableTypes: ["male", "female", "duet", "song", "podcast"],
+        availableTypes: ["male", "song", "podcast"],
     },
 { 
         id: 208,
