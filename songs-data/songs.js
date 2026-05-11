@@ -22,7 +22,7 @@ const songs = [
            song: getFirebaseUrl("songs/song/Chinna-Chinna-Song.mp3")
         },  
         lyrics: "lyrics/Chinna-Chinna.txt",
-        availableTypes: ["make", "female", "duet", "song", "podcast"],
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
     },	
 { 
         id: 213,
