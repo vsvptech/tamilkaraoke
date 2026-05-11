@@ -11,7 +11,21 @@ const songs = [
 
 
 
-
+{ 
+        id: 207,
+        title: "Oru Naalum Unnai",
+        artist: "Ejamaan",
+        music: "Ilaiyaraaja", 
+        image: "images/Ejaman.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Oru-Naalum-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Oru-Naalum-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Oru-Naalum-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Oru-Naalum-Song.mp3")
+        },  
+        lyrics: "lyrics/Oru-Naalum.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 {
         id: 206,
         title: "Para Para",
