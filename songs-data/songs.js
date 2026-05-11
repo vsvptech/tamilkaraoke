@@ -10,6 +10,21 @@ const songs = [
 
 
 { 
+        id: 215,
+        title: "Chinna Chinna Sethi Solla",
+        artist: "Senthoorapandi",
+        music: "Deva", 
+        image: "images/Senthoorapandi.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Chinna-Chinna-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Chinna-Chinna-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Chinna-Chinna-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Chinna-Chinna-Song.mp3")
+        },  
+        lyrics: "lyrics/Chinna-Chinna.txt",
+        availableTypes: ["make", "female", "duet", "song", "podcast"],
+    },	
+{ 
         id: 213,
         title: "Nenjame Nenjame",
         artist: "Maamannan",
