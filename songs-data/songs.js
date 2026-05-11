@@ -8,6 +8,52 @@ const songs = [
 
 
 
+
+{ 
+        id: 213,
+        title: "Nenjame Nenjame",
+        artist: "Maamannan",
+        music: "A R Rahman", 
+        image: "images/Maamannan.jpg",
+        audio: {
+           //male: getFirebaseUrl("songs/male/Nenjame-Nenjame-Male.mp3"),
+           //female: getFirebaseUrl("songs/female/Nenjame-Nenjame-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Nenjame-Nenjame-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Nenjame-Nenjame-Song.mp3")
+        },  
+        lyrics: "lyrics/Nenjame-Nenjame.txt",
+        availableTypes: ["duet", "song", "podcast"],
+    },	
+{ 
+        id: 212,
+        title: "Vennilave Vennilave",
+        artist: "Minsara Kanavu",
+        music: "A R Rahman", 
+        image: "images/MinsaraKanavu.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Vennilave-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Vennilave-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Vennilave-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Vennilave-Song.mp3")
+        },  
+        lyrics: "lyrics/Hey-Vennilave.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
+{ 
+        id: 211,
+        title: "Arariraro",
+        artist: "Raam",
+        music: "Yuvan Shankar Raja", 
+        image: "images/Raam.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Aarariraro-Male.mp3"),
+           //female: getFirebaseUrl("songs/female/Aarariraro-Female.mp3"),
+           //duet: getFirebaseUrl("songs/duet/Aarariraro-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Aarariraro-Song.mp3")
+        },  
+        lyrics: "lyrics/Hey-Unnaithaane.txt",
+        availableTypes: ["male", "song", "podcast"],
+    },
 { 
         id: 210,
         title: "Hey Unnaithaane",
