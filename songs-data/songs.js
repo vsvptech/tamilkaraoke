@@ -8,6 +8,35 @@ const songs = [
 
 
 
+
+{ 
+        id: 217,
+        title: "Idhazhil Kadhai Ezhudhum",
+        artist: "Unnal Mudiyum Thambi",
+        music: "Ilaiyaraaja", 
+        image: "images/UnnalMudiyumThambi.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/IdhazhilKadhai-Male.mp3"),
+           female: getFirebaseUrl("songs/female/IdhazhilKadhai-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/IdhazhilKadhai-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/IdhazhilKadhai-Song.mp3")        },  
+        lyrics: "lyrics/IdhazhilKadhai.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
+{ 
+        id: 216,
+        title: "Appadi Podu Podu",
+        artist: "Ghilli",
+        music: "Vidyasagar", 
+        image: "images/Ghilli.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/AppadiPodu-Male.mp3"),
+           female: getFirebaseUrl("songs/female/AppadiPodu-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/AppadiPodu-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/AppadiPodu-Song.mp3")      },  
+        lyrics: "lyrics/AppadiPodu.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },		
 { 
         id: 215,
         title: "Sakka Podu Potane",
