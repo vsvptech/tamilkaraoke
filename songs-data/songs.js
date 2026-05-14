@@ -8,7 +8,21 @@ const songs = [
 
 
 
-
+{ 
+        id: 215,
+        title: "Sakka Podu Potane",
+        artist: "Dass",
+        music: "Yuvan Shankar Raja", 
+        image: "images/Dass.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Sakka-Podu-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Sakka-Podu-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Sakka-Podu-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Sakka-Podu-Song.mp3")
+        },  
+        lyrics: "lyrics/Sakka-Podu.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 214,
         title: "Chinna Chinna Sethi Solli",
