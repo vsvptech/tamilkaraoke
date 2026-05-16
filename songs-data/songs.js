@@ -10,6 +10,20 @@ const songs = [
 
 
 { 
+        id: 218,
+        title: "Sollamale Yaar Parthathu",
+        artist: "Poove Unakkaga",
+        music: "S A Rajkumar", 
+        image: "images/PooveUnakkaga.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/SollamaleYaar-Male.mp3"),
+           female: getFirebaseUrl("songs/female/SollamaleYaar-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/SollamaleYaar-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/SollamaleYaar-Song.mp3")        },  
+        lyrics: "lyrics/SollamaleYaar.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
+{ 
         id: 217,
         title: "Idhazhil Kadhai Ezhudhum",
         artist: "Unnal Mudiyum Thambi",
