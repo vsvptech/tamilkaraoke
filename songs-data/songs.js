@@ -8,7 +8,20 @@ const songs = [
 
 
 
-
+{ 
+        id: 219,
+        title: "Malai Kovil Vaasalil",
+        artist: "Veera",
+        music: "Ilaiyaraaja", 
+        image: "images/Veera.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/MalaiKovil-Male.mp3"),
+           female: getFirebaseUrl("songs/female/MalaiKovil-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/MalaiKovil-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/MalaiKovil-Song.mp3")        },  
+        lyrics: "lyrics/MalaiKovil.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 218,
         title: "Sollamale Yaar Parthathu",
