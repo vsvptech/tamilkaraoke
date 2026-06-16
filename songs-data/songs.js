@@ -7,7 +7,20 @@ function getFirebaseUrl(path) {
 const songs = [
 
 
-
+{ 
+        id: 220,
+        title: "En Idhayam Idhuvarai",
+        artist: "Singam",
+        music: "Devi Sri Prasad", 
+        image: "images/Singam.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/EnIdhayam-Male.mp3"),
+           female: getFirebaseUrl("songs/female/EnIdhayam-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/EnIdhayam-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/EnIdhayam-Song.mp3")        },  
+        lyrics: "lyrics/EnIdhayam.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 219,
         title: "Malai Kovil Vaasalil",
