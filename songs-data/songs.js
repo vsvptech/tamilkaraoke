@@ -6,7 +6,20 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-
+{ 
+        id: 221,
+        title: "Vazhi Neduga Kaattumalli",
+        artist: "Viduthalai",
+        music: "Ilaiyaraaja", 
+        image: "images/Viduthalai.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/VazhiNeduga-Male.mp3"),
+           female: getFirebaseUrl("songs/female/VazhiNeduga-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/VazhiNeduga-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/VazhiNeduga-Song.mp3")        },  
+        lyrics: "lyrics/VazhiNeduga.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 220,
         title: "En Idhayam Idhuvarai",
