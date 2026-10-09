@@ -6,6 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
+	
+{ 
+        id: 224,
+        title: "Irandum Ondrodu Ondru",
+        artist: "Panakkaran",
+        music: "Ilaiyaraaja", 
+        image: "images/Panakkaran.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/IrandumOndrodu-Male.mp3"),
+           female: getFirebaseUrl("songs/female/IrandumOndrodu-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/IrandumOndrodu-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/IrandumOndrodu-Song.mp3")        },  
+        lyrics: "lyrics/IrandumOndrodu.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 { 
         id: 223,
         title: "Kadhal Kavithaigal",
@@ -20,9 +35,7 @@ const songs = [
         lyrics: "lyrics/KadhalKavithaigal.txt",
         availableTypes: ["male", "female", "duet", "song", "podcast"],
     },
-
-	
-{ 
+	{ 
         id: 222,
         title: "Oh Maane Maane",
         artist: "Vellai Roja",
