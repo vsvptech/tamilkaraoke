@@ -5,8 +5,35 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
-
 	
+{ 
+        id: 226,
+        title: "Meenammaa Meenammaa",
+        artist: "Rajathi Raja",
+        music: "Ilaiyaraaja", 
+        image: "images/RajathiRaja.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/MeenammaaMeenammaa-Male.mp3"),
+           female: getFirebaseUrl("songs/female/MeenammaaMeenammaa-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/MeenammaaMeenammaa-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/MeenammaaMeenammaa-Song.mp3")        },  
+        lyrics: "lyrics/MeenammaaMeenammaa.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
+{ 
+        id: 225,
+        title: "Oyaayiye Yaayiye",
+        artist: "Ayan",
+        music: "Harris Jayaraj", 
+        image: "images/Ayan.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/OyaayiyeYaayiye-Male.mp3"),
+           female: getFirebaseUrl("songs/female/OyaayiyeYaayiye-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/OyaayiyeYaayiye-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/OyaayiyeYaayiye-Song.mp3")        },  
+        lyrics: "lyrics/OyaayiyeYaayiye.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },	
 { 
         id: 224,
         title: "Irandum Ondrodu Ondru",
