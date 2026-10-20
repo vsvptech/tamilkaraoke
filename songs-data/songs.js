@@ -5,6 +5,21 @@ function getFirebaseUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encodeURIComponent(path)}?alt=media`;
 }
 const songs = [
+
+	{ 
+        id: 227,
+        title: "Va Va Va Kanna Va",
+        artist: "Velaikkaran",
+        music: "Ilaiyaraaja", 
+        image: "images/Velaikkaran.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/Va-Va-Va-Kanna-Va-Male.mp3"),
+           female: getFirebaseUrl("songs/female/Va-Va-Va-Kanna-Va-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/Va-Va-Va-Kanna-Va-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/Va-Va-Va-Kanna-Va-Song.mp3")        },  
+        lyrics: "lyrics/Va-Va-Va-Kanna-Va.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 	
 { 
         id: 226,
