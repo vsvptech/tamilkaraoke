@@ -6,6 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
+	
+	{ 
+        id: 228,
+        title: "Nee Kaatru Naan Maram",
+        artist: "Nilaave Vaa",
+        music: "Vidyasagar", 
+        image: "images/NilaaveVaa.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/NeeKaatru-Male.mp3"),
+           female: getFirebaseUrl("songs/female/NeeKaatru-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/NeeKaatru-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/NeeKaatru-Song.mp3")        },  
+        lyrics: "lyrics/NeeKaatru.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 	{ 
         id: 227,
         title: "Va Va Va Kanna Va",
