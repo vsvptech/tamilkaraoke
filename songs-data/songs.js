@@ -6,7 +6,20 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-	
+		{ 
+        id: 229,
+        title: "Pongiyathe Kadhal Vellam",
+        artist: "Mannukkul Vairam",
+        music: "Devendran", 
+        image: "images/MannukkulVairam.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/PongiyatheKadhalVellam-Male.mp3"),
+           female: getFirebaseUrl("songs/female/PongiyatheKadhalVellam-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/PongiyatheKadhalVellam-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/PongiyatheKadhalVellam-Song.mp3")        },  
+        lyrics: "lyrics/PongiyatheKadhalVellam.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 	{ 
         id: 228,
         title: "Nee Kaatru Naan Maram",
