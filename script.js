@@ -138,6 +138,7 @@ const musicDirectors = [
     "Bharathwaj",
     "Deva",
     "Devi Sri Prasad",
+    "Devendran",
     "D Imman",
     "Dhibu Ninan Thomas",
     "G V Prakash Kumar",
