@@ -6,6 +6,21 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
+	
+	{ 
+        id: 230,
+        title: "Naan Thedum Seventhi Poo",
+        artist: "Dharma Pathini",
+        music: "Ilaiyaraaja", 
+        image: "images/DharmaPathini.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/NaanThedum-Male.mp3"),
+           female: getFirebaseUrl("songs/female/NaanThedum-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/NaanThedum-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/NaanThedum-Song.mp3")        },  
+        lyrics: "lyrics/NaanThedum.txt",
+        availableTypes: ["male", "female", "duet", "song", "podcast"],
+    },
 		{ 
         id: 229,
         title: "Pongiyathe Kadhal Vellam",
