@@ -6,7 +6,20 @@ function getFirebaseUrl(path) {
 }
 const songs = [
 
-	
+		{ 
+        id: 231,
+        title: "Poonthalir Aada",
+        artist: "Panneer Pushpangal",
+        music: "Ilaiyaraaja", 
+        image: "images/PanneerPushpangal.jpg",
+        audio: {
+           male: getFirebaseUrl("songs/male/PoonthalirAada-Male.mp3"),
+         //  female: getFirebaseUrl("songs/female/PoonthalirAada-Female.mp3"),
+           duet: getFirebaseUrl("songs/duet/PoonthalirAada-Duet.mp3"),
+           song: getFirebaseUrl("songs/song/PoonthalirAada-Song.mp3")        },  
+        lyrics: "lyrics/PoonthalirAada.txt",
+        availableTypes: ["male", "duet", "song", "podcast"],
+    },
 	{ 
         id: 230,
         title: "Naan Thedum Seventhi Poo",
